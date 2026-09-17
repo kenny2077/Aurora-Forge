@@ -44,16 +44,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-3;pointer-events:none;
   -webkit-mask:radial-gradient(ellipse 92% 66% at 50% 0%,#000 42%,transparent 100%);
           mask:radial-gradient(ellipse 92% 66% at 50% 0%,#000 42%,transparent 100%);}
 /* ---- cursor glow (GPU transform) + masked dot reveal ---- */
-#glow,#hot{position:fixed;top:0;left:0;z-index:-2;pointer-events:none;opacity:0;
-  transform:translate3d(var(--px,72vw),var(--py,34vh),0) translate(-50%,-50%);transition:opacity .6s var(--ease)}
-#glow{width:540px;height:540px;mix-blend-mode:screen;
+#glow{position:fixed;top:0;left:0;z-index:-2;pointer-events:none;opacity:0;
+  transform:translate3d(var(--px,72vw),var(--py,34vh),0) translate(-50%,-50%);transition:opacity .6s var(--ease);
+  width:540px;height:540px;mix-blend-mode:screen;
   background:radial-gradient(circle,rgba(71,234,219,.06),rgba(52,120,246,.025) 40%,transparent 66%)}
-/* dot reveal follows the pointer by transform with a STATIC mask — compositor-only, no per-frame mask repaint */
-#hot{width:400px;height:400px;
-  background:radial-gradient(circle,rgba(71,234,219,.26) 1.3px,transparent 2px) 0 0/19px 19px;
-  -webkit-mask:radial-gradient(circle,#000 2%,transparent 58%);mask:radial-gradient(circle,#000 2%,transparent 58%)}
-body.cursor-on #glow{opacity:.5} body.cursor-on #hot{opacity:.5}
-body.cursor-on #glow,body.cursor-on #hot{will-change:transform}
+body.cursor-on #glow{opacity:.5;will-change:transform}
 
 /* ---- header ---- */
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:25;
@@ -206,7 +201,7 @@ footer .credit{margin-top:22px;font-family:var(--mono);font-size:11px;color:var(
 
 @media (max-width:860px){.hero-inner{grid-template-columns:1fr;gap:34px;padding-block:56px 46px}.week-head .blurb{display:none}}
 @media (max-width:380px){.prog .track{width:90px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}#glow,#hot{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}#glow{display:none}}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:4px}
 </style>
 </head>
@@ -214,7 +209,6 @@ footer .credit{margin-top:22px;font-family:var(--mono);font-size:11px;color:var(
 
 
 <div id="glow" aria-hidden="true"></div>
-<div id="hot" aria-hidden="true"></div>
 
 <header class="top"><div class="wrap topbar">
   <div class="brand"><span class="mark"></span><span class="name">Interview Range <small>· Aurora Forge</small></span></div>
