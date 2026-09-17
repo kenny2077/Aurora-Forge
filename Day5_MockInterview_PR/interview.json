@@ -1,0 +1,21 @@
+{
+  "title": "Day 5 — Full Mock: Bug + Feature + PR",
+  "difficulty": "L4/L5 · Python · capstone",
+  "skill": "Run the full human-led, AI-assisted loop end to end: comprehend, fix a bug, ship a feature, open a PR, self-review.",
+  "time_min": 75,
+  "prompt": "Ticket PRICE-214: a $20 coupon on a $100 cart charged $88.00 — finance expected $86.40. And we need a bulk discount. Here's the pricing engine. Walk me through your plan, then fix and ship it.",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["coupon", "before", "after", "tax", "order"], "answer": "The bug: a fixed-dollar coupon is applied AFTER tax. It must be subtracted from the subtotal BEFORE tax."},
+    {"keywords": ["negative", "floor", "coupon", "bigger"], "answer": "A coupon larger than the cart must not produce a negative total — floor at 0."},
+    {"keywords": ["bulk", "discount", "quantity", "10", "feature"], "answer": "Feature: any line with quantity >= 10 gets 10% off that line, applied before coupon and tax."},
+    {"keywords": ["round", "rounding", "decimals"], "answer": "Round the final total to 2 decimals."},
+    {"keywords": ["order", "operations", "sequence"], "answer": "Order of operations: bulk discount per line -> subtotal -> subtract coupon -> apply tax -> round."},
+    {"keywords": ["pr", "commit", "review", "files"], "answer": "Change only pricing.py; then write the PR description and self-review checklist (that's the ownership signal)."}
+  ],
+  "hints": [
+    "Read pricing.py and write down the current order of operations in total() — the bug is in that order.",
+    "Coupon (fixed $) comes off the subtotal before tax; guard the total at max(0, ...).",
+    "Bulk: in subtotal(), if a line's qty >= BULK_THRESHOLD multiply that line by (1 - BULK_DISCOUNT)."
+  ]
+}

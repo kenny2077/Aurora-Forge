@@ -1,0 +1,19 @@
+{
+  "title": "Day 3 — Refactor, Optimize & Fix",
+  "difficulty": "L3/L4 · TypeScript · refactor",
+  "time_min": 45,
+  "prompt": "Our traffic dashboard's 'top 5 hottest endpoints' panel times out on real access logs, and tied endpoints come out in an inconsistent order. Here's the analyzer — how would you fix it?",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["slow", "perf", "complexity", "timeout", "n2"], "answer": "endpointCounts re-scans the whole list for every endpoint — it's O(n^2). Target O(n) with a single-pass Map."},
+    {"keywords": ["tie", "ties", "order", "alphabetical", "stable"], "answer": "Tied endpoints must be broken alphabetically so the ordering is stable between refreshes."},
+    {"keywords": ["parse", "endpoint", "line", "malformed"], "answer": "Each log line's endpoint is the 2nd whitespace token; malformed lines (parseEndpoint returns null) are skipped."},
+    {"keywords": ["api", "signature", "public"], "answer": "Keep the public functions (parseEndpoint, endpointCounts, topEndpoints) identical."},
+    {"keywords": ["output", "same", "behavior"], "answer": "Same output — top-N most-hit endpoints, highest first — just correct ordering and fast."}
+  ],
+  "hints": [
+    "Say out loud why the counting loop is O(n^2) and what Array.sort does without a tiebreak.",
+    "Build the count Map in one pass (counts.set(e, (counts.get(e) ?? 0) + 1)).",
+    "Add an alphabetical tiebreak to the comparator: (b[1]-a[1]) || a[0].localeCompare(b[0])."
+  ]
+}

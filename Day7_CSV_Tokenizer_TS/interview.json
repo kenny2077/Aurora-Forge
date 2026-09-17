@@ -1,0 +1,20 @@
+{
+  "title": "Day 7 — CSV Tokenizer Edge Cases",
+  "difficulty": "L3/L4 · TypeScript · parsing",
+  "time_min": 40,
+  "prompt": "We ingest user-uploaded CSVs. Right now we just split each line on commas and it breaks on real spreadsheets. Parse a single CSV record into fields correctly. How do you approach it?",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["quote", "quoted", "quotes"], "answer": "Yes — a field can be wrapped in double quotes, and inside quotes a comma is literal text, not a separator. Strip the wrapping quotes from the result."},
+    {"keywords": ["escape", "escaped", "double"], "answer": "Inside a quoted field, two double-quotes \"\" mean one literal double-quote character."},
+    {"keywords": ["trim", "whitespace", "spaces"], "answer": "Whitespace is significant — do not trim. ' b ' stays ' b '."},
+    {"keywords": ["empty", "trailing", "blank"], "answer": "Empty fields are allowed. A trailing comma produces a trailing empty field, and an empty line is a single empty field."},
+    {"keywords": ["newline", "multiline", "lines", "rows"], "answer": "Just one record (one line) per call for this exercise — no embedded newlines to worry about."},
+    {"keywords": ["regex"], "answer": "You can try, but think about the escaped-quote case before you commit to a regex."}
+  ],
+  "hints": [
+    "Think of it as a state machine with two states: inside-quotes and outside-quotes.",
+    "Scan character by character. Outside quotes: a comma ends the field, a quote enters quoted mode. Inside quotes: a quote might close the field OR be the first of an escaped pair.",
+    "When inside quotes and you see a quote, peek at the next char: if it's also a quote, emit one quote and skip both; otherwise close the quoted section."
+  ]
+}

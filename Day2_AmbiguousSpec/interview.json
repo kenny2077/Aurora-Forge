@@ -1,0 +1,20 @@
+{
+  "title": "Day 2 — Ambiguous Scoping",
+  "difficulty": "L3/L4 · Python · scoping",
+  "time_min": 45,
+  "prompt": "Our label printer prints a fixed number of characters per line. Given a piece of text and a width, return how many lines you'd need to write it (and the wrapped lines). That's the whole ticket — go.",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["word", "separator", "whitespace", "split"], "answer": "Words are whitespace-separated; runs of spaces collapse and leading/trailing whitespace is ignored."},
+    {"keywords": ["long", "longer", "width", "overflow", "split"], "answer": "A word longer than the width is NOT split — it overflows onto its own line."},
+    {"keywords": ["newline", "hard", "break", "\\n"], "answer": "A newline already in the text is a HARD break — each newline-delimited segment wraps independently."},
+    {"keywords": ["empty", "blank", "whitespace"], "answer": "Empty or whitespace-only text needs 0 lines (returns [])."},
+    {"keywords": ["width", "zero", "negative", "invalid"], "answer": "width <= 0 is invalid and raises ValueError."},
+    {"keywords": ["greedy", "pack", "fit"], "answer": "Greedy word wrap: pack words joined by single spaces until the next won't fit, then start a new line."}
+  ],
+  "hints": [
+    "Resist coding — first list every decision the one-sentence ask left open (word breaks, over-long words, newlines, empty, width<=0).",
+    "Implement wrap_lines first; line_count is just len(wrap_lines(text, width)).",
+    "Split on '\\n' for hard breaks, then greedily pack each segment's words at the width; an over-long word gets its own line."
+  ]
+}

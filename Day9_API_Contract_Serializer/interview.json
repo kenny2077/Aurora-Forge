@@ -1,0 +1,20 @@
+{
+  "title": "Day 9 — API Contract Serializer",
+  "difficulty": "L3 · Python · API contracts",
+  "time_min": 40,
+  "prompt": "Mobile clients are choking on our user payload. We have a documented response schema and a serializer that's drifted from it. Here's the schema and the code — make them match. Where do you start?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["schema", "contract", "spec", "source", "truth"], "answer": "SCHEMA.md is the source of truth — match it exactly. The tests encode it."},
+    {"keywords": ["null", "nickname", "omit", "present", "missing"], "answer": "Nullable fields (nickname, address) must always be PRESENT with a null value, never dropped."},
+    {"keywords": ["date", "time", "timestamp", "created", "format", "iso"], "answer": "createdAt is ISO-8601 UTC: YYYY-MM-DDThh:mm:ssZ. Not Python's default str(datetime)."},
+    {"keywords": ["case", "camel", "snake", "keys", "naming"], "answer": "Keys are camelCase: displayName, createdAt. Not snake_case."},
+    {"keywords": ["roles", "sorted", "order"], "answer": "roles is a sorted (ascending) list of role NAME strings, not Role objects."},
+    {"keywords": ["address", "nested"], "answer": "address is serialized to {city, zip}, or null when absent."}
+  ],
+  "hints": [
+    "Open SCHEMA.md and the current output side by side and list every difference before editing.",
+    "There are five discrepancy classes: key casing, null-but-present, datetime format, role names+sort, nested address serialization.",
+    "Build the dict in one literal with all camelCase keys; use datetime.strftime('%Y-%m-%dT%H:%M:%SZ'), sorted(r.name for r in roles), and a helper for address-or-None."
+  ]
+}

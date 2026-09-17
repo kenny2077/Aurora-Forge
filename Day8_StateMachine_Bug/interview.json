@@ -1,0 +1,20 @@
+{
+  "title": "Day 8 — State Machine Bug",
+  "difficulty": "L3 · Python · state machines",
+  "time_min": 45,
+  "prompt": "This drives an order from created to delivered, with cancellation allowed before shipping. Support says illegal actions are being accepted and the history has phantom entries. Walk me through how you'd find and fix it.",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["terminal", "final", "delivered", "cancelled"], "answer": "delivered and cancelled are both terminal — no events allowed once you're there."},
+    {"keywords": ["cancel", "shipped"], "answer": "Correct: cancelling a shipped or delivered order must be rejected. Cancel is only legal from created or paid."},
+    {"keywords": ["invalid", "illegal", "reject", "raise", "error", "exception"], "answer": "An invalid event should raise InvalidTransition and leave state and history untouched."},
+    {"keywords": ["history"], "answer": "history should contain only transitions that actually happened — no duplicates, no phantom steps."},
+    {"keywords": ["table", "transitions", "data"], "answer": "The TRANSITIONS table itself is correct. The bugs are in how apply() and is_terminal() use it."},
+    {"keywords": ["skip", "states", "order"], "answer": "You cannot skip states — deliver requires shipped, ship requires paid."}
+  ],
+  "hints": [
+    "Look at apply(): what happens when the event is NOT in the allowed set? Does it raise, or fall through?",
+    "apply() appends to history unconditionally — even when no transition occurred. That's the phantom entry, and the silent-accept is the missing 'else raise'.",
+    "is_terminal() only checks 'delivered'. A terminal state is simply one with no outgoing transitions — 'not TRANSITIONS[self.state]' covers both delivered and cancelled."
+  ]
+}

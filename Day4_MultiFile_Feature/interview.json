@@ -1,0 +1,19 @@
+{
+  "title": "Day 4 — Navigate a Codebase & Ship a Feature",
+  "difficulty": "L4 · Python · multi-file feature",
+  "time_min": 60,
+  "prompt": "You're dropped into a small library-catalog package. The repository layer is done; three service methods (checkout, return_book, most_borrowed) are stubbed. Implement them to pass the integration tests. How do you get oriented?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["repository", "repo", "api", "methods", "storage"], "answer": "Read repository.py first — it already gives you active_loans_for, has_active_loan, add_loan, remove_loan, and borrow_count. Use them; don't reinvent storage."},
+    {"keywords": ["checkout", "copies", "available"], "answer": "checkout: reject if no copies available or the member already holds this book; otherwise record the loan."},
+    {"keywords": ["return", "loan"], "answer": "return_book: if the member has no active loan for that book, raise ValueError; otherwise remove the loan."},
+    {"keywords": ["most", "borrowed", "cumulative", "top", "rank"], "answer": "most_borrowed(n): top n books by cumulative times ever borrowed, ties broken by title; exclude books never borrowed."},
+    {"keywords": ["available", "cumulative", "difference", "count"], "answer": "available_copies is total minus ACTIVE loans; borrow_count is CUMULATIVE (it doesn't drop on return) — two different counters."}
+  ],
+  "hints": [
+    "Map the repository API first — one line per method — before writing any service code.",
+    "checkout uses available_copies + has_active_loan; return_book uses remove_loan's bool result.",
+    "most_borrowed: filter books with borrow_count > 0, then sort by (-borrow_count, title)[:n]."
+  ]
+}

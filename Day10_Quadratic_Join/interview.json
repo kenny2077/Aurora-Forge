@@ -1,0 +1,20 @@
+{
+  "title": "Day 10 — The Accidental O(n·m) Join",
+  "difficulty": "L4 · Python · performance",
+  "time_min": 40,
+  "prompt": "This nightly job attaches customer names to orders. It's fine in staging but takes minutes in prod and we miss the export window. Take a look — how would you speed it up?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["output", "behavior", "same", "change"], "answer": "Output must be identical — same fields, same order as the input orders. Only the performance should change."},
+    {"keywords": ["duplicate", "dup", "same", "id", "ids"], "answer": "If two customers share an id, the FIRST one in the list wins. Watch out — a naive dict comprehension keeps the last."},
+    {"keywords": ["missing", "no", "match", "none"], "answer": "An order with no matching customer gets customer_name = None."},
+    {"keywords": ["complexity", "big", "o", "target"], "answer": "It's currently O(n*m) — a scan over all customers for every order. Target O(n+m)."},
+    {"keywords": ["memory", "space"], "answer": "Extra memory for an index is fine; O(m) for the lookup table is expected."},
+    {"keywords": ["sort", "sorted"], "answer": "No need to sort — a hash lookup is O(1) average, better than sorting for this."}
+  ],
+  "hints": [
+    "What is the cost of the inner 'for c in customers' loop, and how many times does it run?",
+    "It's a nested-loop join: O(orders × customers). Replace the inner scan with a dict lookup keyed by customer id.",
+    "Build the index with setdefault so the FIRST customer for a given id wins (a dict comprehension would keep the last), then map each order through it."
+  ]
+}

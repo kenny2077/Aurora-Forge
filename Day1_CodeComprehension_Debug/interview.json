@@ -1,0 +1,20 @@
+{
+  "title": "Day 1 — Code Comprehension & Debugging",
+  "difficulty": "L3 · Python · debugging",
+  "time_min": 50,
+  "prompt": "Staging fell over last night: our gateway couldn't read '[server] port' as an int and socket.bind crashed. This little config loader is what parses it, and its test suite is failing. Where do you start?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["type", "int", "coerce", "coercion", "bool", "float"], "answer": "Values are coerced: true/false -> bool, integers -> int, decimals -> float, everything else stays str. A version like 1.0.0 must stay a string."},
+    {"keywords": ["comment", "inline", "hash"], "answer": "Full-line comments and blank lines are skipped; an inline comment after a value (' # ...') is stripped from the value."},
+    {"keywords": ["whitespace", "strip", "trim", "spaces"], "answer": "Keys and values are trimmed of surrounding whitespace."},
+    {"keywords": ["duplicate", "repeated", "last", "wins", "key"], "answer": "A repeated key keeps the LAST value; a repeated [section] merges into the existing one."},
+    {"keywords": ["section", "default", "top"], "answer": "Keys before any [section] header go under a section named DEFAULT."},
+    {"keywords": ["equals", "url", "value", "split"], "answer": "Only the first '=' separates key from value, so values may contain '='."}
+  ],
+  "hints": [
+    "Read each function first and write a one-line summary; triage the failures by symptom class (type, whitespace, comment, dedup, split).",
+    "Look hard at _coerce (bool('false') is True!) and at how lines are split and stripped.",
+    "Fix surgically: strip lines/keys/values, strip inline comments, coerce in the right order, split('=', 1), merge sections, and let the last duplicate key win."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Day 6 — The Concurrency Race",
+  "difficulty": "L4 (mid-level) · Python · concurrency",
+  "time_min": 45,
+  "prompt": "We have a cache that lazily builds one client per tenant. Single-threaded it's fine, but under load we sometimes build the same tenant's client more than once and hand out different objects. Here's the class — take a look and tell me what you'd do.",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["thread", "concurrent", "parallel", "threads"], "answer": "Yes — many threads can call get() with the same key at the same instant. Assume a real thread pool."},
+    {"keywords": ["lock", "mutex"], "answer": "There's a self._lock already declared. Whether and how you use it is the whole question."},
+    {"keywords": ["async", "asyncio", "await"], "answer": "It's threads, not asyncio — plain synchronous get() called from multiple threads."},
+    {"keywords": ["factory", "expensive", "side", "effects"], "answer": "The factory is expensive and may open connections, so calling it more than once per key is the actual harm. It must run at most once per key."},
+    {"keywords": ["performance", "contention", "slow"], "answer": "Correctness first. A single lock is acceptable; if you want to avoid serializing all keys you can, but it's not required to pass."},
+    {"keywords": ["same", "object", "identity"], "answer": "Right — every concurrent caller for a key must get the exact same object back."}
+  ],
+  "hints": [
+    "Look at the two lines in get(): the 'if key not in self._store' check and the assignment. What can another thread do between them?",
+    "Two threads can both pass the 'not in' check before either assigns — so both call the factory. That's a check-then-act race.",
+    "Wrap the check-and-build in 'with self._lock:'. For bonus points, use double-checked locking so the fast path (already cached) doesn't take the lock."
+  ]
+}
