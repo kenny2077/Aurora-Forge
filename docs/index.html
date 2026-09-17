@@ -44,15 +44,16 @@ body::before{content:"";position:fixed;inset:0;z-index:-3;pointer-events:none;
   -webkit-mask:radial-gradient(ellipse 92% 66% at 50% 0%,#000 42%,transparent 100%);
           mask:radial-gradient(ellipse 92% 66% at 50% 0%,#000 42%,transparent 100%);}
 /* ---- cursor glow (GPU transform) + masked dot reveal ---- */
-#glow{position:fixed;top:0;left:0;width:620px;height:620px;z-index:-2;pointer-events:none;opacity:0;
-  transform:translate3d(var(--px,72vw),var(--py,34vh),0) translate(-50%,-50%);
-  background:radial-gradient(circle,rgba(71,234,219,.15),rgba(52,120,246,.07) 36%,transparent 66%);
-  mix-blend-mode:screen;will-change:transform;transition:opacity .6s var(--ease)}
-#hot{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:0;transition:opacity .5s var(--ease);
+#glow,#hot{position:fixed;top:0;left:0;z-index:-2;pointer-events:none;opacity:0;
+  transform:translate3d(var(--px,72vw),var(--py,34vh),0) translate(-50%,-50%);transition:opacity .6s var(--ease)}
+#glow{width:620px;height:620px;mix-blend-mode:screen;
+  background:radial-gradient(circle,rgba(71,234,219,.15),rgba(52,120,246,.07) 36%,transparent 66%)}
+/* dot reveal follows the pointer by transform with a STATIC mask — compositor-only, no per-frame mask repaint */
+#hot{width:460px;height:460px;
   background:radial-gradient(circle,rgba(71,234,219,.42) 1.3px,transparent 2px) 0 0/19px 19px;
-  -webkit-mask:radial-gradient(230px circle at var(--px,50%) var(--py,50%),#000 2%,transparent 66%);
-          mask:radial-gradient(230px circle at var(--px,50%) var(--py,50%),#000 2%,transparent 66%)}
-body.cursor-on #glow{opacity:1} body.cursor-on #hot{opacity:.9}
+  -webkit-mask:radial-gradient(circle,#000 2%,transparent 60%);mask:radial-gradient(circle,#000 2%,transparent 60%)}
+body.cursor-on #glow{opacity:1} body.cursor-on #hot{opacity:.85}
+body.cursor-on #glow,body.cursor-on #hot{will-change:transform}
 
 /* ---- header ---- */
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:25;
@@ -154,6 +155,7 @@ main{padding-block:20px 72px}
 .card-foot .lang.ts::before{background:var(--blue-lt);box-shadow:0 0 7px var(--blue-lt)}
 
 /* ---- modal ---- */
+body.modal-open{overflow:hidden}
 .scrim{position:fixed;inset:0;background:rgba(2,7,9,.74);backdrop-filter:blur(6px);display:none;z-index:40;padding:20px}
 .scrim.open{display:grid;place-items:start center}
 .modal{background:linear-gradient(180deg,rgba(9,26,28,.96),rgba(4,16,18,.98));border:1px solid var(--line-strong);
@@ -368,9 +370,10 @@ function card(d){
 
 /* ---- modal / mock ---- */
 let activeDay=null,hintIdx=0,activeTrigger=null;
-function openDay(d,focusInput){
-  if(focusInput===undefined)focusInput=true;
+function openDay(d,focus){
+  if(focus===undefined)focus="input";
   if(!activeDay)activeTrigger=document.activeElement;
+  document.body.classList.add("modal-open");
   activeDay=d;hintIdx=0;
   const m=document.getElementById("modal"),done=!!store.done[d.day];m.innerHTML="";
   const head=el("div","modal-head"),row=el("div","row");
@@ -410,13 +413,14 @@ function openDay(d,focusInput){
   const donebar=el("div","donebar");donebar.appendChild(el("span","q","How did it go?"));
   ["rough","ok","nailed"].forEach(lvl=>{const b=el("button","scorebtn",lvl);
     b.setAttribute("aria-pressed",store.score[d.day]===lvl);
-    b.onclick=()=>{store.score[d.day]=lvl;store.done[d.day]=true;save();openDay(d,false);render();};donebar.appendChild(b);});
+    b.onclick=()=>{store.score[d.day]=lvl;store.done[d.day]=true;save();openDay(d,"done");render();};donebar.appendChild(b);});
   const dn=el("button","btn"+(done?" solid":""),done?"✓ Done":"Mark done");
   dn.onclick=()=>{store.done[d.day]=!store.done[d.day];if(!store.done[d.day])delete store.score[d.day];
-    save();openDay(d,false);render();};donebar.appendChild(dn);
+    save();openDay(d,"done");render();};donebar.appendChild(dn);
   body.appendChild(donebar);m.appendChild(body);
   document.getElementById("scrim").classList.add("open");
-  if(focusInput)setTimeout(()=>input.focus(),30);
+  if(focus==="input")setTimeout(()=>input.focus(),30);
+  else if(focus==="done")setTimeout(()=>dn.focus(),0);
 }
 function chatLine(cls,who,msg){const p=el("p","line "+cls);p.appendChild(el("span","who",who));
   p.appendChild(el("span","msg",msg));return p;}
@@ -428,7 +432,8 @@ function answer(d,q){
     if(t.includes(k)||toks.includes(k))s++;});if(s>score){score=s;best=c;}});
   return best&&score>0?best.answer:"What's your instinct? State an assumption out loud and I'll tell you if it's off.";
 }
-function closeModal(){document.getElementById("scrim").classList.remove("open");activeDay=null;
+function closeModal(){document.getElementById("scrim").classList.remove("open");
+  document.body.classList.remove("modal-open");activeDay=null;
   if(activeTrigger&&activeTrigger.focus){activeTrigger.focus();activeTrigger=null;}}
 document.getElementById("scrim").addEventListener("click",e=>{if(e.target.id==="scrim")closeModal();});
 document.addEventListener("keydown",e=>{
@@ -445,7 +450,7 @@ function updateProgress(){const n=Object.keys(store.done).filter(k=>store.done[k
   document.getElementById("progText").textContent=n+" / "+DAYS.length;
   document.getElementById("progFill").style.width=(100*n/DAYS.length)+"%";}
 document.getElementById("resetBtn").onclick=()=>{store={done:{},score:{}};save();
-  if(activeDay)openDay(activeDay,false);render();};
+  if(activeDay)openDay(activeDay,"none");render();};
 
 document.getElementById("hoursStat").textContent=Math.round(DAYS.reduce((a,d)=>a+d.time,0)/60);
 buildFilters();render();
