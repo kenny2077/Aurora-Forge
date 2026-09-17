@@ -1,0 +1,20 @@
+{
+  "title": "Day 13 — Kill the Mutants (Test Strength)",
+  "difficulty": "L4 (touches L5) · TypeScript · test design",
+  "time_min": 40,
+  "prompt": "Here's a correct median function and five subtly-broken versions of it. Your job isn't to fix code — it's to write checks strong enough to catch every broken version while still accepting the correct one. How do you pick your test inputs?",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["mutant", "broken", "versions", "how", "many"], "answer": "Five mutants: does-not-sort, returns-mean, even-upper (no average), odd-off-by-one, and empty-returns-zero."},
+    {"keywords": ["mean", "average"], "answer": "One mutant returns the mean. You need an input where mean != median to catch it — a skewed distribution."},
+    {"keywords": ["sort", "sorted", "unsorted"], "answer": "One mutant forgets to sort. Use an UNSORTED input whose median differs from the element at the middle index."},
+    {"keywords": ["empty"], "answer": "The correct function throws on empty input; one mutant returns 0. assert that median([]) throws."},
+    {"keywords": ["even", "odd", "length"], "answer": "Cover both: an odd-length list (catches odd-off-by-one) and an even-length list (catches even-upper and mean)."},
+    {"keywords": ["edit", "modify", "which", "file"], "answer": "Only edit assertions.ts. spec.ts and check.test.ts are read-only."}
+  ],
+  "hints": [
+    "Go mutant by mutant: for each one, what is the smallest input where the correct median and that mutant DISAGREE?",
+    "[3,1,2] has median 2, but does-not-sort returns nums[1]=1 and odd-off-by-one returns sorted[mid-1]=1 — so both disagree. A skewed even list like [1,3,2,10] (median 2.5, mean 4, upper 3) catches mean and even-upper.",
+    "Three assertions suffice: median([3,1,2])===2, median([1,3,2,10])===2.5, and assert median([]) throws."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Day 11 — Prompt → Precise Spec",
+  "difficulty": "L3 · Python · AI-fluency (spec writing)",
+  "time_min": 35,
+  "prompt": "Product wants a slugify function for blog URLs. That's the whole ask. Before you write any code, tell me exactly how it should behave — I'm curious what questions you'd pin down first.",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["case", "lower", "upper"], "answer": "Lowercase the whole thing."},
+    {"keywords": ["space", "separator", "special", "punctuation", "characters", "survive"], "answer": "Only [a-z0-9] survive. Any run of other characters collapses to a single hyphen."},
+    {"keywords": ["accent", "unicode", "ascii", "non-ascii", "café", "cafe"], "answer": "Keep it simple: non-ASCII letters are treated as separators, not transliterated. 'Café' -> 'caf'."},
+    {"keywords": ["trailing", "leading", "trim", "strip", "edges"], "answer": "Strip leading and trailing hyphens."},
+    {"keywords": ["empty", "blank", "symbols"], "answer": "Empty input or all-symbol input yields an empty string."},
+    {"keywords": ["digit", "number", "numbers"], "answer": "Digits are kept."},
+    {"keywords": ["length", "max", "truncate"], "answer": "No max-length requirement for this version."}
+  ],
+  "hints": [
+    "List every decision the one-sentence ask left open BEFORE writing code — that's the whole exercise.",
+    "Think in terms of: which characters survive, and what happens to everything else (runs of them).",
+    "One regex does it: replace runs of [^a-z0-9] with '-' on the lowercased string, then strip('-')."
+  ]
+}

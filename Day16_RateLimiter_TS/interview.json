@@ -1,0 +1,20 @@
+{
+  "title": "Day 16 — Token-Bucket Rate Limiter",
+  "difficulty": "L3/L4 · TypeScript · systems",
+  "time_min": 45,
+  "prompt": "This token-bucket rate limiter has two bugs QA found: after an idle period it lets a burst through, and it rejects a request that needs exactly the tokens available. Walk me through the token math and the fixes.",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["cap", "capacity", "burst", "idle", "max"], "answer": "Yes — after refilling, tokens must never exceed capacity. The idle burst is because refill isn't capped."},
+    {"keywords": ["exact", "boundary", "equal", "==", ">="], "answer": "A request needing exactly the available tokens must succeed — the comparison should be >=, not >."},
+    {"keywords": ["refill", "rate", "elapsed", "formula"], "answer": "Refill = elapsed_seconds * refillPerSec, added to current tokens, then capped at capacity."},
+    {"keywords": ["fail", "reject", "consume", "unchanged"], "answer": "On rejection, don't consume tokens. (Refilling on that call is fine; just don't deduct cost.)"},
+    {"keywords": ["time", "clock", "now", "inject", "deterministic"], "answer": "Time is passed in as a seconds value (injected), so there's no real clock in the logic — that's what makes it testable."},
+    {"keywords": ["fractional", "float"], "answer": "Tokens are fractional — 0.5s at 2/s yields 1 token. Don't floor them."}
+  ],
+  "hints": [
+    "Write the invariant first: 0 <= tokens <= capacity, always.",
+    "The idle-burst bug is a missing Math.min(capacity, ...) around the refill; the rejection bug is '>' where it should be '>='.",
+    "tokens = Math.min(capacity, tokens + elapsed * refillPerSec); then if (tokens >= cost) { tokens -= cost; return true; } return false;"
+  ]
+}

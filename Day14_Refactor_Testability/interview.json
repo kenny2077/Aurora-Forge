@@ -1,0 +1,20 @@
+{
+  "title": "Day 14 — Refactor for Testability",
+  "difficulty": "L3 · Python · dependency injection",
+  "time_min": 35,
+  "prompt": "This happy-hour discount works in prod, but QA says they can't test it reliably — it passes in the evening and fails in the morning. How would you make it testable?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["now", "time", "clock", "datetime", "inject"], "answer": "Right — it calls datetime.now() directly. Let the caller inject the time; default to the real clock when not provided."},
+    {"keywords": ["behavior", "production", "prod", "change", "same"], "answer": "Production behavior must stay identical: calling with no time argument should still use datetime.now()."},
+    {"keywords": ["window", "hours", "inclusive", "exclusive", "17", "19"], "answer": "Happy hour is 17:00 inclusive to 19:00 exclusive, by hour."},
+    {"keywords": ["round", "rounding", "decimals"], "answer": "Discounted price is base * 0.8 rounded to 2 decimals."},
+    {"keywords": ["mock", "patch", "monkeypatch", "freeze"], "answer": "You could monkeypatch, but the cleaner seam here is an injectable parameter with a default. That's what the tests use."},
+    {"keywords": ["signature", "api", "argument"], "answer": "Both is_happy_hour and final_price should take an optional now parameter."}
+  ],
+  "hints": [
+    "What single call makes this impossible to test deterministically?",
+    "Add a parameter: now=None, and inside do 'now = now or datetime.now()'. That's the seam.",
+    "Thread now through final_price into is_happy_hour(now); keep the window and rounding exactly as specified."
+  ]
+}

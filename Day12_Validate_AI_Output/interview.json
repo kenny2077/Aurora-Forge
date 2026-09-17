@@ -1,0 +1,20 @@
+{
+  "title": "Day 12 — Validate AI Output",
+  "difficulty": "L4 · Python · output validation",
+  "time_min": 40,
+  "prompt": "A teammate had an AI write this merge_intervals function, checked one overlapping case, and opened a PR. Review it like you're the one whose name is on the approval. What do you check?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["touch", "touching", "adjacent", "endpoint", "boundary"], "answer": "Yes — touching intervals like [1,2] and [2,3] must merge into [1,3]. That's one of the bugs."},
+    {"keywords": ["nested", "contain", "inside", "containment"], "answer": "A nested interval like [2,3] inside [1,10] must keep the outer end (10), not shrink it."},
+    {"keywords": ["mutate", "mutation", "input", "side", "caller"], "answer": "Good instinct — check whether it mutates the caller's list. It does, and it shouldn't."},
+    {"keywords": ["sorted", "unsorted", "order"], "answer": "Input may be unsorted; output should be sorted by start. The sorting part is actually fine."},
+    {"keywords": ["empty"], "answer": "Empty input returns []. That case is handled correctly."},
+    {"keywords": ["how", "many", "bugs", "count"], "answer": "Three defects total: touching, nested, and input mutation."}
+  ],
+  "hints": [
+    "Don't just run it — read it and predict inputs that break it. Look hard at the merge condition and the end-assignment.",
+    "The condition uses '<' (strict) so touching intervals don't merge; and it sets last[1] = curr[1] instead of max(last[1], curr[1]).",
+    "Third bug: 'last' is a reference to an interval from the input, so mutating last[1] mutates the caller's data. Copy the intervals (or build new pairs)."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Day 19 — Event Bus (pub/sub)",
+  "difficulty": "L3/L4 · TypeScript · systems",
+  "time_min": 45,
+  "prompt": "This event bus has two bugs: a handler that unsubscribes another during an emit causes that other handler to be skipped, and once() fires on every emit instead of just once. How would you fix it?",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["iterate", "iteration", "live", "mutate", "during", "emit"], "answer": "Right — emit iterates the live listener array, so a handler calling off() mid-loop shifts the array and skips the next handler. Iterate a snapshot instead."},
+    {"keywords": ["snapshot", "copy"], "answer": "Yes: dispatch over a copy of the listeners captured at the start of emit, so subscribe/unsubscribe during the emit doesn't change who runs this round."},
+    {"keywords": ["once", "auto", "remove", "unsubscribe"], "answer": "once() should fire the handler at most once and then remove itself. It should also return an unsubscribe so it can be cancelled before firing."},
+    {"keywords": ["semantics", "who", "called", "new", "handler"], "answer": "Snapshot semantics: only handlers subscribed at the START of the emit are called; a handler added during the emit is not called until the next emit."},
+    {"keywords": ["api", "signature", "public"], "answer": "Keep on/off/emit/once signatures identical."},
+    {"keywords": ["error", "throw", "handler"], "answer": "Assume handlers don't throw for this exercise — focus on the iteration and once bugs."}
+  ],
+  "hints": [
+    "Why does removing an element from an array you're iterating with for..of skip the next one?",
+    "emit: iterate over [...arr] (a copy), not the live array.",
+    "once: const off = this.on(event, (p) => { off(); handler(p); }); return off;"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Day 18 — Cursor Pagination Off-by-One",
+  "difficulty": "L3/L4 · Python · pagination",
+  "time_min": 40,
+  "prompt": "Infinite scroll is showing a duplicate row at each page boundary, and the next cursor looks wrong. Here's the cursor pagination code. How do you debug it?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["cursor", "greater", "strictly", "seen", "include"], "answer": "The cursor is the last id the client already saw, so the next page must be ids STRICTLY greater than the cursor — the duplicate is an off-by-one there."},
+    {"keywords": ["next", "cursor", "last", "first", "point"], "answer": "next_cursor should be the LAST item's id in the returned page, not the first."},
+    {"keywords": ["null", "none", "end", "more", "last"], "answer": "next_cursor is None when there are no items after this page."},
+    {"keywords": ["sorted", "order", "id"], "answer": "Items are pre-sorted ascending by id — you can rely on that."},
+    {"keywords": ["empty", "past", "beyond"], "answer": "A cursor past the last id returns an empty page and a None cursor."},
+    {"keywords": ["duplicate", "boundary"], "answer": "Trace ids [1..5], limit 2, cursor 2: the '>=' makes it return [2,3] instead of [3,4] — item 2 was already shown."}
+  ],
+  "hints": [
+    "Hand-trace two adjacent pages and watch which item repeats.",
+    "Start condition should be 'id > cursor' (strictly), not 'id >= cursor'.",
+    "next_cursor = page[-1].id only if items remain after this page (start+limit < len), else None."
+  ]
+}

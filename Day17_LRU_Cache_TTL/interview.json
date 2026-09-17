@@ -1,0 +1,20 @@
+{
+  "title": "Day 17 — LRU Cache with TTL",
+  "difficulty": "L3/L4 · Python · systems",
+  "time_min": 45,
+  "prompt": "This LRU cache with TTL has two bugs: it evicts keys we just read, and it serves expired data. Time is injected as `now`. How would you fix the read path?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["recency", "use", "lru", "read", "get", "order"], "answer": "A get() on a present, non-expired key counts as a use — it becomes most-recently-used."},
+    {"keywords": ["ttl", "expire", "insert", "access", "reset"], "answer": "TTL is measured from INSERT time. A read does NOT reset the TTL — recency and expiry are two different clocks."},
+    {"keywords": ["boundary", "exactly", "equal"], "answer": "An entry expires when now - inserted > ttl. Exactly ttl later is still valid."},
+    {"keywords": ["remove", "delete", "expired", "size"], "answer": "An expired entry should be removed when accessed (so size drops)."},
+    {"keywords": ["put", "eviction", "capacity"], "answer": "put and capacity-based eviction are already correct — the bugs are only in get."},
+    {"keywords": ["time", "clock", "inject", "now"], "answer": "now is passed in to get/put, so tests are deterministic — no real clock in the logic."}
+  ],
+  "hints": [
+    "Two separate concerns: LRU order (recency) and TTL (expiry from insert). A read touches recency but not TTL.",
+    "In get: if now - inserted > ttl, delete the key and return None; otherwise move_to_end(key) and return the value.",
+    "The starter get() does neither move_to_end nor the ttl check — add both, in that order."
+  ]
+}

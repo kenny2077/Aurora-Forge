@@ -1,0 +1,20 @@
+{
+  "title": "Day 15 — Security: Path Traversal",
+  "difficulty": "L4 · TypeScript · security",
+  "time_min": 40,
+  "prompt": "This endpoint serves files from a base directory using a user-supplied path. A pen test says you can read /etc/passwd through it. Take a look — how do you lock it down?",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["escape", "traversal", "dotdot", "..", "vector"], "answer": "The attacks are '../' escapes, absolute paths like /etc/passwd, and mid-path tricks like a/../../etc. All must throw."},
+    {"keywords": ["throw", "reject", "error", "return"], "answer": "On an unsafe path, throw Error('unsafe path'). On a safe path, return the resolved absolute path."},
+    {"keywords": ["normalize", "normalization", "resolve", "inside", "allowed"], "answer": "Normalization that stays inside is fine: 'reports/../q1.txt' should resolve to baseDir/q1.txt and be allowed."},
+    {"keywords": ["startswith", "prefix", "boundary", "sibling"], "answer": "Careful: a bare startsWith(base) is buggy — '/srv/data-evil' starts with '/srv/data'. Check for base itself OR base + path separator."},
+    {"keywords": ["join", "why", "insufficient"], "answer": "path.join normalizes but happily produces paths outside the base (../) and mishandles absolute inputs. You must resolve then verify containment."},
+    {"keywords": ["symlink", "realpath"], "answer": "Out of scope here — assume no symlinks; just do lexical containment on resolved absolute paths."}
+  ],
+  "hints": [
+    "path.join isn't a security boundary — it will cheerfully return /srv/secret from '../secret'.",
+    "Resolve both to absolute: base = path.resolve(baseDir); candidate = path.resolve(base, userPath). Then check containment.",
+    "Allow when candidate === base or candidate.startsWith(base + path.sep); otherwise throw. The separator check defeats the sibling-prefix trick."
+  ]
+}

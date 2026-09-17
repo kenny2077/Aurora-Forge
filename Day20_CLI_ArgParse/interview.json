@@ -1,0 +1,22 @@
+{
+  "title": "Day 20 — CLI Argument Parsing Edge Cases",
+  "difficulty": "L3 · Python · parsing",
+  "time_min": 40,
+  "prompt": "This hand-rolled CLI parser handles the simple cases but breaks on '--key=value', doesn't convert numeric options, silently ignores unknown flags, and mishandles the '--' terminator. How do you fix it?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["equals", "=", "form"], "answer": "Support both '--output value' and '--output=value'. Split on the first '=' when present."},
+    {"keywords": ["int", "retries", "convert", "type", "number"], "answer": "--retries is an integer — convert with int() at the boundary. Default is 3."},
+    {"keywords": ["unknown", "invalid", "error", "raise", "silent"], "answer": "An unknown '--option' must raise ValueError, not be swallowed as a positional."},
+    {"keywords": ["--", "terminator", "end", "double", "dash"], "answer": "'--' ends option parsing: everything after it is positional, even if it starts with '--'."},
+    {"keywords": ["positional", "args"], "answer": "Anything not starting with '--' (or anything after '--') is a positional."},
+    {"keywords": ["short", "single", "-v"], "answer": "No short flags in this version — only long '--' options."},
+    {"keywords": ["empty", "blank", "value"], "answer": "'--output=' is an explicit EMPTY value (output becomes ''), not a positional and not an error."},
+    {"keywords": ["bad", "invalid", "non", "integer", "abc", "convert"], "answer": "A non-integer --retries (like 'abc') should raise ValueError — int() does this for you if you convert at the boundary."}
+  ],
+  "hints": [
+    "List the token shapes: --flag, --key value, --key=value, --, positional, unknown. Your loop dispatches on these.",
+    "When an arg starts with '--' and contains '=', split once into key and value; otherwise the value (if the option needs one) is the next arg.",
+    "Track an 'options_done' flag set by '--'; convert --retries with int(); and 'else: raise ValueError' for unknown options."
+  ]
+}
