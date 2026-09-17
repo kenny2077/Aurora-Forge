@@ -1,0 +1,20 @@
+{
+  "title": "Day 21 — Sliding-Window Maximum",
+  "difficulty": "L4/L5 · Python · algorithms",
+  "time_min": 45,
+  "prompt": "We report the max latency over the last W samples at every position in a long stream. The current code recomputes each window's max from scratch and can't keep up. Same output — how would you speed it up?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["output", "same", "change", "behavior"], "answer": "Output must be identical — the max of every contiguous window of size W, left to right. Only the speed changes."},
+    {"keywords": ["complexity", "current", "target", "big", "o"], "answer": "Current is O(n*W). Target O(n) — amortized linear."},
+    {"keywords": ["window", "size", "w", "bounds"], "answer": "1 <= W <= len(nums). W <= 0 raises ValueError. Empty input returns []."},
+    {"keywords": ["deque", "structure", "monotonic", "stack"], "answer": "A monotonic deque of indices is the intended structure — the front holds the current max."},
+    {"keywords": ["memory", "space"], "answer": "O(W) extra space for the deque is expected and fine."},
+    {"keywords": ["duplicate", "equal", "ties"], "answer": "Equal values are fine; popping strictly-smaller-or-equal from the back keeps it correct."}
+  ],
+  "hints": [
+    "When the window slides by one, what did the previous window already tell you that you're throwing away?",
+    "Keep a deque of INDICES whose values are decreasing. The front is always the max of the current window.",
+    "For each i: pop from the back while nums[back] <= nums[i]; push i; pop the front if it's left the window (front <= i-W); once i >= W-1, record nums[front]."
+  ]
+}

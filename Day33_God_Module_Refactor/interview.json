@@ -1,0 +1,20 @@
+{
+  "title": "Day 33 — Extend a Messy Module",
+  "difficulty": "L5 · Python · refactor",
+  "time_min": 45,
+  "prompt": "This one function summarizes orders, and it's blocking two changes: it counts cancelled orders as revenue and crashes on empty input, and finance wants a status filter. How would you approach it?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["cancelled", "revenue", "exclude"], "answer": "Cancelled orders never count toward revenue — exclude them always, even when a status filter is applied."},
+    {"keywords": ["empty", "crash", "zero", "divide"], "answer": "An empty (or all-excluded) order list should give count 0, total 0, average 0.0 — no ZeroDivisionError."},
+    {"keywords": ["status", "filter", "feature"], "answer": "Add an optional status param: when given, include only orders with that status (still excluding cancelled)."},
+    {"keywords": ["cancelled", "status", "filter"], "answer": "Asking for status='cancelled' yields nothing, because cancelled never counts."},
+    {"keywords": ["average", "float", "type"], "answer": "average is total/count as a float, or 0.0 when count is 0."},
+    {"keywords": ["refactor", "seam", "approach"], "answer": "The clean approach: factor out 'which orders count' from the arithmetic — then the bug fix and the feature are both trivial."}
+  ],
+  "hints": [
+    "The bug and the feature both live in the same place: deciding which orders count.",
+    "Extract that decision: included = [o for o in orders if o['status'] != 'cancelled' and (status is None or o['status'] == status)].",
+    "Then total = sum of included amounts, count = len(included), average = total/count if count else 0.0."
+  ]
+}

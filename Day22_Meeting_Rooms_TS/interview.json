@@ -1,0 +1,19 @@
+{
+  "title": "Day 22 — Minimum Meeting Rooms",
+  "difficulty": "L4 · TypeScript · algorithms",
+  "time_min": 40,
+  "prompt": "Given meeting intervals, we need the minimum number of rooms. The planner is over-booking: back-to-back meetings that just touch are counted as conflicts. How would you fix it?",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["end", "exclusive", "inclusive", "touch", "boundary", "closed", "open"], "answer": "Intervals are [start, end) — end exclusive. A meeting ending at 10 and one starting at 10 do NOT conflict and can share a room."},
+    {"keywords": ["empty", "no", "meetings"], "answer": "No meetings -> 0 rooms."},
+    {"keywords": ["overlap", "conflict", "define"], "answer": "Two meetings conflict if one starts strictly before the other ends. The answer is the peak number of simultaneously-active meetings."},
+    {"keywords": ["sort", "structure", "heap", "two", "pointer"], "answer": "The two-pointer sweep over sorted starts and ends is fine — the bug is only the comparison at the boundary."},
+    {"keywords": ["return", "rooms", "count"], "answer": "Return the maximum concurrency — the most meetings active at any instant."}
+  ],
+  "hints": [
+    "Walk the touching case [[1,2],[2,3]] through the sweep by hand: how many rooms does it report, and how many should it?",
+    "With end-exclusive intervals, a start equal to an end is NOT an overlap.",
+    "Change the sweep comparison from 'starts[i] <= ends[j]' to 'starts[i] < ends[j]'."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Day 25 — Running Median (Two Heaps)",
+  "difficulty": "L5 · Python · algorithms",
+  "time_min": 50,
+  "prompt": "We need the median of a stream of samples, updated on every new sample, without re-sorting the whole history each time. How would you design MedianFinder?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["even", "odd", "average", "middle"], "answer": "Odd count: the middle value. Even count: the average of the two middle values, as a float."},
+    {"keywords": ["empty", "before", "no", "samples"], "answer": "Calling median() before any add raises ValueError."},
+    {"keywords": ["complexity", "log", "time", "fast", "add"], "answer": "Aim for O(log n) per add and O(1) for median — no re-sorting."},
+    {"keywords": ["duplicate", "negative", "order"], "answer": "Duplicates and negatives are normal; samples arrive in any order."},
+    {"keywords": ["heap", "structure", "two", "balanced"], "answer": "Two heaps: a max-heap for the lower half and a min-heap for the upper half, kept balanced in size."},
+    {"keywords": ["balance", "rebalance", "sizes"], "answer": "Keep the halves' sizes within one of each other; after inserting, move an element across if they got unbalanced."}
+  ],
+  "hints": [
+    "Split the data into a lower half and an upper half. The median lives at the boundary between them.",
+    "Max-heap for the lower half, min-heap for the upper half. Keep |lower| == |upper| or |lower| == |upper| + 1.",
+    "add: push to one heap, pop its extreme into the other, then rebalance sizes. median: if lower is bigger, its top; else the average of the two tops."
+  ]
+}

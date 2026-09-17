@@ -1,0 +1,20 @@
+{
+  "title": "Day 27 — Circuit Breaker for a Flaky Client",
+  "difficulty": "L4 · TypeScript · resilience",
+  "time_min": 45,
+  "prompt": "This circuit breaker wraps a flaky client. It trips even when failures were separated by successes and never really recovers. Time is injected as `now`. How would you fix it?",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["success", "reset", "close", "recover"], "answer": "A successful call must reset the failure count to 0 (close the breaker). That's the missing piece."},
+    {"keywords": ["consecutive", "threshold", "count"], "answer": "The threshold counts CONSECUTIVE failures — a success in between clears the count."},
+    {"keywords": ["open", "reject", "call", "fn"], "answer": "While open (now < openUntil) the breaker must throw CircuitOpenError WITHOUT calling fn."},
+    {"keywords": ["half", "cooldown", "trial", "elapsed"], "answer": "Once the cooldown elapses (now >= openUntil) it's half-open: one trial call is allowed. Success closes it; failure re-opens it."},
+    {"keywords": ["time", "clock", "now", "inject"], "answer": "Time is passed in as `now` (ms), so tests are deterministic — no real clock."},
+    {"keywords": ["state", "states", "machine"], "answer": "Three states: closed, open, half-open. The bug is a missing transition on success."}
+  ],
+  "hints": [
+    "Sketch the three states and their transitions before touching code.",
+    "The bug: the success path returns the result but never resets this.failures to 0.",
+    "Add 'this.failures = 0;' before returning on success. Everything else (open check, threshold, cooldown) is already there."
+  ]
+}

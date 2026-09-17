@@ -1,0 +1,20 @@
+{
+  "title": "Day 35 — FINAL BOSS: LRU + TTL Cache",
+  "difficulty": "L5 · Python · capstone",
+  "time_min": 90,
+  "prompt": "The final one: an in-memory cache with LRU eviction and per-key TTL. Two bugs — reads don't refresh recency, and eviction removes the wrong end — plus we want a keys() listing. Time is injected. Walk me through it end to end.",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["recency", "read", "get", "use", "lru"], "answer": "A get() on a live key counts as a use — it becomes most-recently-used. That's BUG CACHE-1."},
+    {"keywords": ["evict", "capacity", "which", "end", "most", "least"], "answer": "Eviction must remove the LEAST-recently-used entry. The bug pops the most-recent (last=True) instead of last=False."},
+    {"keywords": ["ttl", "expire", "insert", "reset", "boundary"], "answer": "TTL is anchored to insert time and NOT reset by reads. Expires when now > expiry; valid at exactly expiry."},
+    {"keywords": ["keys", "feature", "order", "live"], "answer": "keys(now) returns non-expired keys in LRU order (least-recently-used first)."},
+    {"keywords": ["ordereddict", "structure", "encode", "recency"], "answer": "The OrderedDict encodes recency by position: the tail is most-recent (move_to_end), the head is least-recent."},
+    {"keywords": ["time", "now", "inject", "clock"], "answer": "now is passed in to put/get/keys, so everything is deterministic."}
+  ],
+  "hints": [
+    "In an OrderedDict, move_to_end pushes a key to the tail (most recent); popitem(last=False) removes the head (least recent).",
+    "BUG CACHE-1: get() must move_to_end(key) after the TTL check. BUG CACHE-2: put() must evict with popitem(last=False).",
+    "keys(now): iterate self._data.items() in order (head=LRU), skip entries whose expiry is < now (strictly), and collect the rest."
+  ]
+}

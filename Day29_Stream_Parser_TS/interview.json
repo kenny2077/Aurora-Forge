@@ -1,0 +1,20 @@
+{
+  "title": "Day 29 — Streaming JSONL Parser",
+  "difficulty": "L4/L5 · TypeScript · streaming",
+  "time_min": 45,
+  "prompt": "We read newline-delimited JSON from a streaming endpoint, but chunks arrive arbitrarily — one JSON object can be split across two chunks, or several can arrive together. Build a parser that emits complete objects as they arrive. How do you handle the chunk boundaries?",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["split", "boundary", "partial", "chunk", "straddle"], "answer": "Yes — a value can be split across chunks. Buffer the incomplete tail and complete it when the rest arrives."},
+    {"keywords": ["multiple", "several", "one", "chunk"], "answer": "A single chunk may contain several complete lines — emit them all in order."},
+    {"keywords": ["blank", "empty", "whitespace"], "answer": "Skip blank/whitespace-only lines."},
+    {"keywords": ["flush", "end", "final", "trailing", "newline"], "answer": "flush() handles end-of-stream: parse whatever complete value remains in the buffer (no trailing newline), or return [] if empty."},
+    {"keywords": ["invariant", "buffer", "guarantee"], "answer": "After each feed, the buffer holds exactly the unterminated tail — everything before the last newline has been emitted."},
+    {"keywords": ["format", "json", "sse", "data"], "answer": "Plain JSONL (one JSON value per line) for this exercise — no SSE 'data:' prefixes to strip."}
+  ],
+  "hints": [
+    "Keep a string buffer. On feed, append the chunk, then repeatedly cut off everything up to the next newline.",
+    "For each complete line: trim it; if non-empty, JSON.parse and collect it. Whatever remains after the last newline stays in the buffer.",
+    "flush(): if the buffer has non-whitespace content, JSON.parse it and clear the buffer; otherwise return []."
+  ]
+}

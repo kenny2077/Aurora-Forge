@@ -1,0 +1,20 @@
+{
+  "title": "Day 24 — Trie Autocomplete",
+  "difficulty": "L4/L5 · TypeScript · algorithms",
+  "time_min": 45,
+  "prompt": "The search box needs autocomplete backed by a trie. Insert already works; implement suggest(prefix, limit) to return the matching words. How do you approach it?",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["order", "sorted", "lexicographic", "alphabetical"], "answer": "Return matches in ascending lexicographic order."},
+    {"keywords": ["prefix", "itself", "word", "include"], "answer": "The prefix counts as a match if it was inserted as a word."},
+    {"keywords": ["empty", "blank", "all"], "answer": "An empty prefix matches every inserted word."},
+    {"keywords": ["no", "match", "missing"], "answer": "If the prefix path doesn't exist, return []."},
+    {"keywords": ["limit", "cap", "top"], "answer": "Return at most `limit` words; ideally stop as soon as you have that many rather than collecting all then slicing. limit 0 returns []."},
+    {"keywords": ["duplicate", "twice", "dedup"], "answer": "Inserting the same word twice yields it once — the trie dedups naturally via the isWord flag."}
+  ],
+  "hints": [
+    "Two phases: (1) walk from the root following the prefix characters; if any is missing, return []. (2) collect words under the node you landed on.",
+    "To get lexicographic order, DFS the children in SORTED key order, and emit a node's word (if isWord) BEFORE descending into its children.",
+    "Reconstruct each word as prefix + the path descended; stop the DFS as soon as results reach `limit`."
+  ]
+}

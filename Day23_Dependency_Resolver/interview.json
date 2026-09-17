@@ -1,0 +1,20 @@
+{
+  "title": "Day 23 — Dependency Resolver (Topological Sort)",
+  "difficulty": "L5 · Python · graphs",
+  "time_min": 50,
+  "prompt": "The build runner needs to order tasks so each runs after its dependencies, pick a stable order, and fail cleanly on impossible (cyclic) dependencies. Given a graph of task -> its dependencies, how do you produce the order?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["order", "before", "after", "dependency"], "answer": "Every task must appear after all of its dependencies in the result."},
+    {"keywords": ["tie", "deterministic", "stable", "multiple", "ready", "alphabetical"], "answer": "When several tasks are ready at once, pick the alphabetically smallest first — so the output is stable."},
+    {"keywords": ["cycle", "impossible", "loop", "detect", "raise"], "answer": "If there's a cycle (including a self-dependency), raise CycleError. Don't hang or return a partial order."},
+    {"keywords": ["not", "key", "root", "missing", "dep"], "answer": "A dependency that never appears as a key is a task with no dependencies of its own — a root."},
+    {"keywords": ["duplicate", "twice"], "answer": "A dependency listed twice should behave the same as once."},
+    {"keywords": ["algorithm", "kahn", "dfs", "heap"], "answer": "Kahn's algorithm (in-degree + a min-heap of ready nodes) gives both the deterministic order and the cycle check for free."}
+  ],
+  "hints": [
+    "Which nodes can go first? The ones nothing depends on being done yet — in-degree zero.",
+    "Use Kahn's algorithm: repeatedly take a ready (in-degree 0) node, append it, and decrement its dependents. A min-heap of ready nodes gives the alphabetical tie-break.",
+    "If you process fewer nodes than the graph contains, the remaining ones are in a cycle -> raise CycleError. Remember to include dep-only nodes in the node set."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "title": "Day 26 — Agent Tool Dispatcher",
+  "difficulty": "L4/L5 · Python · AI-agent engineering",
+  "time_min": 45,
+  "prompt": "An LLM agent emits tool calls like {tool, args}. This dispatcher looks up the tool and calls it, but it validates nothing — bad calls crash with raw errors. How would you make it robust?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["unknown", "missing", "tool", "exist"], "answer": "An unknown tool name should raise ToolError (not a raw KeyError)."},
+    {"keywords": ["required", "arg", "params", "missing"], "answer": "A tool declares its required params. Missing one should raise ToolError, not let the handler throw a TypeError."},
+    {"keywords": ["extra", "unexpected", "unknown", "strict"], "answer": "Be strict: any argument the tool didn't declare should raise ToolError — don't silently pass it through."},
+    {"keywords": ["zero", "no", "args"], "answer": "A tool with no params called with empty args is valid."},
+    {"keywords": ["error", "type", "toolerror", "leak"], "answer": "Every invalid call should surface as one ToolError so the model gets a single predictable error to react to."},
+    {"keywords": ["types", "schema", "value", "validate"], "answer": "For this exercise validate presence of the right arg names (not their types) — existence, required, and no-extras."}
+  ],
+  "hints": [
+    "Treat the LLM as an untrusted caller: check everything before invoking the handler.",
+    "Three checks: tool in registry? required params all present? any unexpected keys? Each failure -> ToolError.",
+    "Compare set(args) against set(params): missing = required - given; extra = given - required."
+  ]
+}

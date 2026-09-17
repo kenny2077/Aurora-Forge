@@ -1,0 +1,20 @@
+{
+  "title": "Day 28 — Context-Window Token-Budget Trimmer",
+  "difficulty": "L4/L5 · Python · AI-agent engineering",
+  "time_min": 40,
+  "prompt": "Our chat requests keep blowing the model's context limit as conversations grow. We need to trim the message history to a token budget. What do you keep and what do you drop?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["system", "prompt", "keep", "always"], "answer": "Always keep the system message(s) — they carry the instructions and are non-negotiable."},
+    {"keywords": ["recent", "old", "drop", "priority"], "answer": "Keep the most RECENT turns; drop from the OLDEST until it fits."},
+    {"keywords": ["count", "token", "tokens", "measure"], "answer": "Token counting is injected as count_tokens(content). Sum it over the messages you keep (system included)."},
+    {"keywords": ["system", "over", "exceeds", "bigger", "budget"], "answer": "If the system message alone exceeds the budget, return just the system message — don't truncate it silently."},
+    {"keywords": ["order", "chronological"], "answer": "Preserve chronological order in the result."},
+    {"keywords": ["contiguous", "suffix", "gap"], "answer": "Keep a contiguous most-recent block — once a message doesn't fit, stop; don't cherry-pick a small older one."}
+  ],
+  "hints": [
+    "Split system vs non-system. Reserve the system tokens first.",
+    "Walk the non-system messages newest-first, keeping while they fit the remaining budget; stop at the first that doesn't.",
+    "Reverse your kept list back to chronological order and return system + kept. If system alone is over budget, you still return system."
+  ]
+}

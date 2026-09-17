@@ -1,0 +1,20 @@
+{
+  "title": "Day 34 — Capstone: Ambiguous Scoping (Leaderboard)",
+  "difficulty": "L5 · Python · scoping",
+  "time_min": 45,
+  "prompt": "Build a leaderboard — add scores, get the top players, and look up someone's rank. That's the whole ticket. Before you write any code, what would you want to nail down?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["replace", "accumulate", "add", "update", "score"], "answer": "add_score REPLACES the player's score (latest wins), it does not accumulate."},
+    {"keywords": ["tie", "ties", "equal", "order", "same"], "answer": "In top(), ties are broken by player name ascending."},
+    {"keywords": ["rank", "based", "one", "highest"], "answer": "rank is 1-based, highest score is rank 1."},
+    {"keywords": ["rank", "tie", "shared", "competition", "gap"], "answer": "Standard competition ranking: tied players share a rank, and the next rank has a gap (two tied at 1 -> next is 3)."},
+    {"keywords": ["unknown", "missing", "ghost", "raise"], "answer": "rank of an unknown player raises KeyError — don't invent a score."},
+    {"keywords": ["n", "larger", "population", "limit"], "answer": "top(n) returns up to n names; if n exceeds the population, return everyone. Empty leaderboard -> []."}
+  ],
+  "hints": [
+    "Write down every unstated decision BEFORE coding — that's the whole exercise. Six of them hide in one sentence.",
+    "Store player -> score in a dict (replace semantics). top: sort by (-score, name). rank: 1 + count of strictly-higher scores.",
+    "For ties in rank, count only STRICTLY higher scores, so equal scores share a rank and create a gap after."
+  ]
+}

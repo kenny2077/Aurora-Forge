@@ -1,0 +1,20 @@
+{
+  "title": "Day 31 — Capstone: URL Shortener",
+  "difficulty": "L5 · Python · capstone (bug + feature)",
+  "time_min": 60,
+  "prompt": "Two tickets for our URL shortener: same URL shortened twice returns different codes (should be idempotent), and we want custom aliases. Here's the code and its store. Walk me through your plan, then build it.",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["idempotent", "same", "url", "twice", "reuse"], "answer": "The same URL must always return the same code. store.code_for_url(url) tells you if you've seen it."},
+    {"keywords": ["alias", "custom", "feature"], "answer": "shorten(url, alias=...) uses that alias. If the alias already maps to a DIFFERENT url, raise AliasTaken; re-aliasing the same url is fine."},
+    {"keywords": ["collision", "auto", "clash", "generated"], "answer": "An auto-generated code must not collide with an existing alias — use store.has_code to skip taken codes."},
+    {"keywords": ["resolve", "unknown", "missing"], "answer": "resolve(code) returns the url or None if the code is unknown."},
+    {"keywords": ["store", "api", "methods"], "answer": "Read store.py: save, get, code_for_url, has_code are the hooks you need."},
+    {"keywords": ["files", "change", "modify"], "answer": "Change only shortener.py; store.py and the tests are fixed."}
+  ],
+  "hints": [
+    "Read store.py first — code_for_url (idempotency) and has_code (collision avoidance) are already there.",
+    "Bug: before minting a new code, return store.code_for_url(url) if it exists.",
+    "Feature: add alias=None; if alias given and maps to a different url -> AliasTaken, else save it; when auto-generating, loop past any code that has_code() already."
+  ]
+}

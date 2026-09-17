@@ -1,0 +1,20 @@
+{
+  "title": "Day 30 — RAG Chunker with Overlap & Dedup",
+  "difficulty": "L4/L5 · Python · AI-agent engineering",
+  "time_min": 40,
+  "prompt": "Before embedding documents for retrieval we need to split them into overlapping word-windows and drop duplicate chunks. How would you implement the chunker?",
+  "test_cmd": "python3 -m pytest -q",
+  "clarifications": [
+    {"keywords": ["overlap", "step", "advance", "stride"], "answer": "Windows are `size` words; each window advances by (size - overlap) words, so consecutive windows share `overlap` words."},
+    {"keywords": ["last", "shorter", "final", "partial"], "answer": "The final window may be shorter than size — that's fine, keep it."},
+    {"keywords": ["dedup", "duplicate", "order", "first"], "answer": "Drop exact-duplicate chunk strings, keeping the FIRST occurrence and preserving order (use a seen-set)."},
+    {"keywords": ["token", "word", "split", "whitespace"], "answer": "Tokenize on whitespace (str.split), which also collapses extra spaces."},
+    {"keywords": ["invalid", "overlap", "size", "raise", "error"], "answer": "size <= 0 raises ValueError; overlap must be in [0, size), so overlap >= size raises."},
+    {"keywords": ["empty"], "answer": "Empty text returns []."}
+  ],
+  "hints": [
+    "step = size - overlap. Generate window start indices 0, step, 2*step, ... across the word list.",
+    "Each chunk is ' '.join(words[start:start+size]); the slice naturally makes the last one shorter.",
+    "Dedup with a seen set as you append, so the first occurrence wins and order is preserved."
+  ]
+}

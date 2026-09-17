@@ -1,0 +1,20 @@
+{
+  "title": "Day 32 — Cross-Language Contract",
+  "difficulty": "L4/L5 · TypeScript · integration",
+  "time_min": 40,
+  "prompt": "Our Python server rejects the TS client's request body — the schemas have drifted. There's a documented contract. Make the client match it. Where do you start?",
+  "test_cmd": "node --test",
+  "clarifications": [
+    {"keywords": ["case", "snake", "camel", "keys"], "answer": "The server expects snake_case keys (user_id, full_name, email_verified, created_at). No camelCase."},
+    {"keywords": ["date", "time", "timestamp", "created", "iso", "ms"], "answer": "created_at is an ISO string via new Date(ms).toISOString(), not the raw epoch-ms number the client holds."},
+    {"keywords": ["tags", "sort", "sorted", "order"], "answer": "tags must be sorted ascending — and don't mutate the caller's array; sort a copy."},
+    {"keywords": ["referrer", "null", "omit", "present"], "answer": "referrer is nullable but always present: user.referrer ?? null. Never drop the key."},
+    {"keywords": ["contract", "schema", "truth"], "answer": "CONTRACT.md is the source of truth — match it exactly; the tests encode it."},
+    {"keywords": ["mutate", "array", "copy"], "answer": "Sort a COPY of tags ([...tags].sort()) so you don't mutate the caller's data."}
+  ],
+  "hints": [
+    "Open CONTRACT.md and the current output side by side; list every difference before editing.",
+    "Five things: snake_case keys, ISO timestamp, sorted tags (copy!), null-but-present referrer.",
+    "Return one object literal with snake_case keys; new Date(user.createdAtMs).toISOString(); [...user.tags].sort(); user.referrer ?? null."
+  ]
+}
