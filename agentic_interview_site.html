@@ -1,216 +1,211 @@
 <title>The Agentic Interview</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Committed single visual world: an aurora night sky. Every color is painted explicitly. */
+/* Aurora Forge palette + native type. Deep teal-green night, restrained glows, one GPU cursor light. */
 :root{
-  --bg:#060912; --bg2:#0a1020; --void:#03050c;
-  --surface:#0d1526; --surface-2:#111c31; --glass:rgba(18,32,54,.55);
-  --ink:#e9f4f1; --muted:#a3b6bc; --faint:#8397a1; --line:#1b2c40; --line-2:#152234;
-  --green:#3ff0a8; --teal:#25e6cf; --cyan:#59c8ff; --violet:#a98cff; --pink:#ff8fd6;
-  --accent:#3ff0a8; --accent-ink:#6bf2bd;
-  --l3:#3ff0a8; --l3-soft:rgba(63,240,168,.13); --l4:#59c8ff; --l4-soft:rgba(89,200,255,.13);
-  --l5:#a98cff; --l5-soft:rgba(169,140,255,.14);
-  --py:#f2c85a; --ts:#59c8ff;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --sans:"Sora",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  --pixel:"Press Start 2P","Sora",monospace;
-  --glow:0 0 0 1px rgba(63,240,168,.14),0 8px 40px -12px rgba(37,230,207,.28);
+  --night:#061713; --night-deep:#020c0f; --night-blue:#08152d; --forest:#051a18;
+  --ink:#f5faf7; --muted:#a9bbb5; --muted-strong:#c6d4cf; --faint:#7f938d;
+  --line:rgba(151,225,211,.14); --line-strong:rgba(151,225,211,.28); --panel:rgba(8,24,26,.5);
+  --cyan:#47eadb; --teal:#0eb9ad; --blue:#3478f6; --blue-lt:#6aa6ff; --violet:#7565ff; --violet-lt:#a99fff; --amber:#f3b85e;
+  --l3:var(--cyan); --l3-soft:rgba(71,234,219,.11);
+  --l4:var(--blue-lt); --l4-soft:rgba(106,166,255,.12);
+  --l5:var(--violet-lt); --l5-soft:rgba(169,159,255,.13);
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --content:1180px; --pad:clamp(20px,4.5vw,64px);
 }
 *{box-sizing:border-box}
-html,body{background:var(--bg)}
-body{color:var(--ink);font-family:var(--sans);line-height:1.55;font-size:14px;
+html,body{margin:0}
+body{color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;letter-spacing:-.006em;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;
   background:
-    radial-gradient(1100px 520px at 78% -8%, rgba(63,240,168,.10), transparent 60%),
-    radial-gradient(900px 500px at 12% 2%, rgba(169,140,255,.10), transparent 60%),
-    linear-gradient(180deg,var(--void),var(--bg) 340px);
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;margin:0}
+    radial-gradient(1200px 560px at 82% -8%, rgba(14,185,173,.10), transparent 62%),
+    radial-gradient(900px 520px at 6% 2%, rgba(117,101,255,.09), transparent 60%),
+    linear-gradient(180deg,#020c0f 0%,#041614 16%,#051a18 32%,#07142b 56%,#061713 80%,#020c0f 100%) fixed;}
 img{max-width:100%}
-.wrap{max-width:1120px;margin:0 auto;padding-inline:22px}
-h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
-.mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
-.pix{font-family:var(--pixel);text-transform:uppercase;line-height:1.6}
-
-/* aurora gradient text */
-.aur-text{background:linear-gradient(100deg,var(--green),var(--teal) 40%,var(--cyan) 70%,var(--violet));
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.028em;text-wrap:balance}
+.mono{font-family:var(--mono);font-feature-settings:"tnum"} .tnum{font-variant-numeric:tabular-nums}
+.wrap{max-width:var(--content);margin:0 auto;padding-inline:var(--pad)}
+.grad{background:linear-gradient(96deg,var(--cyan),var(--teal) 34%,var(--blue-lt) 66%,var(--violet-lt));
   -webkit-background-clip:text;background-clip:text;color:transparent}
 
-/* cursor trail (fixed, behind modal, above content) */
-#trail{position:fixed;inset:0;pointer-events:none;z-index:30}
-
-/* header */
-header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:25;
-  background:linear-gradient(180deg,rgba(6,9,18,.9),rgba(6,9,18,.62));backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line)}
-.topbar{display:flex;align-items:center;gap:12px 16px;padding-block:12px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:10px}
-.brand .mark{width:22px;height:22px;border-radius:5px;image-rendering:pixelated;flex:none;
+/* ---- static signal field (zero JS) ---- */
+body::before{content:"";position:fixed;inset:0;z-index:-3;pointer-events:none;
   background:
-    linear-gradient(180deg,#0a1020,#0a1020),
-    repeating-linear-gradient(90deg,transparent 0 3px,rgba(0,0,0,.35) 3px 4px);
-  box-shadow:inset 0 0 0 2px #0a1020, 0 0 12px rgba(63,240,168,.5);position:relative}
-.brand .mark::after{content:"";position:absolute;inset:3px;border-radius:2px;
-  background:linear-gradient(150deg,var(--green),var(--cyan) 55%,var(--violet))}
-.brand .name{font-family:var(--pixel);font-size:9.5px;letter-spacing:.02em}
-.prog{margin-left:auto;display:flex;align-items:center;gap:11px;font-family:var(--mono);font-size:12px;color:var(--muted)}
-.prog .track{width:130px;height:8px;border-radius:99px;background:var(--surface-2);
-  border:1px solid var(--line);overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.5)}
-.prog .fill{height:100%;width:0;transition:width .5s cubic-bezier(.2,.8,.2,1);
-  background:linear-gradient(90deg,var(--green),var(--teal) 50%,var(--cyan));box-shadow:0 0 10px rgba(63,240,168,.6)}
+    linear-gradient(rgba(110,237,218,.04) 1px,transparent 1px) 0 0/44px 44px,
+    linear-gradient(90deg,rgba(110,237,218,.04) 1px,transparent 1px) 0 0/44px 44px;
+  -webkit-mask:radial-gradient(ellipse 92% 66% at 50% 0%,#000 42%,transparent 100%);
+          mask:radial-gradient(ellipse 92% 66% at 50% 0%,#000 42%,transparent 100%);}
+/* ---- cursor glow (GPU transform) + masked dot reveal ---- */
+#glow{position:fixed;top:0;left:0;width:620px;height:620px;z-index:-2;pointer-events:none;opacity:0;
+  transform:translate3d(var(--px,72vw),var(--py,34vh),0) translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(71,234,219,.15),rgba(52,120,246,.07) 36%,transparent 66%);
+  mix-blend-mode:screen;will-change:transform;transition:opacity .6s var(--ease)}
+#hot{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:0;transition:opacity .5s var(--ease);
+  background:radial-gradient(circle,rgba(71,234,219,.42) 1.3px,transparent 2px) 0 0/19px 19px;
+  -webkit-mask:radial-gradient(230px circle at var(--px,50%) var(--py,50%),#000 2%,transparent 66%);
+          mask:radial-gradient(230px circle at var(--px,50%) var(--py,50%),#000 2%,transparent 66%)}
+body.cursor-on #glow{opacity:1} body.cursor-on #hot{opacity:.9}
+
+/* ---- header ---- */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:25;
+  background:linear-gradient(180deg,rgba(3,9,11,.86),rgba(3,9,11,.5));backdrop-filter:blur(14px) saturate(1.2);
+  border-bottom:1px solid var(--line)}
+.topbar{display:flex;align-items:center;gap:12px 18px;padding-block:15px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .mark{width:20px;height:20px;border-radius:6px;flex:none;
+  background:conic-gradient(from 210deg,var(--cyan),var(--blue-lt),var(--violet-lt),var(--cyan));
+  box-shadow:0 0 18px -4px var(--cyan);position:relative}
+.brand .mark::after{content:"";position:absolute;inset:5px;border-radius:3px;background:var(--night-deep)}
+.brand .name{font-weight:600;font-size:15px;letter-spacing:-.02em}
+.brand .name small{color:var(--faint);font-weight:450;letter-spacing:0}
+.prog{margin-left:auto;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.prog .track{width:132px;height:5px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+.prog .fill{height:100%;width:0;transition:width .6s var(--ease);
+  background:linear-gradient(90deg,var(--cyan),var(--teal));box-shadow:0 0 10px -1px var(--cyan)}
 .ghost{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:transparent;
-  border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;transition:.15s}
-.ghost:hover{border-color:var(--green);color:var(--accent-ink);box-shadow:0 0 12px -4px var(--green)}
+  border:1px solid var(--line);border-radius:8px;padding:6px 11px;cursor:pointer;transition:.2s var(--ease)}
+.ghost:hover{border-color:var(--line-strong);color:var(--ink)}
 
-/* hero */
-.hero{position:relative;isolation:isolate;overflow:hidden;border-bottom:1px solid var(--line)}
-#sky{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;z-index:-2;display:block}
-.hero::after{content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(180deg,rgba(6,9,18,.15) 0%,rgba(6,9,18,.35) 55%,rgba(6,9,18,.92) 100%)}
-.hero-inner{display:grid;grid-template-columns:1.08fr .92fr;gap:36px;align-items:center;
-  padding-block:52px 40px}
-.eyebrow{font-family:var(--pixel);font-size:9px;color:var(--accent-ink);letter-spacing:.06em;
-  display:inline-flex;align-items:center;gap:8px}
-.eyebrow::before{content:"";width:8px;height:8px;background:var(--green);image-rendering:pixelated;
-  box-shadow:0 0 8px var(--green)}
-.hero h1{font-family:var(--sans);font-weight:800;font-size:clamp(32px,5.2vw,50px);line-height:1.04;
-  letter-spacing:-.025em;margin:16px 0 0}
-.lede{color:#cfe0dd;font-size:16px;margin-top:16px;max-width:46ch;text-shadow:0 1px 12px rgba(0,0,0,.5)}
-.stats{display:flex;flex-wrap:wrap;gap:14px 28px;margin-top:24px}
-.stat b{font-family:var(--sans);font-weight:700;font-size:27px;letter-spacing:-.02em;display:block;line-height:1}
-.stat span{font-family:var(--mono);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em}
+/* ---- hero ---- */
+.hero{position:relative;border-bottom:1px solid var(--line)}
+.hero-inner{display:grid;grid-template-columns:1.12fr .88fr;gap:48px;align-items:center;padding-block:76px 60px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);
+  display:inline-flex;align-items:center;gap:9px}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.hero h1{font-size:clamp(2.6rem,5.6vw,4.3rem);line-height:1.02;margin:22px 0 0;letter-spacing:-.04em;font-weight:600}
+.lede{color:var(--muted-strong);font-size:clamp(1rem,1.4vw,1.18rem);line-height:1.55;margin-top:22px;max-width:44ch}
+.stats{display:flex;flex-wrap:wrap;gap:14px 40px;margin-top:36px}
+.stat b{font-size:30px;font-weight:600;letter-spacing:-.03em;display:block;line-height:1}
+.stat span{font-family:var(--mono);font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-top:6px;display:block}
 
-/* terminal */
-.term{background:var(--glass);border:1px solid var(--line);border-radius:14px;overflow:hidden;
-  box-shadow:var(--glow);backdrop-filter:blur(8px)}
-.term-head{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line-2);
-  background:rgba(8,14,26,.6);font-family:var(--mono);font-size:11px;color:var(--faint)}
-.term-head .lights{display:flex;gap:6px}
-.term-head .lights i{width:9px;height:9px;border-radius:50%}
-.term-head .lights i:nth-child(1){background:var(--pink)}.term-head .lights i:nth-child(2){background:var(--py)}
-.term-head .lights i:nth-child(3){background:var(--green)}
-.term-body{padding:15px 16px 17px;font-family:var(--mono);font-size:12.5px;line-height:1.7}
-.line{margin:0 0 8px;display:flex;gap:9px}
-.line .who{color:var(--faint);flex:none;width:74px}
-.line.izer .msg{color:#dcebe8}.line.you .who{color:var(--accent-ink)}.line.you .msg{color:var(--muted)}
-.line.hint .who{color:var(--violet)}.line.hint .msg{color:#bcb3e0}
-.caret{display:inline-block;width:8px;height:15px;background:var(--green);margin-left:2px;vertical-align:-2px;
-  box-shadow:0 0 8px var(--green);animation:blink 1.1s steps(1) infinite}
+/* ---- terminal ---- */
+.term{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;backdrop-filter:blur(10px);
+  box-shadow:0 30px 80px -40px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.03)}
+.term-head{display:flex;align-items:center;gap:9px;padding:13px 16px;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:11.5px;color:var(--faint)}
+.term-head .lights{display:flex;gap:7px}
+.term-head .lights i{width:9px;height:9px;border-radius:50%;opacity:.9}
+.term-head .lights i:nth-child(1){background:var(--amber)}.term-head .lights i:nth-child(2){background:var(--teal)}
+.term-head .lights i:nth-child(3){background:var(--violet-lt)}
+.term-body{padding:17px 18px 19px;font-family:var(--mono);font-size:12.5px;line-height:1.75}
+.line{margin:0 0 9px;display:flex;gap:10px}
+.line .who{color:var(--faint);flex:none;width:76px}
+.line.izer .msg{color:var(--muted-strong)}.line.you .who{color:var(--cyan)}.line.you .msg{color:var(--muted)}
+.line.hint .who{color:var(--violet-lt)}.line.hint .msg{color:#c3bce6}
+.caret{display:inline-block;width:7px;height:15px;background:var(--cyan);margin-left:3px;vertical-align:-2px;
+  box-shadow:0 0 8px var(--cyan);animation:blink 1.15s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
 
-/* controls */
-.controls{position:sticky;top:calc(env(safe-area-inset-top,0px) + 54px);z-index:15;
-  background:linear-gradient(180deg,rgba(6,9,18,.94),rgba(6,9,18,.72));backdrop-filter:blur(10px);
-  padding-block:13px;border-bottom:1px solid var(--line)}
+/* ---- controls ---- */
+.controls{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:15;
+  background:linear-gradient(180deg,rgba(3,9,11,.9),rgba(3,9,11,.62));backdrop-filter:blur(12px);
+  padding-block:14px;border-bottom:1px solid var(--line)}
 .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .filters .grp{display:flex;gap:6px;flex-wrap:wrap}
-.filters .sep{width:1px;height:20px;background:var(--line);margin-inline:3px}
-.chip{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--surface);
-  border:1px solid var(--line);border-radius:99px;padding:6px 12px;cursor:pointer;white-space:nowrap;transition:.16s}
-.chip:hover{border-color:var(--teal);color:var(--ink);box-shadow:0 0 14px -6px var(--teal)}
-.chip[aria-pressed="true"]{color:#04120c;border-color:transparent;font-weight:600;
-  background:linear-gradient(100deg,var(--green),var(--teal));box-shadow:0 0 16px -4px var(--teal)}
+.filters .sep{width:1px;height:18px;background:var(--line);margin-inline:5px}
+.chip{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:rgba(255,255,255,.02);
+  border:1px solid var(--line);border-radius:99px;padding:6px 13px;cursor:pointer;white-space:nowrap;transition:.2s var(--ease)}
+.chip:hover{border-color:var(--line-strong);color:var(--ink)}
+.chip[aria-pressed="true"]{color:var(--night-deep);border-color:transparent;font-weight:600;
+  background:linear-gradient(96deg,var(--cyan),var(--teal))}
 .filters .count{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--faint)}
 
-main{padding-block:14px 64px}
-.week{margin-top:38px}
-.week-head{display:flex;align-items:baseline;gap:13px;padding-bottom:12px;
-  border-bottom:1px solid var(--line);margin-bottom:18px}
-.week-head .tag{font-family:var(--pixel);font-size:9px;color:var(--accent-ink);flex:none;
-  padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--l3-soft)}
-.week-head h2{font-weight:700;font-size:21px;letter-spacing:-.02em}
+main{padding-block:20px 72px}
+.week{margin-top:46px}
+.week-head{display:flex;align-items:baseline;gap:14px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.week-head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--cyan);flex:none;text-transform:uppercase}
+.week-head h2{font-size:clamp(1.35rem,2.2vw,1.7rem);font-weight:600;letter-spacing:-.03em}
 .week-head .blurb{color:var(--faint);font-size:13px;margin-left:auto;text-align:right}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:15px}
-.card{position:relative;text-align:left;border:1px solid var(--line);border-radius:14px;
-  padding:16px;cursor:pointer;transition:transform .18s cubic-bezier(.2,.8,.2,1),border-color .18s,box-shadow .18s;
-  display:flex;flex-direction:column;gap:9px;min-height:158px;color:inherit;font:inherit;overflow:hidden;
-  background:linear-gradient(180deg,var(--surface),var(--bg2))}
-.card::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .2s;pointer-events:none;
-  background:radial-gradient(340px circle at var(--mx,50%) var(--my,0%),rgba(63,240,168,.16),transparent 42%)}
-.card:hover{transform:translateY(-3px);border-color:var(--teal);box-shadow:var(--glow)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.card{position:relative;text-align:left;border:1px solid var(--line);border-radius:16px;padding:18px;cursor:pointer;
+  transition:transform .35s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease);
+  display:flex;flex-direction:column;gap:10px;min-height:162px;color:inherit;font:inherit;overflow:hidden;
+  background:var(--panel);backdrop-filter:blur(6px)}
+.card::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .3s var(--ease);pointer-events:none;
+  background:radial-gradient(360px circle at var(--mx,50%) var(--my,0),rgba(71,234,219,.10),transparent 44%)}
+.card:hover{transform:translateY(-4px);border-color:var(--line-strong);
+  box-shadow:0 24px 60px -34px rgba(0,0,0,.9),0 0 0 1px var(--line-strong)}
 .card:hover::before{opacity:1}
-.card-top{display:flex;align-items:center;gap:8px;position:relative;z-index:1}
-.daynum{font-family:var(--pixel);font-size:9px;color:var(--muted)}
-.pill{font-family:var(--mono);font-size:10px;font-weight:600;padding:3px 9px;border-radius:99px;line-height:1;
-  border:1px solid transparent}
-.pill.l3{background:var(--l3-soft);color:var(--l3);border-color:rgba(63,240,168,.3)}
-.pill.l4{background:var(--l4-soft);color:var(--l4);border-color:rgba(89,200,255,.3)}
-.pill.l5{background:var(--l5-soft);color:var(--l5);border-color:rgba(169,140,255,.3)}
-.check{margin-left:auto;width:22px;height:22px;border-radius:6px;border:1px solid var(--line);
-  display:grid;place-items:center;color:var(--faint);flex:none;font-family:var(--pixel);font-size:9px;
-  image-rendering:pixelated;background:var(--void)}
-.card.done .check{background:linear-gradient(150deg,var(--green),var(--teal));border-color:transparent;
-  color:#03120b;box-shadow:0 0 14px -3px var(--green)}
-.card.done{border-color:rgba(63,240,168,.4)}
-.card h3{font-size:15.5px;font-weight:600;letter-spacing:-.01em;line-height:1.28;position:relative;z-index:1}
-.card .skill{color:var(--muted);font-size:12.5px;line-height:1.45;flex:1;position:relative;z-index:1}
-.card-foot{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:10.5px;color:var(--faint);
-  padding-top:10px;border-top:1px solid var(--line-2);position:relative;z-index:1}
-.card-foot .lang::before{content:"";display:inline-block;width:7px;height:7px;margin-right:5px;
-  image-rendering:pixelated;background:var(--py);box-shadow:0 0 6px var(--py)}
-.card-foot .lang.ts::before{background:var(--ts);box-shadow:0 0 6px var(--ts)}
+.card-top{display:flex;align-items:center;gap:9px;position:relative;z-index:1}
+.daynum{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.02em}
+.pill{font-family:var(--mono);font-size:10.5px;font-weight:500;padding:3px 9px;border-radius:99px;line-height:1;border:1px solid transparent}
+.pill.l3{background:var(--l3-soft);color:var(--l3);border-color:rgba(71,234,219,.26)}
+.pill.l4{background:var(--l4-soft);color:var(--l4);border-color:rgba(106,166,255,.26)}
+.pill.l5{background:var(--l5-soft);color:var(--l5);border-color:rgba(169,159,255,.26)}
+.check{margin-left:auto;width:22px;height:22px;border-radius:7px;border:1px solid var(--line);display:grid;place-items:center;
+  color:var(--faint);flex:none;font-size:12px;background:rgba(255,255,255,.02);transition:.25s var(--ease)}
+.card.done .check{background:linear-gradient(150deg,var(--cyan),var(--teal));border-color:transparent;color:var(--night-deep);
+  box-shadow:0 0 16px -3px var(--cyan)}
+.card.done{border-color:rgba(71,234,219,.32)}
+.card h3{font-size:16px;font-weight:600;letter-spacing:-.02em;line-height:1.3;position:relative;z-index:1}
+.card .skill{color:var(--muted);font-size:13px;line-height:1.5;flex:1;position:relative;z-index:1}
+.card-foot{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;color:var(--faint);
+  padding-top:11px;border-top:1px solid var(--line);position:relative;z-index:1}
+.card-foot .lang::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;
+  background:var(--amber);box-shadow:0 0 7px var(--amber);vertical-align:1px}
+.card-foot .lang.ts::before{background:var(--blue-lt);box-shadow:0 0 7px var(--blue-lt)}
 
-/* modal */
-.scrim{position:fixed;inset:0;background:rgba(3,6,14,.72);backdrop-filter:blur(4px);
-  display:none;z-index:40;padding:20px}
+/* ---- modal ---- */
+.scrim{position:fixed;inset:0;background:rgba(2,7,9,.74);backdrop-filter:blur(6px);display:none;z-index:40;padding:20px}
 .scrim.open{display:grid;place-items:start center}
-.modal{background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--teal);
-  border-radius:16px;width:min(660px,100%);margin-top:5vh;box-shadow:0 0 60px -18px var(--teal);
-  max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
-.modal-head{padding:18px 20px 15px;border-bottom:1px solid var(--line-2);background:rgba(8,14,26,.5)}
-.modal-head .row{display:flex;align-items:center;gap:9px;margin-bottom:10px}
-.modal-head h2{font-weight:700;font-size:20px;letter-spacing:-.02em;line-height:1.18}
-.modal-head .meta{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:9px;
-  display:flex;flex-wrap:wrap;gap:4px 14px}
-.x{margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:8px;width:30px;height:30px;
-  cursor:pointer;color:var(--muted);font-size:15px;flex:none}
-.x:hover{border-color:var(--pink);color:var(--pink)}
-.modal-body{padding:16px 20px 20px;overflow:auto}
-.ticket{background:var(--void);border:1px solid var(--line-2);border-left:3px solid var(--green);
-  border-radius:9px;padding:11px 13px;font-size:13px;color:var(--muted);margin-bottom:16px}
-.ticket b{color:var(--accent-ink);font-family:var(--mono);font-size:11.5px}
-.chatlog{display:flex;flex-direction:column;gap:9px;font-family:var(--mono);font-size:12.5px;line-height:1.6;
-  margin-bottom:14px}
-.chatlog .line .who{width:82px}
+.modal{background:linear-gradient(180deg,rgba(9,26,28,.96),rgba(4,16,18,.98));border:1px solid var(--line-strong);
+  border-radius:20px;width:min(660px,100%);margin-top:5vh;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 40px 120px -40px rgba(0,0,0,.95),0 0 60px -30px var(--cyan)}
+.modal-head{padding:20px 22px 16px;border-bottom:1px solid var(--line)}
+.modal-head .row{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.modal-head h2{font-size:20px;font-weight:600;letter-spacing:-.03em;line-height:1.22}
+.modal-head .meta{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:10px;display:flex;flex-wrap:wrap;gap:4px 16px}
+.x{margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:9px;width:32px;height:32px;cursor:pointer;
+  color:var(--muted);font-size:15px;flex:none;transition:.2s var(--ease)}
+.x:hover{border-color:var(--amber);color:var(--amber)}
+.modal-body{padding:18px 22px 22px;overflow:auto}
+.ticket{background:rgba(0,0,0,.28);border:1px solid var(--line);border-left:2px solid var(--cyan);border-radius:11px;
+  padding:12px 14px;font-size:13px;color:var(--muted);margin-bottom:18px}
+.ticket b{color:var(--cyan);font-family:var(--mono);font-size:11.5px;letter-spacing:.02em}
+.chatlog{display:flex;flex-direction:column;gap:10px;font-family:var(--mono);font-size:12.5px;line-height:1.65;margin-bottom:15px}
+.chatlog .line .who{width:84px}
 .askrow{display:flex;gap:8px;margin-bottom:9px}
-.askrow input{flex:1;font-family:var(--mono);font-size:12.5px;background:var(--void);color:var(--ink);
-  border:1px solid var(--line);border-radius:9px;padding:10px 12px}
-.askrow input:focus{outline:2px solid var(--green);outline-offset:1px;border-color:var(--green)}
-.btn{font-family:var(--mono);font-size:12px;border-radius:9px;padding:10px 13px;cursor:pointer;
-  border:1px solid var(--line);background:var(--surface-2);color:var(--ink);white-space:nowrap;transition:.15s}
-.btn:hover{border-color:var(--teal);color:var(--accent-ink);box-shadow:0 0 14px -6px var(--teal)}
-.btn.solid{background:linear-gradient(100deg,var(--green),var(--teal));border-color:transparent;color:#04120c;font-weight:600}
-.btn.solid:hover{box-shadow:0 0 18px -4px var(--teal);color:#04120c}
-.hintbtn{margin-bottom:14px}
-.runbox{margin-top:6px}
-.runbox .lbl{font-family:var(--mono);font-size:10.5px;color:var(--faint);text-transform:uppercase;
-  letter-spacing:.06em;margin-bottom:6px}
-.cmd{font-family:var(--mono);font-size:12px;background:var(--void);border:1px solid var(--line-2);
-  border-radius:9px;padding:11px 13px;color:var(--ink);overflow-x:auto;white-space:nowrap}
+.askrow input{flex:1;font-family:var(--mono);font-size:12.5px;background:rgba(0,0,0,.3);color:var(--ink);
+  border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+.askrow input::placeholder{color:var(--faint)}
+.askrow input:focus{outline:2px solid var(--cyan);outline-offset:1px;border-color:var(--cyan)}
+.btn{font-family:var(--mono);font-size:12px;border-radius:10px;padding:11px 14px;cursor:pointer;border:1px solid var(--line);
+  background:rgba(255,255,255,.03);color:var(--ink);white-space:nowrap;transition:.2s var(--ease)}
+.btn:hover{border-color:var(--line-strong);color:var(--cyan)}
+.btn.solid{background:linear-gradient(96deg,var(--cyan),var(--teal));border-color:transparent;color:var(--night-deep);font-weight:600}
+.btn.solid:hover{color:var(--night-deep);box-shadow:0 0 20px -6px var(--cyan)}
+.hintbtn{margin-bottom:15px}
+.runbox{margin-top:7px}
+.runbox .lbl{font-family:var(--mono);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px}
+.cmd{font-family:var(--mono);font-size:12px;background:rgba(0,0,0,.34);border:1px solid var(--line);border-radius:10px;
+  padding:12px 14px;color:var(--ink);overflow-x:auto;white-space:nowrap;line-height:1.7}
 .cmd .p{color:var(--faint)}
-.donebar{display:flex;align-items:center;gap:9px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line-2);flex-wrap:wrap}
-.donebar .q{font-size:12.5px;color:var(--muted);margin-right:auto}
-.scorebtn{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line);background:var(--surface-2);
-  color:var(--muted);border-radius:8px;padding:7px 11px;cursor:pointer;transition:.15s}
-.scorebtn:hover{border-color:var(--violet);color:var(--violet)}
-.scorebtn[aria-pressed="true"]{background:linear-gradient(150deg,var(--green),var(--teal));border-color:transparent;color:#04120c;font-weight:600}
+.donebar{display:flex;align-items:center;gap:9px;margin-top:20px;padding-top:17px;border-top:1px solid var(--line);flex-wrap:wrap}
+.donebar .q{font-size:13px;color:var(--muted);margin-right:auto}
+.scorebtn{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);
+  border-radius:9px;padding:8px 12px;cursor:pointer;transition:.2s var(--ease)}
+.scorebtn:hover{border-color:var(--violet-lt);color:var(--violet-lt)}
+.scorebtn[aria-pressed="true"]{background:linear-gradient(150deg,var(--cyan),var(--teal));border-color:transparent;color:var(--night-deep);font-weight:600}
 
-footer{border-top:1px solid var(--line);padding-block:32px 46px;color:var(--muted);font-size:13px}
-footer h3{font-weight:700;font-size:17px;margin-bottom:10px;letter-spacing:-.01em}
-footer .cmd{white-space:pre;margin:10px 0;line-height:1.7}
-footer .fine{font-size:12px;color:var(--faint);margin-top:16px;max-width:74ch;line-height:1.6}
-footer .fine b{color:var(--accent-ink);font-weight:600}
+footer{border-top:1px solid var(--line);padding-block:38px 52px;color:var(--muted);font-size:13px}
+footer h3{font-size:17px;font-weight:600;margin-bottom:12px;letter-spacing:-.02em}
+footer .cmd{white-space:pre;margin:12px 0}
+footer .fine{font-size:12px;color:var(--faint);margin-top:18px;max-width:76ch;line-height:1.7}
+footer .fine b{color:var(--cyan);font-weight:600}
+footer .credit{margin-top:22px;font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.04em}
 
-@media (max-width:820px){.hero-inner{grid-template-columns:1fr;gap:26px}.week-head .blurb{display:none}}
-@media (max-width:380px){.prog .track{width:88px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+@media (max-width:860px){.hero-inner{grid-template-columns:1fr;gap:34px;padding-block:56px 46px}.week-head .blurb{display:none}}
+@media (max-width:380px){.prog .track{width:90px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}#glow,#hot{display:none}}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:4px}
 </style>
 
-<canvas id="trail" aria-hidden="true"></canvas>
+<div id="glow" aria-hidden="true"></div>
+<div id="hot" aria-hidden="true"></div>
 
 <header class="top"><div class="wrap topbar">
-  <div class="brand"><span class="mark"></span><span class="name aur-text">Aurora Range</span></div>
+  <div class="brand"><span class="mark"></span><span class="name">Interview Range <small>· Aurora Forge</small></span></div>
   <div class="prog">
     <span class="tnum" id="progText">0 / 35</span>
     <span class="track"><span class="fill" id="progFill"></span></span>
@@ -218,34 +213,31 @@ footer .fine b{color:var(--accent-ink);font-weight:600}
   </div>
 </div></header>
 
-<section class="hero">
-  <canvas id="sky" aria-hidden="true"></canvas>
-  <div class="wrap hero-inner">
-    <div>
-      <span class="eyebrow">35-day range · updated for 2026</span>
-      <h1>Interviews stopped testing recall.<br><span class="aur-text">They test how you drive the AI.</span></h1>
-      <p class="lede">A month of exercises for the new "human-led, AI-assisted" coding round at Google
-        and Meta — read unfamiliar code, scope a vague ticket, validate what the model wrote, and ship.
-        Every day is a runnable test suite and a spoiler-free mock.</p>
-      <div class="stats">
-        <div class="stat"><b class="tnum aur-text">35</b><span>days</span></div>
-        <div class="stat"><b class="tnum aur-text">7</b><span>weeks</span></div>
-        <div class="stat"><b class="aur-text">L3–L5</b><span>difficulty</span></div>
-        <div class="stat"><b class="tnum aur-text" id="hoursStat">—</b><span>hours of reps</span></div>
-      </div>
-    </div>
-    <div class="term" aria-hidden="true">
-      <div class="term-head"><span class="lights"><i></i><i></i><i></i></span><span>mock · Day 2 — Ambiguous Scoping</span></div>
-      <div class="term-body">
-        <p class="line izer"><span class="who">interviewer</span><span class="msg">Given text and a width, return how many lines you'd need to write it. Go.</span></p>
-        <p class="line you"><span class="who">you</span><span class="msg">ask: does a newline force a hard break?</span></p>
-        <p class="line izer"><span class="who">interviewer</span><span class="msg">Yes — a newline is a hard break. And a word longer than the width?</span></p>
-        <p class="line hint"><span class="who">hint 1/3</span><span class="msg">List every decision the one-sentence ask left open first.</span></p>
-        <p class="line you" style="margin:0"><span class="who">you</span><span class="msg">right, stating my assumptions<span class="caret"></span></span></p>
-      </div>
+<section class="hero"><div class="wrap hero-inner">
+  <div>
+    <span class="eyebrow">35-day range · built for 2026</span>
+    <h1>Interviews stopped testing recall.<br><span class="grad">They test how you drive the AI.</span></h1>
+    <p class="lede">A month of exercises for the new human-led, AI-assisted coding round at Google and
+      Meta — read unfamiliar code, scope a vague ticket, validate what the model wrote, and ship.
+      Every day is a runnable test suite and a spoiler-free mock.</p>
+    <div class="stats">
+      <div class="stat"><b class="tnum grad">35</b><span>days</span></div>
+      <div class="stat"><b class="tnum grad">7</b><span>weeks</span></div>
+      <div class="stat"><b class="grad">L3–L5</b><span>difficulty</span></div>
+      <div class="stat"><b class="tnum grad" id="hoursStat">—</b><span>hours of reps</span></div>
     </div>
   </div>
-</section>
+  <div class="term" aria-hidden="true">
+    <div class="term-head"><span class="lights"><i></i><i></i><i></i></span><span>mock · Day 2 — Ambiguous Scoping</span></div>
+    <div class="term-body">
+      <p class="line izer"><span class="who">interviewer</span><span class="msg">Given text and a width, return how many lines you'd need to write it. Go.</span></p>
+      <p class="line you"><span class="who">you</span><span class="msg">ask: does a newline force a hard break?</span></p>
+      <p class="line izer"><span class="who">interviewer</span><span class="msg">Yes — a newline is a hard break. And a word longer than the width?</span></p>
+      <p class="line hint"><span class="who">hint 1/3</span><span class="msg">List every decision the one-sentence ask left open first.</span></p>
+      <p class="line you" style="margin:0"><span class="who">you</span><span class="msg">right, stating my assumptions<span class="caret"></span></span></p>
+    </div>
+  </div>
+</div></section>
 
 <div class="controls"><div class="wrap filters">
   <div class="grp" id="fWeek"></div><span class="sep"></span>
@@ -270,6 +262,7 @@ python3 interview.py Day2_AmbiguousSpec</div>
     are the spoiler-free mode — only the vague prompt, hints on request. Progress saves in your browser only.
     <b>Days 1–20</b> were critic-gated to ≥8/10 on difficulty, solvability and learning value;
     <b>Days 21–35</b> are self-verified — every starter fails for its stated reason, every reference solution passes.</p>
+  <p class="credit">Aurora Forge Lab · Interview Range</p>
 </div></footer>
 
 <div class="scrim" id="scrim" role="dialog" aria-modal="true" aria-labelledby="mTitle">
@@ -279,9 +272,8 @@ python3 interview.py Day2_AmbiguousSpec</div>
 <script>
 const PAYLOAD = {"days": [{"day": 1, "folder": "Day1_CodeComprehension_Debug", "week": 1, "title": "Code Comprehension & Debugging", "difficulty": "L3 · Python · debugging", "level": 3, "lang": "Python", "topic": "debugging", "time": 50, "prompt": "Staging fell over last night: our gateway couldn't read '[server] port' as an int and socket.bind crashed. This little config loader is what parses it, and its test suite is failing. Where do you start?", "test_cmd": "python3 -m pytest -q", "skill": "the signature Google round.", "ticket": "On-call scenario — INCIDENT-401", "clarifications": [{"keywords": ["type", "int", "coerce", "coercion", "bool", "float"], "answer": "Values are coerced: true/false -> bool, integers -> int, decimals -> float, everything else stays str. A version like 1.0.0 must stay a string."}, {"keywords": ["comment", "inline", "hash"], "answer": "Full-line comments and blank lines are skipped; an inline comment after a value (' # ...') is stripped from the value."}, {"keywords": ["whitespace", "strip", "trim", "spaces"], "answer": "Keys and values are trimmed of surrounding whitespace."}, {"keywords": ["duplicate", "repeated", "last", "wins", "key"], "answer": "A repeated key keeps the LAST value; a repeated [section] merges into the existing one."}, {"keywords": ["section", "default", "top"], "answer": "Keys before any [section] header go under a section named DEFAULT."}, {"keywords": ["equals", "url", "value", "split"], "answer": "Only the first '=' separates key from value, so values may contain '='."}], "hints": ["Read each function first and write a one-line summary; triage the failures by symptom class (type, whitespace, comment, dedup, split).", "Look hard at _coerce (bool('false') is True!) and at how lines are split and stripped.", "Fix surgically: strip lines/keys/values, strip inline comments, coerce in the right order, split('=', 1), merge sections, and let the last duplicate key win."]}, {"day": 2, "folder": "Day2_AmbiguousSpec", "week": 1, "title": "Ambiguous Scoping", "difficulty": "L3/L4 · Python · scoping", "level": 4, "lang": "Python", "topic": "scoping", "time": 45, "prompt": "Our label printer prints a fixed number of characters per line. Given a piece of text and a width, return how many lines you'd need to write it (and the wrapped lines). That's the whole ticket — go.", "test_cmd": "python3 -m pytest -q", "skill": "the trap that sinks most candidates.", "ticket": "Ticket LABEL-88 — label-printer line estimator", "clarifications": [{"keywords": ["word", "separator", "whitespace", "split"], "answer": "Words are whitespace-separated; runs of spaces collapse and leading/trailing whitespace is ignored."}, {"keywords": ["long", "longer", "width", "overflow", "split"], "answer": "A word longer than the width is NOT split — it overflows onto its own line."}, {"keywords": ["newline", "hard", "break", "\\n"], "answer": "A newline already in the text is a HARD break — each newline-delimited segment wraps independently."}, {"keywords": ["empty", "blank", "whitespace"], "answer": "Empty or whitespace-only text needs 0 lines (returns [])."}, {"keywords": ["width", "zero", "negative", "invalid"], "answer": "width <= 0 is invalid and raises ValueError."}, {"keywords": ["greedy", "pack", "fit"], "answer": "Greedy word wrap: pack words joined by single spaces until the next won't fit, then start a new line."}], "hints": ["Resist coding — first list every decision the one-sentence ask left open (word breaks, over-long words, newlines, empty, width<=0).", "Implement wrap_lines first; line_count is just len(wrap_lines(text, width)).", "Split on '\\n' for hard breaks, then greedily pack each segment's words at the width; an over-long word gets its own line."]}, {"day": 3, "folder": "Day3_Refactor_Optimize_TS", "week": 1, "title": "Refactor, Optimize & Fix", "difficulty": "L3/L4 · TypeScript · refactor", "level": 4, "lang": "TypeScript", "topic": "refactor", "time": 45, "prompt": "Our traffic dashboard's 'top 5 hottest endpoints' panel times out on real access logs, and tied endpoints come out in an inconsistent order. Here's the analyzer — how would you fix it?", "test_cmd": "node --test", "skill": "the \"optimize this existing code\" half of the code-comprehension round, in your other", "ticket": "Ticket OBS-152 — top-endpoints report times out on real logs", "clarifications": [{"keywords": ["slow", "perf", "complexity", "timeout", "n2"], "answer": "endpointCounts re-scans the whole list for every endpoint — it's O(n^2). Target O(n) with a single-pass Map."}, {"keywords": ["tie", "ties", "order", "alphabetical", "stable"], "answer": "Tied endpoints must be broken alphabetically so the ordering is stable between refreshes."}, {"keywords": ["parse", "endpoint", "line", "malformed"], "answer": "Each log line's endpoint is the 2nd whitespace token; malformed lines (parseEndpoint returns null) are skipped."}, {"keywords": ["api", "signature", "public"], "answer": "Keep the public functions (parseEndpoint, endpointCounts, topEndpoints) identical."}, {"keywords": ["output", "same", "behavior"], "answer": "Same output — top-N most-hit endpoints, highest first — just correct ordering and fast."}], "hints": ["Say out loud why the counting loop is O(n^2) and what Array.sort does without a tiebreak.", "Build the count Map in one pass (counts.set(e, (counts.get(e) ?? 0) + 1)).", "Add an alphabetical tiebreak to the comparator: (b[1]-a[1]) || a[0].localeCompare(b[0])."]}, {"day": 4, "folder": "Day4_MultiFile_Feature", "week": 1, "title": "Navigate a Codebase & Ship a Feature", "difficulty": "L4 · Python · multi-file feature", "level": 4, "lang": "Python", "topic": "multi-file feature", "time": 60, "prompt": "You're dropped into a small library-catalog package. The repository layer is done; three service methods (checkout, return_book, most_borrowed) are stubbed. Implement them to pass the integration tests. How do you get oriented?", "test_cmd": "python3 -m pytest -q", "skill": "the Meta-style multi-file challenge.", "ticket": "", "clarifications": [{"keywords": ["repository", "repo", "api", "methods", "storage"], "answer": "Read repository.py first — it already gives you active_loans_for, has_active_loan, add_loan, remove_loan, and borrow_count. Use them; don't reinvent storage."}, {"keywords": ["checkout", "copies", "available"], "answer": "checkout: reject if no copies available or the member already holds this book; otherwise record the loan."}, {"keywords": ["return", "loan"], "answer": "return_book: if the member has no active loan for that book, raise ValueError; otherwise remove the loan."}, {"keywords": ["most", "borrowed", "cumulative", "top", "rank"], "answer": "most_borrowed(n): top n books by cumulative times ever borrowed, ties broken by title; exclude books never borrowed."}, {"keywords": ["available", "cumulative", "difference", "count"], "answer": "available_copies is total minus ACTIVE loans; borrow_count is CUMULATIVE (it doesn't drop on return) — two different counters."}], "hints": ["Map the repository API first — one line per method — before writing any service code.", "checkout uses available_copies + has_active_loan; return_book uses remove_loan's bool result.", "most_borrowed: filter books with borrow_count > 0, then sort by (-borrow_count, title)[:n]."]}, {"day": 5, "folder": "Day5_MockInterview_PR", "week": 1, "title": "Full Mock: Bug + Feature + PR", "difficulty": "L4/L5 · Python · capstone", "level": 5, "lang": "Python", "topic": "capstone", "time": 75, "prompt": "Ticket PRICE-214: a $20 coupon on a $100 cart charged $88.00 — finance expected $86.40. And we need a bulk discount. Here's the pricing engine. Walk me through your plan, then fix and ship it.", "test_cmd": "python3 -m pytest -q", "skill": "Run the full human-led, AI-assisted loop end to end: comprehend, fix a bug, ship a feature, open a PR, self-review.", "ticket": "Ticket PRICE-214 — Checkout pricing is wrong, and bulk pricing is missing", "clarifications": [{"keywords": ["coupon", "before", "after", "tax", "order"], "answer": "The bug: a fixed-dollar coupon is applied AFTER tax. It must be subtracted from the subtotal BEFORE tax."}, {"keywords": ["negative", "floor", "coupon", "bigger"], "answer": "A coupon larger than the cart must not produce a negative total — floor at 0."}, {"keywords": ["bulk", "discount", "quantity", "10", "feature"], "answer": "Feature: any line with quantity >= 10 gets 10% off that line, applied before coupon and tax."}, {"keywords": ["round", "rounding", "decimals"], "answer": "Round the final total to 2 decimals."}, {"keywords": ["order", "operations", "sequence"], "answer": "Order of operations: bulk discount per line -> subtotal -> subtract coupon -> apply tax -> round."}, {"keywords": ["pr", "commit", "review", "files"], "answer": "Change only pricing.py; then write the PR description and self-review checklist (that's the ownership signal)."}], "hints": ["Read pricing.py and write down the current order of operations in total() — the bug is in that order.", "Coupon (fixed $) comes off the subtotal before tax; guard the total at max(0, ...).", "Bulk: in subtotal(), if a line's qty >= BULK_THRESHOLD multiply that line by (1 - BULK_DISCOUNT)."]}, {"day": 6, "folder": "Day6_Concurrency_Race", "week": 2, "title": "The Concurrency Race", "difficulty": "L4 (mid-level) · Python · concurrency", "level": 4, "lang": "Python", "topic": "concurrency", "time": 45, "prompt": "We have a cache that lazily builds one client per tenant. Single-threaded it's fine, but under load we sometimes build the same tenant's client more than once and hand out different objects. Here's the class — take a look and tell me what you'd do.", "test_cmd": "python3 -m pytest -q", "skill": "read concurrent code, reason about interleavings, fix a", "ticket": "Ticket GW-503 — tenant clients built multiple times under load", "clarifications": [{"keywords": ["thread", "concurrent", "parallel", "threads"], "answer": "Yes — many threads can call get() with the same key at the same instant. Assume a real thread pool."}, {"keywords": ["lock", "mutex"], "answer": "There's a self._lock already declared. Whether and how you use it is the whole question."}, {"keywords": ["async", "asyncio", "await"], "answer": "It's threads, not asyncio — plain synchronous get() called from multiple threads."}, {"keywords": ["factory", "expensive", "side", "effects"], "answer": "The factory is expensive and may open connections, so calling it more than once per key is the actual harm. It must run at most once per key."}, {"keywords": ["performance", "contention", "slow"], "answer": "Correctness first. A single lock is acceptable; if you want to avoid serializing all keys you can, but it's not required to pass."}, {"keywords": ["same", "object", "identity"], "answer": "Right — every concurrent caller for a key must get the exact same object back."}], "hints": ["Look at the two lines in get(): the 'if key not in self._store' check and the assignment. What can another thread do between them?", "Two threads can both pass the 'not in' check before either assigns — so both call the factory. That's a check-then-act race.", "Wrap the check-and-build in 'with self._lock:'. For bonus points, use double-checked locking so the fast path (already cached) doesn't take the lock."]}, {"day": 7, "folder": "Day7_CSV_Tokenizer_TS", "week": 2, "title": "CSV Tokenizer Edge Cases", "difficulty": "L3/L4 · TypeScript · parsing", "level": 4, "lang": "TypeScript", "topic": "parsing", "time": 40, "prompt": "We ingest user-uploaded CSVs. Right now we just split each line on commas and it breaks on real spreadsheets. Parse a single CSV record into fields correctly. How do you approach it?", "test_cmd": "node --test", "skill": "turn a naive string split into a correct tokenizer by reasoning", "ticket": "Ticket IMP-77 — CSV importer mangles quoted fields", "clarifications": [{"keywords": ["quote", "quoted", "quotes"], "answer": "Yes — a field can be wrapped in double quotes, and inside quotes a comma is literal text, not a separator. Strip the wrapping quotes from the result."}, {"keywords": ["escape", "escaped", "double"], "answer": "Inside a quoted field, two double-quotes \"\" mean one literal double-quote character."}, {"keywords": ["trim", "whitespace", "spaces"], "answer": "Whitespace is significant — do not trim. ' b ' stays ' b '."}, {"keywords": ["empty", "trailing", "blank"], "answer": "Empty fields are allowed. A trailing comma produces a trailing empty field, and an empty line is a single empty field."}, {"keywords": ["newline", "multiline", "lines", "rows"], "answer": "Just one record (one line) per call for this exercise — no embedded newlines to worry about."}, {"keywords": ["regex"], "answer": "You can try, but think about the escaped-quote case before you commit to a regex."}], "hints": ["Think of it as a state machine with two states: inside-quotes and outside-quotes.", "Scan character by character. Outside quotes: a comma ends the field, a quote enters quoted mode. Inside quotes: a quote might close the field OR be the first of an escaped pair.", "When inside quotes and you see a quote, peek at the next char: if it's also a quote, emit one quote and skip both; otherwise close the quoted section."]}, {"day": 8, "folder": "Day8_StateMachine_Bug", "week": 2, "title": "State Machine Bug", "difficulty": "L3 · Python · state machines", "level": 3, "lang": "Python", "topic": "state machines", "time": 45, "prompt": "This drives an order from created to delivered, with cancellation allowed before shipping. Support says illegal actions are being accepted and the history has phantom entries. Walk me through how you'd find and fix it.", "test_cmd": "python3 -m pytest -q", "skill": "read a finite state machine, reason about legal vs.", "ticket": "Ticket ORD-311 — illegal order actions are being accepted", "clarifications": [{"keywords": ["terminal", "final", "delivered", "cancelled"], "answer": "delivered and cancelled are both terminal — no events allowed once you're there."}, {"keywords": ["cancel", "shipped"], "answer": "Correct: cancelling a shipped or delivered order must be rejected. Cancel is only legal from created or paid."}, {"keywords": ["invalid", "illegal", "reject", "raise", "error", "exception"], "answer": "An invalid event should raise InvalidTransition and leave state and history untouched."}, {"keywords": ["history"], "answer": "history should contain only transitions that actually happened — no duplicates, no phantom steps."}, {"keywords": ["table", "transitions", "data"], "answer": "The TRANSITIONS table itself is correct. The bugs are in how apply() and is_terminal() use it."}, {"keywords": ["skip", "states", "order"], "answer": "You cannot skip states — deliver requires shipped, ship requires paid."}], "hints": ["Look at apply(): what happens when the event is NOT in the allowed set? Does it raise, or fall through?", "apply() appends to history unconditionally — even when no transition occurred. That's the phantom entry, and the silent-accept is the missing 'else raise'.", "is_terminal() only checks 'delivered'. A terminal state is simply one with no outgoing transitions — 'not TRANSITIONS[self.state]' covers both delivered and cancelled."]}, {"day": 9, "folder": "Day9_API_Contract_Serializer", "week": 2, "title": "API Contract Serializer", "difficulty": "L3 · Python · API contracts", "level": 3, "lang": "Python", "topic": "API contracts", "time": 40, "prompt": "Mobile clients are choking on our user payload. We have a documented response schema and a serializer that's drifted from it. Here's the schema and the code — make them match. Where do you start?", "test_cmd": "python3 -m pytest -q", "skill": "make code conform to an external contract exactly — the unglamorous,", "ticket": "Ticket API-902 — mobile clients choke on the user payload", "clarifications": [{"keywords": ["schema", "contract", "spec", "source", "truth"], "answer": "SCHEMA.md is the source of truth — match it exactly. The tests encode it."}, {"keywords": ["null", "nickname", "omit", "present", "missing"], "answer": "Nullable fields (nickname, address) must always be PRESENT with a null value, never dropped."}, {"keywords": ["date", "time", "timestamp", "created", "format", "iso"], "answer": "createdAt is ISO-8601 UTC: YYYY-MM-DDThh:mm:ssZ. Not Python's default str(datetime)."}, {"keywords": ["case", "camel", "snake", "keys", "naming"], "answer": "Keys are camelCase: displayName, createdAt. Not snake_case."}, {"keywords": ["roles", "sorted", "order"], "answer": "roles is a sorted (ascending) list of role NAME strings, not Role objects."}, {"keywords": ["address", "nested"], "answer": "address is serialized to {city, zip}, or null when absent."}], "hints": ["Open SCHEMA.md and the current output side by side and list every difference before editing.", "There are five discrepancy classes: key casing, null-but-present, datetime format, role names+sort, nested address serialization.", "Build the dict in one literal with all camelCase keys; use datetime.strftime('%Y-%m-%dT%H:%M:%SZ'), sorted(r.name for r in roles), and a helper for address-or-None."]}, {"day": 10, "folder": "Day10_Quadratic_Join", "week": 2, "title": "The Accidental O(n·m) Join", "difficulty": "L4 · Python · performance", "level": 4, "lang": "Python", "topic": "performance", "time": 40, "prompt": "This nightly job attaches customer names to orders. It's fine in staging but takes minutes in prod and we miss the export window. Take a look — how would you speed it up?", "test_cmd": "python3 -m pytest -q", "skill": "recognize a hidden quadratic (a nested scan = a join), and replace it", "ticket": "Ticket ETL-140 — nightly enrichment job blows the export SLA", "clarifications": [{"keywords": ["output", "behavior", "same", "change"], "answer": "Output must be identical — same fields, same order as the input orders. Only the performance should change."}, {"keywords": ["duplicate", "dup", "same", "id", "ids"], "answer": "If two customers share an id, the FIRST one in the list wins. Watch out — a naive dict comprehension keeps the last."}, {"keywords": ["missing", "no", "match", "none"], "answer": "An order with no matching customer gets customer_name = None."}, {"keywords": ["complexity", "big", "o", "target"], "answer": "It's currently O(n*m) — a scan over all customers for every order. Target O(n+m)."}, {"keywords": ["memory", "space"], "answer": "Extra memory for an index is fine; O(m) for the lookup table is expected."}, {"keywords": ["sort", "sorted"], "answer": "No need to sort — a hash lookup is O(1) average, better than sorting for this."}], "hints": ["What is the cost of the inner 'for c in customers' loop, and how many times does it run?", "It's a nested-loop join: O(orders × customers). Replace the inner scan with a dict lookup keyed by customer id.", "Build the index with setdefault so the FIRST customer for a given id wins (a dict comprehension would keep the last), then map each order through it."]}, {"day": 11, "folder": "Day11_Prompt_To_Spec", "week": 3, "title": "Prompt → Precise Spec", "difficulty": "L3 · Python · AI-fluency (spec writing)", "level": 3, "lang": "Python", "topic": "AI-fluency (spec writing)", "time": 35, "prompt": "Product wants a slugify function for blog URLs. That's the whole ask. Before you write any code, tell me exactly how it should behave — I'm curious what questions you'd pin down first.", "test_cmd": "python3 -m pytest -q", "skill": "the front half of AI-assisted work — converting a vague ask into a", "ticket": "Ticket BLOG-12 — \"add slugify for our blog URLs\"", "clarifications": [{"keywords": ["case", "lower", "upper"], "answer": "Lowercase the whole thing."}, {"keywords": ["space", "separator", "special", "punctuation", "characters", "survive"], "answer": "Only [a-z0-9] survive. Any run of other characters collapses to a single hyphen."}, {"keywords": ["accent", "unicode", "ascii", "non-ascii", "café", "cafe"], "answer": "Keep it simple: non-ASCII letters are treated as separators, not transliterated. 'Café' -> 'caf'."}, {"keywords": ["trailing", "leading", "trim", "strip", "edges"], "answer": "Strip leading and trailing hyphens."}, {"keywords": ["empty", "blank", "symbols"], "answer": "Empty input or all-symbol input yields an empty string."}, {"keywords": ["digit", "number", "numbers"], "answer": "Digits are kept."}, {"keywords": ["length", "max", "truncate"], "answer": "No max-length requirement for this version."}], "hints": ["List every decision the one-sentence ask left open BEFORE writing code — that's the whole exercise.", "Think in terms of: which characters survive, and what happens to everything else (runs of them).", "One regex does it: replace runs of [^a-z0-9] with '-' on the lowercased string, then strip('-')."]}, {"day": 12, "folder": "Day12_Validate_AI_Output", "week": 3, "title": "Validate AI Output", "difficulty": "L4 · Python · output validation", "level": 4, "lang": "Python", "topic": "output validation", "time": 40, "prompt": "A teammate had an AI write this merge_intervals function, checked one overlapping case, and opened a PR. Review it like you're the one whose name is on the approval. What do you check?", "test_cmd": "python3 -m pytest -q", "skill": "THE headline skill of the AI-assisted interview — catching what the", "ticket": "PR REVIEW — an AI wrote `merge_intervals`, QA it before merge", "clarifications": [{"keywords": ["touch", "touching", "adjacent", "endpoint", "boundary"], "answer": "Yes — touching intervals like [1,2] and [2,3] must merge into [1,3]. That's one of the bugs."}, {"keywords": ["nested", "contain", "inside", "containment"], "answer": "A nested interval like [2,3] inside [1,10] must keep the outer end (10), not shrink it."}, {"keywords": ["mutate", "mutation", "input", "side", "caller"], "answer": "Good instinct — check whether it mutates the caller's list. It does, and it shouldn't."}, {"keywords": ["sorted", "unsorted", "order"], "answer": "Input may be unsorted; output should be sorted by start. The sorting part is actually fine."}, {"keywords": ["empty"], "answer": "Empty input returns []. That case is handled correctly."}, {"keywords": ["how", "many", "bugs", "count"], "answer": "Three defects total: touching, nested, and input mutation."}], "hints": ["Don't just run it — read it and predict inputs that break it. Look hard at the merge condition and the end-assignment.", "The condition uses '<' (strict) so touching intervals don't merge; and it sets last[1] = curr[1] instead of max(last[1], curr[1]).", "Third bug: 'last' is a reference to an interval from the input, so mutating last[1] mutates the caller's data. Copy the intervals (or build new pairs)."]}, {"day": 13, "folder": "Day13_Mutation_Testing_TS", "week": 3, "title": "Kill the Mutants (Test Strength)", "difficulty": "L4 (touches L5) · TypeScript · test design", "level": 5, "lang": "TypeScript", "topic": "test design", "time": 40, "prompt": "Here's a correct median function and five subtly-broken versions of it. Your job isn't to fix code — it's to write checks strong enough to catch every broken version while still accepting the correct one. How do you pick your test inputs?", "test_cmd": "node --test", "skill": "knowing what makes a test *strong*.", "ticket": "QA-55 — our median tests are too weak to catch regressions", "clarifications": [{"keywords": ["mutant", "broken", "versions", "how", "many"], "answer": "Five mutants: does-not-sort, returns-mean, even-upper (no average), odd-off-by-one, and empty-returns-zero."}, {"keywords": ["mean", "average"], "answer": "One mutant returns the mean. You need an input where mean != median to catch it — a skewed distribution."}, {"keywords": ["sort", "sorted", "unsorted"], "answer": "One mutant forgets to sort. Use an UNSORTED input whose median differs from the element at the middle index."}, {"keywords": ["empty"], "answer": "The correct function throws on empty input; one mutant returns 0. assert that median([]) throws."}, {"keywords": ["even", "odd", "length"], "answer": "Cover both: an odd-length list (catches odd-off-by-one) and an even-length list (catches even-upper and mean)."}, {"keywords": ["edit", "modify", "which", "file"], "answer": "Only edit assertions.ts. spec.ts and check.test.ts are read-only."}], "hints": ["Go mutant by mutant: for each one, what is the smallest input where the correct median and that mutant DISAGREE?", "[3,1,2] has median 2, but does-not-sort returns nums[1]=1 and odd-off-by-one returns sorted[mid-1]=1 — so both disagree. A skewed even list like [1,3,2,10] (median 2.5, mean 4, upper 3) catches mean and even-upper.", "Three assertions suffice: median([3,1,2])===2, median([1,3,2,10])===2.5, and assert median([]) throws."]}, {"day": 14, "folder": "Day14_Refactor_Testability", "week": 3, "title": "Refactor for Testability", "difficulty": "L3 · Python · dependency injection", "level": 3, "lang": "Python", "topic": "dependency injection", "time": 35, "prompt": "This happy-hour discount works in prod, but QA says they can't test it reliably — it passes in the evening and fails in the morning. How would you make it testable?", "test_cmd": "python3 -m pytest -q", "skill": "introduce a *seam* so hidden dependencies (the clock, randomness,", "ticket": "QA-71 — happy-hour pricing can't be tested reliably", "clarifications": [{"keywords": ["now", "time", "clock", "datetime", "inject"], "answer": "Right — it calls datetime.now() directly. Let the caller inject the time; default to the real clock when not provided."}, {"keywords": ["behavior", "production", "prod", "change", "same"], "answer": "Production behavior must stay identical: calling with no time argument should still use datetime.now()."}, {"keywords": ["window", "hours", "inclusive", "exclusive", "17", "19"], "answer": "Happy hour is 17:00 inclusive to 19:00 exclusive, by hour."}, {"keywords": ["round", "rounding", "decimals"], "answer": "Discounted price is base * 0.8 rounded to 2 decimals."}, {"keywords": ["mock", "patch", "monkeypatch", "freeze"], "answer": "You could monkeypatch, but the cleaner seam here is an injectable parameter with a default. That's what the tests use."}, {"keywords": ["signature", "api", "argument"], "answer": "Both is_happy_hour and final_price should take an optional now parameter."}], "hints": ["What single call makes this impossible to test deterministically?", "Add a parameter: now=None, and inside do 'now = now or datetime.now()'. That's the seam.", "Thread now through final_price into is_happy_hour(now); keep the window and rounding exactly as specified."]}, {"day": 15, "folder": "Day15_Security_Path_Traversal_TS", "week": 3, "title": "Security: Path Traversal", "difficulty": "L4 · TypeScript · security", "level": 4, "lang": "TypeScript", "topic": "security", "time": 40, "prompt": "This endpoint serves files from a base directory using a user-supplied path. A pen test says you can read /etc/passwd through it. Take a look — how do you lock it down?", "test_cmd": "node --test", "skill": "spot and close an injection-class vulnerability, and prove it with", "ticket": "SEC-208 — file endpoint is vulnerable to path traversal", "clarifications": [{"keywords": ["escape", "traversal", "dotdot", "..", "vector"], "answer": "The attacks are '../' escapes, absolute paths like /etc/passwd, and mid-path tricks like a/../../etc. All must throw."}, {"keywords": ["throw", "reject", "error", "return"], "answer": "On an unsafe path, throw Error('unsafe path'). On a safe path, return the resolved absolute path."}, {"keywords": ["normalize", "normalization", "resolve", "inside", "allowed"], "answer": "Normalization that stays inside is fine: 'reports/../q1.txt' should resolve to baseDir/q1.txt and be allowed."}, {"keywords": ["startswith", "prefix", "boundary", "sibling"], "answer": "Careful: a bare startsWith(base) is buggy — '/srv/data-evil' starts with '/srv/data'. Check for base itself OR base + path separator."}, {"keywords": ["join", "why", "insufficient"], "answer": "path.join normalizes but happily produces paths outside the base (../) and mishandles absolute inputs. You must resolve then verify containment."}, {"keywords": ["symlink", "realpath"], "answer": "Out of scope here — assume no symlinks; just do lexical containment on resolved absolute paths."}], "hints": ["path.join isn't a security boundary — it will cheerfully return /srv/secret from '../secret'.", "Resolve both to absolute: base = path.resolve(baseDir); candidate = path.resolve(base, userPath). Then check containment.", "Allow when candidate === base or candidate.startsWith(base + path.sep); otherwise throw. The separator check defeats the sibling-prefix trick."]}, {"day": 16, "folder": "Day16_RateLimiter_TS", "week": 4, "title": "Token-Bucket Rate Limiter", "difficulty": "L3/L4 · TypeScript · systems", "level": 4, "lang": "TypeScript", "topic": "systems", "time": 45, "prompt": "This token-bucket rate limiter has two bugs QA found: after an idle period it lets a burst through, and it rejects a request that needs exactly the tokens available. Walk me through the token math and the fixes.", "test_cmd": "node --test", "skill": "implement/fix a canonical systems building block with an injected", "ticket": "GW-620 — rate limiter lets bursts through and rejects valid requests", "clarifications": [{"keywords": ["cap", "capacity", "burst", "idle", "max"], "answer": "Yes — after refilling, tokens must never exceed capacity. The idle burst is because refill isn't capped."}, {"keywords": ["exact", "boundary", "equal", "==", ">="], "answer": "A request needing exactly the available tokens must succeed — the comparison should be >=, not >."}, {"keywords": ["refill", "rate", "elapsed", "formula"], "answer": "Refill = elapsed_seconds * refillPerSec, added to current tokens, then capped at capacity."}, {"keywords": ["fail", "reject", "consume", "unchanged"], "answer": "On rejection, don't consume tokens. (Refilling on that call is fine; just don't deduct cost.)"}, {"keywords": ["time", "clock", "now", "inject", "deterministic"], "answer": "Time is passed in as a seconds value (injected), so there's no real clock in the logic — that's what makes it testable."}, {"keywords": ["fractional", "float"], "answer": "Tokens are fractional — 0.5s at 2/s yields 1 token. Don't floor them."}], "hints": ["Write the invariant first: 0 <= tokens <= capacity, always.", "The idle-burst bug is a missing Math.min(capacity, ...) around the refill; the rejection bug is '>' where it should be '>='.", "tokens = Math.min(capacity, tokens + elapsed * refillPerSec); then if (tokens >= cost) { tokens -= cost; return true; } return false;"]}, {"day": 17, "folder": "Day17_LRU_Cache_TTL", "week": 4, "title": "LRU Cache with TTL", "difficulty": "L3/L4 · Python · systems", "level": 4, "lang": "Python", "topic": "systems", "time": 45, "prompt": "This LRU cache with TTL has two bugs: it evicts keys we just read, and it serves expired data. Time is injected as `now`. How would you fix the read path?", "test_cmd": "python3 -m pytest -q", "skill": "implement/fix the other canonical cache building block — LRU eviction", "ticket": "CACHE-88 — cache evicts hot keys and serves stale data", "clarifications": [{"keywords": ["recency", "use", "lru", "read", "get", "order"], "answer": "A get() on a present, non-expired key counts as a use — it becomes most-recently-used."}, {"keywords": ["ttl", "expire", "insert", "access", "reset"], "answer": "TTL is measured from INSERT time. A read does NOT reset the TTL — recency and expiry are two different clocks."}, {"keywords": ["boundary", "exactly", "equal"], "answer": "An entry expires when now - inserted > ttl. Exactly ttl later is still valid."}, {"keywords": ["remove", "delete", "expired", "size"], "answer": "An expired entry should be removed when accessed (so size drops)."}, {"keywords": ["put", "eviction", "capacity"], "answer": "put and capacity-based eviction are already correct — the bugs are only in get."}, {"keywords": ["time", "clock", "inject", "now"], "answer": "now is passed in to get/put, so tests are deterministic — no real clock in the logic."}], "hints": ["Two separate concerns: LRU order (recency) and TTL (expiry from insert). A read touches recency but not TTL.", "In get: if now - inserted > ttl, delete the key and return None; otherwise move_to_end(key) and return the value.", "The starter get() does neither move_to_end nor the ttl check — add both, in that order."]}, {"day": 18, "folder": "Day18_Cursor_Pagination", "week": 4, "title": "Cursor Pagination Off-by-One", "difficulty": "L3/L4 · Python · pagination", "level": 4, "lang": "Python", "topic": "pagination", "time": 40, "prompt": "Infinite scroll is showing a duplicate row at each page boundary, and the next cursor looks wrong. Here's the cursor pagination code. How do you debug it?", "test_cmd": "python3 -m pytest -q", "skill": "get the boundary math of cursor pagination exactly right — a bug here", "ticket": "FEED-233 — infinite scroll shows a duplicate row at every page boundary", "clarifications": [{"keywords": ["cursor", "greater", "strictly", "seen", "include"], "answer": "The cursor is the last id the client already saw, so the next page must be ids STRICTLY greater than the cursor — the duplicate is an off-by-one there."}, {"keywords": ["next", "cursor", "last", "first", "point"], "answer": "next_cursor should be the LAST item's id in the returned page, not the first."}, {"keywords": ["null", "none", "end", "more", "last"], "answer": "next_cursor is None when there are no items after this page."}, {"keywords": ["sorted", "order", "id"], "answer": "Items are pre-sorted ascending by id — you can rely on that."}, {"keywords": ["empty", "past", "beyond"], "answer": "A cursor past the last id returns an empty page and a None cursor."}, {"keywords": ["duplicate", "boundary"], "answer": "Trace ids [1..5], limit 2, cursor 2: the '>=' makes it return [2,3] instead of [3,4] — item 2 was already shown."}], "hints": ["Hand-trace two adjacent pages and watch which item repeats.", "Start condition should be 'id > cursor' (strictly), not 'id >= cursor'.", "next_cursor = page[-1].id only if items remain after this page (start+limit < len), else None."]}, {"day": 19, "folder": "Day19_EventBus_TS", "week": 4, "title": "Event Bus (pub/sub)", "difficulty": "L3/L4 · TypeScript · systems", "level": 4, "lang": "TypeScript", "topic": "systems", "time": 45, "prompt": "This event bus has two bugs: a handler that unsubscribes another during an emit causes that other handler to be skipped, and once() fires on every emit instead of just once. How would you fix it?", "test_cmd": "node --test", "skill": "implement a small pub/sub correctly, including the two subtle traps", "ticket": "CORE-410 — handlers get skipped, and `once` fires forever", "clarifications": [{"keywords": ["iterate", "iteration", "live", "mutate", "during", "emit"], "answer": "Right — emit iterates the live listener array, so a handler calling off() mid-loop shifts the array and skips the next handler. Iterate a snapshot instead."}, {"keywords": ["snapshot", "copy"], "answer": "Yes: dispatch over a copy of the listeners captured at the start of emit, so subscribe/unsubscribe during the emit doesn't change who runs this round."}, {"keywords": ["once", "auto", "remove", "unsubscribe"], "answer": "once() should fire the handler at most once and then remove itself. It should also return an unsubscribe so it can be cancelled before firing."}, {"keywords": ["semantics", "who", "called", "new", "handler"], "answer": "Snapshot semantics: only handlers subscribed at the START of the emit are called; a handler added during the emit is not called until the next emit."}, {"keywords": ["api", "signature", "public"], "answer": "Keep on/off/emit/once signatures identical."}, {"keywords": ["error", "throw", "handler"], "answer": "Assume handlers don't throw for this exercise — focus on the iteration and once bugs."}], "hints": ["Why does removing an element from an array you're iterating with for..of skip the next one?", "emit: iterate over [...arr] (a copy), not the live array.", "once: const off = this.on(event, (p) => { off(); handler(p); }); return off;"]}, {"day": 20, "folder": "Day20_CLI_ArgParse", "week": 4, "title": "CLI Argument Parsing Edge Cases", "difficulty": "L3 · Python · parsing", "level": 3, "lang": "Python", "topic": "parsing", "time": 40, "prompt": "This hand-rolled CLI parser handles the simple cases but breaks on '--key=value', doesn't convert numeric options, silently ignores unknown flags, and mishandles the '--' terminator. How do you fix it?", "test_cmd": "python3 -m pytest -q", "skill": "handle the messy edge cases of a real input format — the `=` form,", "ticket": "CLI-19 — flags in `--key=value` form and `--` are mishandled", "clarifications": [{"keywords": ["equals", "=", "form"], "answer": "Support both '--output value' and '--output=value'. Split on the first '=' when present."}, {"keywords": ["int", "retries", "convert", "type", "number"], "answer": "--retries is an integer — convert with int() at the boundary. Default is 3."}, {"keywords": ["unknown", "invalid", "error", "raise", "silent"], "answer": "An unknown '--option' must raise ValueError, not be swallowed as a positional."}, {"keywords": ["--", "terminator", "end", "double", "dash"], "answer": "'--' ends option parsing: everything after it is positional, even if it starts with '--'."}, {"keywords": ["positional", "args"], "answer": "Anything not starting with '--' (or anything after '--') is a positional."}, {"keywords": ["short", "single", "-v"], "answer": "No short flags in this version — only long '--' options."}, {"keywords": ["empty", "blank", "value"], "answer": "'--output=' is an explicit EMPTY value (output becomes ''), not a positional and not an error."}, {"keywords": ["bad", "invalid", "non", "integer", "abc", "convert"], "answer": "A non-integer --retries (like 'abc') should raise ValueError — int() does this for you if you convert at the boundary."}], "hints": ["List the token shapes: --flag, --key value, --key=value, --, positional, unknown. Your loop dispatches on these.", "When an arg starts with '--' and contains '=', split once into key and value; otherwise the value (if the option needs one) is the next arg.", "Track an 'options_done' flag set by '--'; convert --retries with int(); and 'else: raise ValueError' for unknown options."]}, {"day": 21, "folder": "Day21_Sliding_Window_Max", "week": 5, "title": "Sliding-Window Maximum", "difficulty": "L4/L5 · Python · algorithms", "level": 5, "lang": "Python", "topic": "algorithms", "time": 45, "prompt": "We report the max latency over the last W samples at every position in a long stream. The current code recomputes each window's max from scratch and can't keep up. Same output — how would you speed it up?", "test_cmd": "python3 -m pytest -q", "skill": "recognize a recompute-from-scratch quadratic and replace it with an", "ticket": "OBS-301 — peak-latency dashboard lags on long streams", "clarifications": [{"keywords": ["output", "same", "change", "behavior"], "answer": "Output must be identical — the max of every contiguous window of size W, left to right. Only the speed changes."}, {"keywords": ["complexity", "current", "target", "big", "o"], "answer": "Current is O(n*W). Target O(n) — amortized linear."}, {"keywords": ["window", "size", "w", "bounds"], "answer": "1 <= W <= len(nums). W <= 0 raises ValueError. Empty input returns []."}, {"keywords": ["deque", "structure", "monotonic", "stack"], "answer": "A monotonic deque of indices is the intended structure — the front holds the current max."}, {"keywords": ["memory", "space"], "answer": "O(W) extra space for the deque is expected and fine."}, {"keywords": ["duplicate", "equal", "ties"], "answer": "Equal values are fine; popping strictly-smaller-or-equal from the back keeps it correct."}], "hints": ["When the window slides by one, what did the previous window already tell you that you're throwing away?", "Keep a deque of INDICES whose values are decreasing. The front is always the max of the current window.", "For each i: pop from the back while nums[back] <= nums[i]; push i; pop the front if it's left the window (front <= i-W); once i >= W-1, record nums[front]."]}, {"day": 22, "folder": "Day22_Meeting_Rooms_TS", "week": 5, "title": "Minimum Meeting Rooms", "difficulty": "L4 · TypeScript · algorithms", "level": 4, "lang": "TypeScript", "topic": "algorithms", "time": 40, "prompt": "Given meeting intervals, we need the minimum number of rooms. The planner is over-booking: back-to-back meetings that just touch are counted as conflicts. How would you fix it?", "test_cmd": "node --test", "skill": "the sweep-line / two-pointer interval technique, and getting the", "ticket": "SCHED-140 — we're over-booking rooms for back-to-back meetings", "clarifications": [{"keywords": ["end", "exclusive", "inclusive", "touch", "boundary", "closed", "open"], "answer": "Intervals are [start, end) — end exclusive. A meeting ending at 10 and one starting at 10 do NOT conflict and can share a room."}, {"keywords": ["empty", "no", "meetings"], "answer": "No meetings -> 0 rooms."}, {"keywords": ["overlap", "conflict", "define"], "answer": "Two meetings conflict if one starts strictly before the other ends. The answer is the peak number of simultaneously-active meetings."}, {"keywords": ["sort", "structure", "heap", "two", "pointer"], "answer": "The two-pointer sweep over sorted starts and ends is fine — the bug is only the comparison at the boundary."}, {"keywords": ["return", "rooms", "count"], "answer": "Return the maximum concurrency — the most meetings active at any instant."}], "hints": ["Walk the touching case [[1,2],[2,3]] through the sweep by hand: how many rooms does it report, and how many should it?", "With end-exclusive intervals, a start equal to an end is NOT an overlap.", "Change the sweep comparison from 'starts[i] <= ends[j]' to 'starts[i] < ends[j]'."]}, {"day": 23, "folder": "Day23_Dependency_Resolver", "week": 5, "title": "Dependency Resolver (Topological Sort)", "difficulty": "L5 · Python · graphs", "level": 5, "lang": "Python", "topic": "graphs", "time": 50, "prompt": "The build runner needs to order tasks so each runs after its dependencies, pick a stable order, and fail cleanly on impossible (cyclic) dependencies. Given a graph of task -> its dependencies, how do you produce the order?", "test_cmd": "python3 -m pytest -q", "skill": "model a real problem as a graph, produce a topological order with a", "ticket": "BUILD-500 — task runner needs a correct, stable run order", "clarifications": [{"keywords": ["order", "before", "after", "dependency"], "answer": "Every task must appear after all of its dependencies in the result."}, {"keywords": ["tie", "deterministic", "stable", "multiple", "ready", "alphabetical"], "answer": "When several tasks are ready at once, pick the alphabetically smallest first — so the output is stable."}, {"keywords": ["cycle", "impossible", "loop", "detect", "raise"], "answer": "If there's a cycle (including a self-dependency), raise CycleError. Don't hang or return a partial order."}, {"keywords": ["not", "key", "root", "missing", "dep"], "answer": "A dependency that never appears as a key is a task with no dependencies of its own — a root."}, {"keywords": ["duplicate", "twice"], "answer": "A dependency listed twice should behave the same as once."}, {"keywords": ["algorithm", "kahn", "dfs", "heap"], "answer": "Kahn's algorithm (in-degree + a min-heap of ready nodes) gives both the deterministic order and the cycle check for free."}], "hints": ["Which nodes can go first? The ones nothing depends on being done yet — in-degree zero.", "Use Kahn's algorithm: repeatedly take a ready (in-degree 0) node, append it, and decrement its dependents. A min-heap of ready nodes gives the alphabetical tie-break.", "If you process fewer nodes than the graph contains, the remaining ones are in a cycle -> raise CycleError. Remember to include dep-only nodes in the node set."]}, {"day": 24, "folder": "Day24_Trie_Autocomplete_TS", "week": 5, "title": "Trie Autocomplete", "difficulty": "L4/L5 · TypeScript · algorithms", "level": 5, "lang": "TypeScript", "topic": "algorithms", "time": 45, "prompt": "The search box needs autocomplete backed by a trie. Insert already works; implement suggest(prefix, limit) to return the matching words. How do you approach it?", "test_cmd": "node --test", "skill": "implement prefix search over a trie — traverse to a prefix node,", "ticket": "SEARCH-77 — search box needs prefix suggestions", "clarifications": [{"keywords": ["order", "sorted", "lexicographic", "alphabetical"], "answer": "Return matches in ascending lexicographic order."}, {"keywords": ["prefix", "itself", "word", "include"], "answer": "The prefix counts as a match if it was inserted as a word."}, {"keywords": ["empty", "blank", "all"], "answer": "An empty prefix matches every inserted word."}, {"keywords": ["no", "match", "missing"], "answer": "If the prefix path doesn't exist, return []."}, {"keywords": ["limit", "cap", "top"], "answer": "Return at most `limit` words; ideally stop as soon as you have that many rather than collecting all then slicing. limit 0 returns []."}, {"keywords": ["duplicate", "twice", "dedup"], "answer": "Inserting the same word twice yields it once — the trie dedups naturally via the isWord flag."}], "hints": ["Two phases: (1) walk from the root following the prefix characters; if any is missing, return []. (2) collect words under the node you landed on.", "To get lexicographic order, DFS the children in SORTED key order, and emit a node's word (if isWord) BEFORE descending into its children.", "Reconstruct each word as prefix + the path descended; stop the DFS as soon as results reach `limit`."]}, {"day": 25, "folder": "Day25_Running_Median", "week": 5, "title": "Running Median (Two Heaps)", "difficulty": "L5 · Python · algorithms", "level": 5, "lang": "Python", "topic": "algorithms", "time": 50, "prompt": "We need the median of a stream of samples, updated on every new sample, without re-sorting the whole history each time. How would you design MedianFinder?", "test_cmd": "python3 -m pytest -q", "skill": "the two-heap invariant for an online median — a hard-tier interview", "ticket": "OBS-410 — median latency panel is too slow to update", "clarifications": [{"keywords": ["even", "odd", "average", "middle"], "answer": "Odd count: the middle value. Even count: the average of the two middle values, as a float."}, {"keywords": ["empty", "before", "no", "samples"], "answer": "Calling median() before any add raises ValueError."}, {"keywords": ["complexity", "log", "time", "fast", "add"], "answer": "Aim for O(log n) per add and O(1) for median — no re-sorting."}, {"keywords": ["duplicate", "negative", "order"], "answer": "Duplicates and negatives are normal; samples arrive in any order."}, {"keywords": ["heap", "structure", "two", "balanced"], "answer": "Two heaps: a max-heap for the lower half and a min-heap for the upper half, kept balanced in size."}, {"keywords": ["balance", "rebalance", "sizes"], "answer": "Keep the halves' sizes within one of each other; after inserting, move an element across if they got unbalanced."}], "hints": ["Split the data into a lower half and an upper half. The median lives at the boundary between them.", "Max-heap for the lower half, min-heap for the upper half. Keep |lower| == |upper| or |lower| == |upper| + 1.", "add: push to one heap, pop its extreme into the other, then rebalance sizes. median: if lower is bigger, its top; else the average of the two tops."]}, {"day": 26, "folder": "Day26_Tool_Dispatcher", "week": 6, "title": "Agent Tool Dispatcher", "difficulty": "L4/L5 · Python · AI-agent engineering", "level": 5, "lang": "Python", "topic": "AI-agent engineering", "time": 45, "prompt": "An LLM agent emits tool calls like {tool, args}. This dispatcher looks up the tool and calls it, but it validates nothing — bad calls crash with raw errors. How would you make it robust?", "test_cmd": "python3 -m pytest -q", "skill": "the validation layer at the heart of every tool-calling agent —", "ticket": "AGENT-90 — malformed tool calls crash the agent loop", "clarifications": [{"keywords": ["unknown", "missing", "tool", "exist"], "answer": "An unknown tool name should raise ToolError (not a raw KeyError)."}, {"keywords": ["required", "arg", "params", "missing"], "answer": "A tool declares its required params. Missing one should raise ToolError, not let the handler throw a TypeError."}, {"keywords": ["extra", "unexpected", "unknown", "strict"], "answer": "Be strict: any argument the tool didn't declare should raise ToolError — don't silently pass it through."}, {"keywords": ["zero", "no", "args"], "answer": "A tool with no params called with empty args is valid."}, {"keywords": ["error", "type", "toolerror", "leak"], "answer": "Every invalid call should surface as one ToolError so the model gets a single predictable error to react to."}, {"keywords": ["types", "schema", "value", "validate"], "answer": "For this exercise validate presence of the right arg names (not their types) — existence, required, and no-extras."}], "hints": ["Treat the LLM as an untrusted caller: check everything before invoking the handler.", "Three checks: tool in registry? required params all present? any unexpected keys? Each failure -> ToolError.", "Compare set(args) against set(params): missing = required - given; extra = given - required."]}, {"day": 27, "folder": "Day27_Circuit_Breaker_TS", "week": 6, "title": "Circuit Breaker for a Flaky Client", "difficulty": "L4 · TypeScript · resilience", "level": 4, "lang": "TypeScript", "topic": "resilience", "time": 45, "prompt": "This circuit breaker wraps a flaky client. It trips even when failures were separated by successes and never really recovers. Time is injected as `now`. How would you fix it?", "test_cmd": "node --test", "skill": "a small but real resilience state machine (closed → open → half-open)", "ticket": "RES-77 — breaker never really recovers", "clarifications": [{"keywords": ["success", "reset", "close", "recover"], "answer": "A successful call must reset the failure count to 0 (close the breaker). That's the missing piece."}, {"keywords": ["consecutive", "threshold", "count"], "answer": "The threshold counts CONSECUTIVE failures — a success in between clears the count."}, {"keywords": ["open", "reject", "call", "fn"], "answer": "While open (now < openUntil) the breaker must throw CircuitOpenError WITHOUT calling fn."}, {"keywords": ["half", "cooldown", "trial", "elapsed"], "answer": "Once the cooldown elapses (now >= openUntil) it's half-open: one trial call is allowed. Success closes it; failure re-opens it."}, {"keywords": ["time", "clock", "now", "inject"], "answer": "Time is passed in as `now` (ms), so tests are deterministic — no real clock."}, {"keywords": ["state", "states", "machine"], "answer": "Three states: closed, open, half-open. The bug is a missing transition on success."}], "hints": ["Sketch the three states and their transitions before touching code.", "The bug: the success path returns the result but never resets this.failures to 0.", "Add 'this.failures = 0;' before returning on success. Everything else (open check, threshold, cooldown) is already there."]}, {"day": 28, "folder": "Day28_Token_Budget_Trimmer", "week": 6, "title": "Context-Window Token-Budget Trimmer", "difficulty": "L4/L5 · Python · AI-agent engineering", "level": 5, "lang": "Python", "topic": "AI-agent engineering", "time": 40, "prompt": "Our chat requests keep blowing the model's context limit as conversations grow. We need to trim the message history to a token budget. What do you keep and what do you drop?", "test_cmd": "python3 -m pytest -q", "skill": "the exact plumbing every LLM app needs — fit a growing chat history", "ticket": "CTX-64 — requests blow the model's context limit", "clarifications": [{"keywords": ["system", "prompt", "keep", "always"], "answer": "Always keep the system message(s) — they carry the instructions and are non-negotiable."}, {"keywords": ["recent", "old", "drop", "priority"], "answer": "Keep the most RECENT turns; drop from the OLDEST until it fits."}, {"keywords": ["count", "token", "tokens", "measure"], "answer": "Token counting is injected as count_tokens(content). Sum it over the messages you keep (system included)."}, {"keywords": ["system", "over", "exceeds", "bigger", "budget"], "answer": "If the system message alone exceeds the budget, return just the system message — don't truncate it silently."}, {"keywords": ["order", "chronological"], "answer": "Preserve chronological order in the result."}, {"keywords": ["contiguous", "suffix", "gap"], "answer": "Keep a contiguous most-recent block — once a message doesn't fit, stop; don't cherry-pick a small older one."}], "hints": ["Split system vs non-system. Reserve the system tokens first.", "Walk the non-system messages newest-first, keeping while they fit the remaining budget; stop at the first that doesn't.", "Reverse your kept list back to chronological order and return system + kept. If system alone is over budget, you still return system."]}, {"day": 29, "folder": "Day29_Stream_Parser_TS", "week": 6, "title": "Streaming JSONL Parser", "difficulty": "L4/L5 · TypeScript · streaming", "level": 5, "lang": "TypeScript", "topic": "streaming", "time": 45, "prompt": "We read newline-delimited JSON from a streaming endpoint, but chunks arrive arbitrarily — one JSON object can be split across two chunks, or several can arrive together. Build a parser that emits complete objects as they arrive. How do you handle the chunk boundaries?", "test_cmd": "node --test", "skill": "correct buffering of a chunked byte/char stream — the thing that", "ticket": "STREAM-31 — streamed responses drop or corrupt objects", "clarifications": [{"keywords": ["split", "boundary", "partial", "chunk", "straddle"], "answer": "Yes — a value can be split across chunks. Buffer the incomplete tail and complete it when the rest arrives."}, {"keywords": ["multiple", "several", "one", "chunk"], "answer": "A single chunk may contain several complete lines — emit them all in order."}, {"keywords": ["blank", "empty", "whitespace"], "answer": "Skip blank/whitespace-only lines."}, {"keywords": ["flush", "end", "final", "trailing", "newline"], "answer": "flush() handles end-of-stream: parse whatever complete value remains in the buffer (no trailing newline), or return [] if empty."}, {"keywords": ["invariant", "buffer", "guarantee"], "answer": "After each feed, the buffer holds exactly the unterminated tail — everything before the last newline has been emitted."}, {"keywords": ["format", "json", "sse", "data"], "answer": "Plain JSONL (one JSON value per line) for this exercise — no SSE 'data:' prefixes to strip."}], "hints": ["Keep a string buffer. On feed, append the chunk, then repeatedly cut off everything up to the next newline.", "For each complete line: trim it; if non-empty, JSON.parse and collect it. Whatever remains after the last newline stays in the buffer.", "flush(): if the buffer has non-whitespace content, JSON.parse it and clear the buffer; otherwise return []."]}, {"day": 30, "folder": "Day30_RAG_Chunker", "week": 6, "title": "RAG Chunker with Overlap & Dedup", "difficulty": "L4/L5 · Python · AI-agent engineering", "level": 5, "lang": "Python", "topic": "AI-agent engineering", "time": 40, "prompt": "Before embedding documents for retrieval we need to split them into overlapping word-windows and drop duplicate chunks. How would you implement the chunker?", "test_cmd": "python3 -m pytest -q", "skill": "the ingestion primitive behind every retrieval system — window a", "ticket": "RAG-22 — chunking wastes the vector store and loses cross-boundary context", "clarifications": [{"keywords": ["overlap", "step", "advance", "stride"], "answer": "Windows are `size` words; each window advances by (size - overlap) words, so consecutive windows share `overlap` words."}, {"keywords": ["last", "shorter", "final", "partial"], "answer": "The final window may be shorter than size — that's fine, keep it."}, {"keywords": ["dedup", "duplicate", "order", "first"], "answer": "Drop exact-duplicate chunk strings, keeping the FIRST occurrence and preserving order (use a seen-set)."}, {"keywords": ["token", "word", "split", "whitespace"], "answer": "Tokenize on whitespace (str.split), which also collapses extra spaces."}, {"keywords": ["invalid", "overlap", "size", "raise", "error"], "answer": "size <= 0 raises ValueError; overlap must be in [0, size), so overlap >= size raises."}, {"keywords": ["empty"], "answer": "Empty text returns []."}], "hints": ["step = size - overlap. Generate window start indices 0, step, 2*step, ... across the word list.", "Each chunk is ' '.join(words[start:start+size]); the slice naturally makes the last one shorter.", "Dedup with a seen set as you append, so the first occurrence wins and order is preserved."]}, {"day": 31, "folder": "Day31_URL_Shortener", "week": 7, "title": "Capstone: URL Shortener", "difficulty": "L5 · Python · capstone (bug + feature)", "level": 5, "lang": "Python", "topic": "capstone (bug + feature)", "time": 60, "prompt": "Two tickets for our URL shortener: same URL shortened twice returns different codes (should be idempotent), and we want custom aliases. Here's the code and its store. Walk me through your plan, then build it.", "test_cmd": "python3 -m pytest -q", "skill": "the full loop under time pressure — comprehend a small two-file", "ticket": "Two tickets, one sitting", "clarifications": [{"keywords": ["idempotent", "same", "url", "twice", "reuse"], "answer": "The same URL must always return the same code. store.code_for_url(url) tells you if you've seen it."}, {"keywords": ["alias", "custom", "feature"], "answer": "shorten(url, alias=...) uses that alias. If the alias already maps to a DIFFERENT url, raise AliasTaken; re-aliasing the same url is fine."}, {"keywords": ["collision", "auto", "clash", "generated"], "answer": "An auto-generated code must not collide with an existing alias — use store.has_code to skip taken codes."}, {"keywords": ["resolve", "unknown", "missing"], "answer": "resolve(code) returns the url or None if the code is unknown."}, {"keywords": ["store", "api", "methods"], "answer": "Read store.py: save, get, code_for_url, has_code are the hooks you need."}, {"keywords": ["files", "change", "modify"], "answer": "Change only shortener.py; store.py and the tests are fixed."}], "hints": ["Read store.py first — code_for_url (idempotency) and has_code (collision avoidance) are already there.", "Bug: before minting a new code, return store.code_for_url(url) if it exists.", "Feature: add alias=None; if alias given and maps to a different url -> AliasTaken, else save it; when auto-generating, loop past any code that has_code() already."]}, {"day": 32, "folder": "Day32_CrossLang_Contract_TS", "week": 7, "title": "Cross-Language Contract", "difficulty": "L4/L5 · TypeScript · integration", "level": 5, "lang": "TypeScript", "topic": "integration", "time": 40, "prompt": "Our Python server rejects the TS client's request body — the schemas have drifted. There's a documented contract. Make the client match it. Where do you start?", "test_cmd": "node --test", "skill": "make a client conform *exactly* to a contract owned by a service in", "ticket": "API-720 — Python server rejects the mobile client's payload", "clarifications": [{"keywords": ["case", "snake", "camel", "keys"], "answer": "The server expects snake_case keys (user_id, full_name, email_verified, created_at). No camelCase."}, {"keywords": ["date", "time", "timestamp", "created", "iso", "ms"], "answer": "created_at is an ISO string via new Date(ms).toISOString(), not the raw epoch-ms number the client holds."}, {"keywords": ["tags", "sort", "sorted", "order"], "answer": "tags must be sorted ascending — and don't mutate the caller's array; sort a copy."}, {"keywords": ["referrer", "null", "omit", "present"], "answer": "referrer is nullable but always present: user.referrer ?? null. Never drop the key."}, {"keywords": ["contract", "schema", "truth"], "answer": "CONTRACT.md is the source of truth — match it exactly; the tests encode it."}, {"keywords": ["mutate", "array", "copy"], "answer": "Sort a COPY of tags ([...tags].sort()) so you don't mutate the caller's data."}], "hints": ["Open CONTRACT.md and the current output side by side; list every difference before editing.", "Five things: snake_case keys, ISO timestamp, sorted tags (copy!), null-but-present referrer.", "Return one object literal with snake_case keys; new Date(user.createdAtMs).toISOString(); [...user.tags].sort(); user.referrer ?? null."]}, {"day": 33, "folder": "Day33_God_Module_Refactor", "week": 7, "title": "Extend a Messy Module", "difficulty": "L5 · Python · refactor", "level": 5, "lang": "Python", "topic": "refactor", "time": 45, "prompt": "This one function summarizes orders, and it's blocking two changes: it counts cancelled orders as revenue and crashes on empty input, and finance wants a status filter. How would you approach it?", "test_cmd": "python3 -m pytest -q", "skill": "make a change *safe and easy* in code that fights you — by factoring", "ticket": "Two changes blocked by one tangled function", "clarifications": [{"keywords": ["cancelled", "revenue", "exclude"], "answer": "Cancelled orders never count toward revenue — exclude them always, even when a status filter is applied."}, {"keywords": ["empty", "crash", "zero", "divide"], "answer": "An empty (or all-excluded) order list should give count 0, total 0, average 0.0 — no ZeroDivisionError."}, {"keywords": ["status", "filter", "feature"], "answer": "Add an optional status param: when given, include only orders with that status (still excluding cancelled)."}, {"keywords": ["cancelled", "status", "filter"], "answer": "Asking for status='cancelled' yields nothing, because cancelled never counts."}, {"keywords": ["average", "float", "type"], "answer": "average is total/count as a float, or 0.0 when count is 0."}, {"keywords": ["refactor", "seam", "approach"], "answer": "The clean approach: factor out 'which orders count' from the arithmetic — then the bug fix and the feature are both trivial."}], "hints": ["The bug and the feature both live in the same place: deciding which orders count.", "Extract that decision: included = [o for o in orders if o['status'] != 'cancelled' and (status is None or o['status'] == status)].", "Then total = sum of included amounts, count = len(included), average = total/count if count else 0.0."]}, {"day": 34, "folder": "Day34_Leaderboard_Ambiguous", "week": 7, "title": "Capstone: Ambiguous Scoping (Leaderboard)", "difficulty": "L5 · Python · scoping", "level": 5, "lang": "Python", "topic": "scoping", "time": 45, "prompt": "Build a leaderboard — add scores, get the top players, and look up someone's rank. That's the whole ticket. Before you write any code, what would you want to nail down?", "test_cmd": "python3 -m pytest -q", "skill": "the scoping capstone.", "ticket": "The whole ticket", "clarifications": [{"keywords": ["replace", "accumulate", "add", "update", "score"], "answer": "add_score REPLACES the player's score (latest wins), it does not accumulate."}, {"keywords": ["tie", "ties", "equal", "order", "same"], "answer": "In top(), ties are broken by player name ascending."}, {"keywords": ["rank", "based", "one", "highest"], "answer": "rank is 1-based, highest score is rank 1."}, {"keywords": ["rank", "tie", "shared", "competition", "gap"], "answer": "Standard competition ranking: tied players share a rank, and the next rank has a gap (two tied at 1 -> next is 3)."}, {"keywords": ["unknown", "missing", "ghost", "raise"], "answer": "rank of an unknown player raises KeyError — don't invent a score."}, {"keywords": ["n", "larger", "population", "limit"], "answer": "top(n) returns up to n names; if n exceeds the population, return everyone. Empty leaderboard -> []."}], "hints": ["Write down every unstated decision BEFORE coding — that's the whole exercise. Six of them hide in one sentence.", "Store player -> score in a dict (replace semantics). top: sort by (-score, name). rank: 1 + count of strictly-higher scores.", "For ties in rank, count only STRICTLY higher scores, so equal scores share a rank and create a gap after."]}, {"day": 35, "folder": "Day35_Final_Boss_KVStore", "week": 7, "title": "FINAL BOSS: LRU + TTL Cache", "difficulty": "L5 · Python · capstone", "level": 5, "lang": "Python", "topic": "capstone", "time": 90, "prompt": "The final one: an in-memory cache with LRU eviction and per-key TTL. Two bugs — reads don't refresh recency, and eviction removes the wrong end — plus we want a keys() listing. Time is injected. Walk me through it end to end.", "test_cmd": "python3 -m pytest -q", "skill": "everything at once, under time.", "ticket": "Three items on one component", "clarifications": [{"keywords": ["recency", "read", "get", "use", "lru"], "answer": "A get() on a live key counts as a use — it becomes most-recently-used. That's BUG CACHE-1."}, {"keywords": ["evict", "capacity", "which", "end", "most", "least"], "answer": "Eviction must remove the LEAST-recently-used entry. The bug pops the most-recent (last=True) instead of last=False."}, {"keywords": ["ttl", "expire", "insert", "reset", "boundary"], "answer": "TTL is anchored to insert time and NOT reset by reads. Expires when now > expiry; valid at exactly expiry."}, {"keywords": ["keys", "feature", "order", "live"], "answer": "keys(now) returns non-expired keys in LRU order (least-recently-used first)."}, {"keywords": ["ordereddict", "structure", "encode", "recency"], "answer": "The OrderedDict encodes recency by position: the tail is most-recent (move_to_end), the head is least-recent."}, {"keywords": ["time", "now", "inject", "clock"], "answer": "now is passed in to put/get/keys, so everything is deterministic."}], "hints": ["In an OrderedDict, move_to_end pushes a key to the tail (most recent); popitem(last=False) removes the head (least recent).", "BUG CACHE-1: get() must move_to_end(key) after the TTL check. BUG CACHE-2: put() must evict with popitem(last=False).", "keys(now): iterate self._data.items() in order (head=LRU), skip entries whose expiry is < now (strictly), and collect the rest."]}], "weeks": {"1": {"tag": "Week 1", "name": "Foundations", "blurb": "The core loop: comprehend, scope, refactor, ship."}, "2": {"tag": "Week 2", "name": "Debugging & comprehension", "blurb": "Read code you didn't write; fix the real bug."}, "3": {"tag": "Week 3", "name": "AI-fluency & validation", "blurb": "The skills the round actually scores."}, "4": {"tag": "Week 4", "name": "Systems building blocks", "blurb": "Rate limiters, caches, pagination, pub/sub."}, "5": {"tag": "Week 5", "name": "Algorithms in context", "blurb": "Hard-tier algorithms, framed as real work."}, "6": {"tag": "Week 6", "name": "Applied AI-agent engineering", "blurb": "Tool loops, breakers, context, streaming, RAG."}, "7": {"tag": "Week 7", "name": "Capstones", "blurb": "Full loop, timed, multi-file."}}};
 const DAYS = PAYLOAD.days, WEEKS = PAYLOAD.weeks;
-const KEY = "aurora-interview-v1";
+const KEY = "aurora-interview-v2";
 const LNAME = {3:"l3",4:"l4",5:"l5"};
-const RM = matchMedia("(prefers-reduced-motion:reduce)").matches;
 const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
 const esc=s=>(s||"").replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
 
@@ -290,84 +282,25 @@ try{const raw=localStorage.getItem(KEY);if(raw)store=Object.assign(store,JSON.pa
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 let filt={week:"all",lang:"all",level:"all",status:"all"};
 
-/* ============ aurora pixel sky ============ */
-(function sky(){
-  const cv=document.getElementById("sky"); if(!cv) return;
-  const ctx=cv.getContext("2d"); const SCALE=5; let W=0,H=0,stars=[],mtn=[];
-  function fit(){
-    const r=cv.getBoundingClientRect();
-    W=Math.max(120,Math.round(r.width/SCALE)); H=Math.max(60,Math.round(r.height/SCALE));
-    cv.width=W; cv.height=H;
-    stars=Array.from({length:Math.round(W*H/70)},()=>({x:Math.random()*W|0,y:Math.random()*H*.7|0,
-      p:Math.random()*6.28,s:Math.random()<.15?2:1}));
-    mtn=[]; for(let layer=0;layer<2;layer++){const row=[];let h=H*(.62+layer*.16);
-      for(let x=0;x<=W;x++){h+=(Math.random()-.5)*(layer?1.4:2.2);const base=H*(.62+layer*.16);
-        h=Math.max(base-H*.12,Math.min(base+H*.12,h));row.push(h|0);}mtn.push(row);}
+/* ---- cursor light: one lerp loop, GPU transform + mask, idles when still ---- */
+(function cursor(){
+  const RM=matchMedia("(prefers-reduced-motion:reduce)").matches;
+  if(RM||matchMedia("(pointer:coarse)").matches)return;
+  const root=document.documentElement.style;
+  let tx=innerWidth*.72,ty=innerHeight*.34,cx=tx,cy=ty,raf=0,idle=0;
+  root.setProperty("--px",tx+"px");root.setProperty("--py",ty+"px");
+  function tick(){
+    cx+=(tx-cx)*.15;cy+=(ty-cy)*.15;
+    root.setProperty("--px",cx.toFixed(1)+"px");root.setProperty("--py",cy.toFixed(1)+"px");
+    if(Math.abs(tx-cx)+Math.abs(ty-cy)<.4){if(++idle>18){raf=0;return;}}else idle=0;
+    raf=requestAnimationFrame(tick);
   }
-  function draw(t){
-    // sky gradient
-    const g=ctx.createLinearGradient(0,0,0,H);
-    g.addColorStop(0,"#05070f");g.addColorStop(.55,"#0a1226");g.addColorStop(1,"#0c1a2b");
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    // stars
-    for(const s of stars){const tw=RM?.8:(.55+.45*Math.sin(t/700+s.p));
-      ctx.fillStyle="rgba(210,235,255,"+(tw*.9).toFixed(2)+")";ctx.fillRect(s.x,s.y,s.s,s.s);}
-    // aurora ribbons
-    const cols=[["#3ff0a8",.5],["#25e6cf",.42],["#a98cff",.34]];
-    for(let b=0;b<cols.length;b++){
-      const ph=RM?0:t/1400; const amp=H*(.09+b*.02); const yBase=H*(.24+b*.11);
-      for(let x=0;x<W;x++){
-        const y=yBase+Math.sin(x/(9+b*3)+ph+b)*amp+Math.sin(x/23-ph*1.3)*amp*.5;
-        const hgt=H*(.16+.05*Math.sin(x/17+ph+b));
-        const gg=ctx.createLinearGradient(0,y,0,y+hgt);
-        gg.addColorStop(0,"rgba(0,0,0,0)");
-        gg.addColorStop(.5,col(cols[b][0],cols[b][1]*(.6+.4*Math.sin(x/11+ph))));
-        gg.addColorStop(1,"rgba(0,0,0,0)");
-        ctx.fillStyle=gg;ctx.fillRect(x,y,1,hgt);
-      }
-    }
-    // mountains
-    const mc=["#060b16","#03060d"];
-    for(let l=0;l<mtn.length;l++){ctx.fillStyle=mc[l];const row=mtn[l];
-      for(let x=0;x<W;x++)ctx.fillRect(x,row[x],1,H-row[x]);}
-    if(!RM) raf=requestAnimationFrame(draw);
-  }
-  function col(hex,a){const n=parseInt(hex.slice(1),16);return "rgba("+(n>>16&255)+","+(n>>8&255)+","+(n&255)+","+Math.min(1,a).toFixed(2)+")";}
-  let raf; function start(){cancelAnimationFrame(raf);fit();if(RM)draw(0);else{cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);}}
-  let rz; addEventListener("resize",()=>{clearTimeout(rz);rz=setTimeout(start,150)});
-  start();
+  addEventListener("pointermove",e=>{tx=e.clientX;ty=e.clientY;idle=0;
+    if(!document.body.classList.contains("cursor-on"))document.body.classList.add("cursor-on");
+    if(!raf)raf=requestAnimationFrame(tick);},{passive:true});
 })();
 
-/* ============ cursor aurora trail ============ */
-(function trail(){
-  if(RM||matchMedia("(pointer:coarse)").matches) return;
-  const cv=document.getElementById("trail"),ctx=cv.getContext("2d");
-  let W,H,parts=[],mx=-99,my=-99,moved=false;
-  const AUR=["#3ff0a8","#25e6cf","#59c8ff","#a98cff"];
-  function fit(){W=cv.width=innerWidth;H=cv.height=innerHeight;}
-  fit();addEventListener("resize",fit);
-  addEventListener("pointermove",e=>{mx=e.clientX;my=e.clientY;moved=true;
-    for(let i=0;i<2;i++)parts.push({x:mx+(Math.random()-.5)*6,y:my+(Math.random()-.5)*6,
-      vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4-.3,life:1,
-      c:AUR[Math.random()*AUR.length|0],s:Math.random()<.3?3:2});
-    if(parts.length>140)parts.splice(0,parts.length-140);},{passive:true});
-  function loop(){
-    ctx.clearRect(0,0,W,H);
-    if(moved){const g=ctx.createRadialGradient(mx,my,0,mx,my,26);
-      g.addColorStop(0,"rgba(63,240,168,.22)");g.addColorStop(1,"rgba(63,240,168,0)");
-      ctx.fillStyle=g;ctx.beginPath();ctx.arc(mx,my,26,0,6.29);ctx.fill();}
-    for(const p of parts){p.x+=p.vx;p.y+=p.vy;p.life-=.03;
-      if(p.life<=0)continue;
-      ctx.globalAlpha=Math.max(0,p.life)*.8;ctx.fillStyle=p.c;
-      ctx.fillRect(p.x|0,p.y|0,p.s,p.s);}
-    ctx.globalAlpha=1;
-    parts=parts.filter(p=>p.life>0);
-    requestAnimationFrame(loop);
-  }
-  requestAnimationFrame(loop);
-})();
-
-/* ============ filters ============ */
+/* ---- filters ---- */
 function buildFilters(){
   const mk=(host,items,key)=>{host.innerHTML="";items.forEach(([val,label])=>{
     const c=el("button","chip",label);c.setAttribute("aria-pressed",filt[key]===val);
@@ -386,8 +319,8 @@ function match(d){
   if(filt.status==="todo"&&done)return false;
   return true;
 }
+function levelLabel(d){return (d.difficulty.match(/L[345](\/L[345])?/)||["L"+d.level])[0];}
 
-/* ============ catalog ============ */
 function render(){
   const host=document.getElementById("catalog");host.innerHTML="";
   const shown=DAYS.filter(match);
@@ -402,19 +335,18 @@ function render(){
     const grid=el("div","grid");byWeek[w].forEach(d=>grid.appendChild(card(d)));
     sec.appendChild(grid);host.appendChild(sec);
   });
-  if(!shown.length)host.appendChild(el("p","",  "No days match these filters."));
+  if(!shown.length)host.appendChild(el("p",null,"No days match these filters."));
   updateProgress();
 }
-function levelLabel(d){return (d.difficulty.match(/L[345](\/L[345])?/)||["L"+d.level])[0];}
 function card(d){
   const c=el("button","card"+(store.done[d.day]?" done":""));
   c.onclick=()=>openDay(d);
   c.addEventListener("pointermove",e=>{const r=c.getBoundingClientRect();
     c.style.setProperty("--mx",(e.clientX-r.left)+"px");c.style.setProperty("--my",(e.clientY-r.top)+"px");});
   const top=el("div","card-top");
-  top.appendChild(el("span","daynum","D"+String(d.day).padStart(2,"0")));
+  top.appendChild(el("span","daynum","Day "+String(d.day).padStart(2,"0")));
   top.appendChild(el("span","pill "+LNAME[d.level],levelLabel(d)));
-  top.appendChild(el("span","check",store.done[d.day]?"★":""));
+  top.appendChild(el("span","check",store.done[d.day]?"✓":""));
   c.appendChild(top);
   c.appendChild(el("h3",null,d.title));
   c.appendChild(el("p","skill",d.skill||d.topic));
@@ -424,7 +356,7 @@ function card(d){
   c.appendChild(foot);return c;
 }
 
-/* ============ modal / mock ============ */
+/* ---- modal / mock ---- */
 let activeDay=null,hintIdx=0,activeTrigger=null;
 function openDay(d,focusInput){
   if(focusInput===undefined)focusInput=true;
@@ -432,7 +364,7 @@ function openDay(d,focusInput){
   activeDay=d;hintIdx=0;
   const m=document.getElementById("modal"),done=!!store.done[d.day];m.innerHTML="";
   const head=el("div","modal-head"),row=el("div","row");
-  row.appendChild(el("span","daynum","D"+String(d.day).padStart(2,"0")));
+  row.appendChild(el("span","daynum","Day "+String(d.day).padStart(2,"0")));
   row.appendChild(el("span","pill "+LNAME[d.level],levelLabel(d)));
   const x=el("button","x","✕");x.setAttribute("aria-label","Close");x.onclick=closeModal;row.appendChild(x);
   head.appendChild(row);
@@ -469,7 +401,7 @@ function openDay(d,focusInput){
   ["rough","ok","nailed"].forEach(lvl=>{const b=el("button","scorebtn",lvl);
     b.setAttribute("aria-pressed",store.score[d.day]===lvl);
     b.onclick=()=>{store.score[d.day]=lvl;store.done[d.day]=true;save();openDay(d,false);render();};donebar.appendChild(b);});
-  const dn=el("button","btn"+(done?" solid":""),done?"★ Done":"Mark done");
+  const dn=el("button","btn"+(done?" solid":""),done?"✓ Done":"Mark done");
   dn.onclick=()=>{store.done[d.day]=!store.done[d.day];if(!store.done[d.day])delete store.score[d.day];
     save();openDay(d,false);render();};donebar.appendChild(dn);
   body.appendChild(donebar);m.appendChild(body);
@@ -493,18 +425,17 @@ document.addEventListener("keydown",e=>{
   if(e.key==="Escape"){closeModal();return;}
   if(e.key==="Tab"&&document.getElementById("scrim").classList.contains("open")){
     const f=document.getElementById("modal").querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');
-    if(!f.length)return; const first=f[0],last=f[f.length-1];
+    if(!f.length)return;const first=f[0],last=f[f.length-1];
     if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
   }
 });
 
-/* ============ progress ============ */
 function updateProgress(){const n=Object.keys(store.done).filter(k=>store.done[k]).length;
   document.getElementById("progText").textContent=n+" / "+DAYS.length;
   document.getElementById("progFill").style.width=(100*n/DAYS.length)+"%";}
 document.getElementById("resetBtn").onclick=()=>{store={done:{},score:{}};save();
-  if(activeDay)openDay(activeDay);render();};
+  if(activeDay)openDay(activeDay,false);render();};
 
 document.getElementById("hoursStat").textContent=Math.round(DAYS.reduce((a,d)=>a+d.time,0)/60);
 buildFilters();render();
