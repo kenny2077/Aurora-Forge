@@ -8,13 +8,13 @@
 
 **35 days. 35 failing test suites. One habit: never ship a line you can't defend.**
 
-[![Live demo](https://img.shields.io/badge/live-demo-47eadb?style=flat-square&labelColor=061713)](https://kenny2077.github.io/forge-range/)
+[![Live demo](https://img.shields.io/badge/live-demo-47eadb?style=flat-square&labelColor=061713)](https://kenny2077.github.io/Aurora-Forge/)
 [![Exercises](https://img.shields.io/badge/exercises-35_days-0eb9ad?style=flat-square&labelColor=061713)](./MONTH_PLAN.md)
 [![Languages](https://img.shields.io/badge/Python%20%7C%20TypeScript-6aa6ff?style=flat-square&labelColor=061713)](#curriculum)
 [![Difficulty](https://img.shields.io/badge/difficulty-L3–L5-7565ff?style=flat-square&labelColor=061713)](#curriculum)
 [![License](https://img.shields.io/badge/license-MIT-a9bbb5?style=flat-square&labelColor=061713)](./LICENSE)
 
-**[▶ Live site](https://kenny2077.github.io/forge-range/)** · **[📋 The plan](./MONTH_PLAN.md)** · **[🎛 Run a mock](#the-interactive-mock)** · **[🔎 Sources](./SOURCES.md)**
+**[▶ Live site](https://kenny2077.github.io/Aurora-Forge/)** · **[📋 The plan](./MONTH_PLAN.md)** · **[🎛 Run a mock](#the-interactive-mock)** · **[🔎 Sources](./SOURCES.md)**
 
 </div>
 
@@ -41,8 +41,8 @@ agent-infra engineering.
 ## Quickstart
 
 ```bash
-git clone https://github.com/kenny2077/forge-range.git
-cd forge-range
+git clone https://github.com/kenny2077/Aurora-Forge.git
+cd Aurora-Forge
 
 # Python days — needs python3 + pytest
 cd Day6_Concurrency_Race && python3 -m pytest -q     # watch it fail, then fix it with AI
@@ -73,7 +73,7 @@ you> test        # runs the day's suite from inside the session
 you> done        # debrief + self-score, written to AI_LOG.md
 ```
 
-The same flow lives in the browser — the **[live site](https://kenny2077.github.io/forge-range/)**
+The same flow lives in the browser — the **[live site](https://kenny2077.github.io/Aurora-Forge/)**
 lets you filter by week, language and difficulty, open any day as a mock, and track your progress
 (saved locally).
 
