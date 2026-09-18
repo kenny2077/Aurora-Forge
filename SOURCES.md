@@ -1,6 +1,12 @@
 # Sources — what this program is based on
 
-Real reporting on the 2026 AI-assisted / "vibe coding" interview shift, used to design the drills:
+Reporting on the AI-assisted / "vibe coding" interview shift, used to design the drills.
+
+**How to read these:** they are secondary reporting and candidate write-ups, not company policy
+documents. Meta's AI-enabled coding interview is the best-documented case; Google's is described as
+Gemini-assisted formats tested for selected SWE interviews, so treat it as a pilot in progress
+rather than a completed, company-wide switch. The drills are built on the *scoring shift* every
+source agrees on, which holds regardless of how far any one rollout has gone.
 
 - [Google's AI-Assisted Coding Interview (2026 Guide) — Exponent](https://www.tryexponent.com/blog/google-ai-coding-interview)
   — the three new rounds (code comprehension, technical design, open-ended), the "human-led,

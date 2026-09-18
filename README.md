@@ -4,7 +4,9 @@
 
 # Forge Range
 
-### The training range for the 2026 human-led, AI-assisted coding interview
+### The training range for the human-led, AI-assisted coding interview
+
+**35 days. 35 failing test suites. One habit: never ship a line you can't defend.**
 
 [![Live demo](https://img.shields.io/badge/live-demo-47eadb?style=flat-square&labelColor=061713)](https://kenny2077.github.io/forge-range/)
 [![Exercises](https://img.shields.io/badge/exercises-35_days-0eb9ad?style=flat-square&labelColor=061713)](./MONTH_PLAN.md)
@@ -12,22 +14,29 @@
 [![Difficulty](https://img.shields.io/badge/difficulty-L3–L5-7565ff?style=flat-square&labelColor=061713)](#curriculum)
 [![License](https://img.shields.io/badge/license-MIT-a9bbb5?style=flat-square&labelColor=061713)](./LICENSE)
 
-**[▶ Live site](https://kenny2077.github.io/forge-range/)** · **[📋 The plan](./MONTH_PLAN.md)** · **[🎛 Run a mock](#the-interactive-mock)**
+**[▶ Live site](https://kenny2077.github.io/forge-range/)** · **[📋 The plan](./MONTH_PLAN.md)** · **[🎛 Run a mock](#the-interactive-mock)** · **[🔎 Sources](./SOURCES.md)**
 
 </div>
 
-> [!NOTE]
-> In 2026, Google and Meta moved the coding round to **"human-led, AI-assisted"** — you get an AI
-> assistant and are graded on *judgment*: scoping an ambiguous problem, reading code you didn't
-> write, catching what the AI got subtly wrong, and owning the result. LeetCode doesn't train that.
-> This does — 35 runnable days, each a failing test suite you make pass with AI.
+> [!IMPORTANT]
+> **The coding round is being rebuilt while everyone is still prepping for the old one.**
+>
+> Companies including **Meta** are piloting or rolling out AI-enabled coding interviews, and
+> **Google** has reportedly tested Gemini-assisted formats for selected SWE interviews. Where the
+> format has landed it is **human-led, AI-assisted**: you get an assistant, and you are graded on
+> *judgment* — scoping an ambiguous problem, reading code you didn't write, catching what the model
+> got subtly wrong, and owning the result.
+>
+> LeetCode doesn't train that. **This does** — 35 runnable days, each a failing test suite you make
+> pass with AI. ([what this is based on →](./SOURCES.md))
 
 ## Why
 
-The interview stopped testing recall and started testing how you **drive the model**. Every day here
-is a ticket-style brief with realistic starter code, a **failing test suite**, and a spoiler-free
-mock. It's not more algorithms — it's the skills the new round actually scores: ambiguous scoping,
-output validation, test strength, testability, security-mindedness, and agent-infra engineering.
+Where this format has landed, the round stopped testing recall and started testing how you **drive
+the model**. Every day here is a ticket-style brief with realistic starter code, a **failing test
+suite**, and a spoiler-free mock. It's not more algorithms — it's the skills the new round actually
+scores: ambiguous scoping, output validation, test strength, testability, security-mindedness, and
+agent-infra engineering.
 
 ## Quickstart
 
