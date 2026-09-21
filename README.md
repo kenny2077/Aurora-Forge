@@ -14,7 +14,7 @@
 [![Difficulty](https://img.shields.io/badge/difficulty-L3–L5-7565ff?style=flat-square&labelColor=061713)](#curriculum)
 [![License](https://img.shields.io/badge/license-MIT-a9bbb5?style=flat-square&labelColor=061713)](./LICENSE)
 
-**[▶ Live site](https://kenny2077.github.io/Aurora-Forge/)** · **[📋 The plan](./MONTH_PLAN.md)** · **[🎛 Run a mock](#the-interactive-mock)** · **[🔎 Sources](./SOURCES.md)**
+**[▶ Live site](https://kenny2077.github.io/Aurora-Forge/)** · **[📋 The plan](./MONTH_PLAN.md)** · **[🎓 Fundamentals exam](https://kenny2077.github.io/Aurora-Forge/fundamentals.html)** · **[🎛 Run a mock](#the-interactive-mock)** · **[🔎 Sources](./SOURCES.md)**
 
 </div>
 
