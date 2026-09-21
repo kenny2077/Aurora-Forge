@@ -14,7 +14,7 @@
 [![Difficulty](https://img.shields.io/badge/difficulty-L3–L5-7565ff?style=flat-square&labelColor=061713)](#curriculum)
 [![License](https://img.shields.io/badge/license-MIT-a9bbb5?style=flat-square&labelColor=061713)](./LICENSE)
 
-**[▶ Live site](https://kenny2077.github.io/Aurora-Forge/)** · **[📋 The plan](./MONTH_PLAN.md)** · **[🎓 Fundamentals exam](https://kenny2077.github.io/Aurora-Forge/fundamentals.html)** · **[🎛 Run a mock](#the-interactive-mock)** · **[🔎 Sources](./SOURCES.md)**
+**[🎓 Fundamentals exam](https://kenny2077.github.io/Aurora-Forge/fundamentals.html)** · **[🐛 Real-world problems](https://kenny2077.github.io/Aurora-Forge/swe.html)** · **[▶ Coding days](https://kenny2077.github.io/Aurora-Forge/)** · **[📋 Plan](./MONTH_PLAN.md)** · **[🔎 Sources](./SOURCES.md)**
 
 </div>
 
@@ -29,6 +29,15 @@
 >
 > LeetCode doesn't train that. **This does** — 35 runnable days, each a failing test suite you make
 > pass with AI. ([what this is based on →](./SOURCES.md))
+
+## Two layers
+
+The product is two layers, entry-level (Google **L3**) first:
+
+| | Layer | What it is |
+|---|---|---|
+| **1** | **[Fundamentals of Agentic Coding](https://kenny2077.github.io/Aurora-Forge/fundamentals.html)** — *know the game* | A scored MCQ exam: context windows & compaction, prompting, tool calls / harness / MCP, prompt injection, reasoning-effort tiers, and output validation. Objective and quantifiable. |
+| **2** | **Real-world code** — *play the game* | [SWE-bench-style problems](https://kenny2077.github.io/Aurora-Forge/swe.html): read a real bug, find the **core issue**, pick the **surgical fix** — plus the 35 guided coding days below and the terminal mock. |
 
 ## Why
 
@@ -79,6 +88,8 @@ lets you filter by week, language and difficulty, open any day as a mock, and tr
 
 ## Curriculum
 
+Layer 2's guided hands-on track — 35 days, each a failing suite you make pass with AI:
+
 | Week | Theme | Days | Focus |
 |:---:|---|:---:|---|
 | 1 | **Foundations** | 01–05 | Comprehend · scope · refactor · multi-file feature · mock PR |
@@ -102,7 +113,9 @@ Per-day levels and verification status live in **[MONTH_PLAN.md](./MONTH_PLAN.md
 │   ├── interview.json       #   drives the mock (prompt, clarifications, hints)
 │   └── AI_LOG.md            #   your prompt + verification log
 ├── interview.py             # the terminal mock runner
-├── docs/index.html          # the interactive web app (GitHub Pages)
+├── docs/index.html          # the coding-days web app (GitHub Pages)
+├── docs/fundamentals.html   # Layer 1 — fundamentals exam
+├── docs/swe.html            # Layer 2 — SWE-bench-style problems
 ├── assets/banner.svg        # the pixel-art hero
 ├── MONTH_PLAN.md            # curriculum + verification status
 └── SOURCES.md               # reporting behind the program's design

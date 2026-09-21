@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="SWE-bench-style read-and-diagnose problems (Aurora Forge, Layer 2).">
+<meta name="color-scheme" content="dark">
+<title>SWE Problems</title>
+<style>
+:root{
+  --night:#061713; --night-deep:#020c0f; --forest:#051a18; --panel:rgba(8,24,26,.55);
+  --ink:#eaf4f1; --muted:#a3b6bc; --faint:#8397a1; --line:rgba(151,225,211,.15); --line-2:rgba(151,225,211,.09);
+  --cyan:#47eadb; --teal:#0eb9ad; --blue:#6aa6ff; --violet:#a99fff; --amber:#f3b85e;
+  --good:#3ff0a8; --good-soft:rgba(63,240,168,.12); --bad:#ff7a8a; --bad-soft:rgba(255,122,138,.12);
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;letter-spacing:-.006em;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background:
+    radial-gradient(1100px 520px at 82% -8%,rgba(14,185,173,.10),transparent 62%),
+    radial-gradient(880px 500px at 6% 0%,rgba(117,101,255,.09),transparent 60%),
+    linear-gradient(180deg,#020c0f,#051a18 32%,#07142b 60%,#061713 82%,#020c0f) fixed}
+.wrap{max-width:780px;margin:0 auto;padding:0 20px}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.03em;text-wrap:balance}
+.mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
+.grad{background:linear-gradient(96deg,var(--cyan),var(--teal) 40%,var(--blue) 70%,var(--violet));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+
+header{padding:26px 0 18px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;
+  background:linear-gradient(180deg,rgba(3,9,11,.92),rgba(3,9,11,.55));backdrop-filter:blur(12px)}
+.brandrow{display:flex;align-items:center;gap:11px}
+.mark{width:20px;height:20px;border-radius:6px;flex:none;
+  background:conic-gradient(from 210deg,var(--cyan),var(--blue),var(--violet),var(--cyan));
+  box-shadow:0 0 16px -3px var(--cyan);position:relative}
+.mark::after{content:"";position:absolute;inset:5px;border-radius:3px;background:var(--night-deep)}
+.brand{font-weight:600;font-size:15px}.brand small{color:var(--faint);font-weight:450}
+.bar{margin-top:14px;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+.bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--teal));
+  transition:width .4s var(--ease);box-shadow:0 0 10px -1px var(--cyan)}
+.barlbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;color:var(--faint);margin-top:8px}
+
+main{padding:28px 0 80px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
+.hero h1{font-size:clamp(2rem,5vw,2.9rem);line-height:1.05;margin:14px 0 0;letter-spacing:-.04em}
+.hero p{color:var(--muted);max-width:60ch;margin-top:14px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.pill{font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px solid var(--line);
+  border-radius:99px;padding:6px 12px;background:rgba(255,255,255,.02)}
+.note{margin-top:18px;font-size:13px;color:var(--faint);max-width:64ch;line-height:1.6;
+  border-left:2px solid var(--line);padding-left:12px}
+.best{margin-top:16px;font-family:var(--mono);font-size:12.5px;color:var(--faint)}
+
+.btn{font-family:var(--sans);font-weight:600;font-size:15px;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;
+  background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);transition:.2s var(--ease);
+  box-shadow:0 0 0 1px rgba(71,234,219,.3)}
+.btn:hover{box-shadow:0 0 22px -6px var(--cyan)}
+.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);font-weight:500}
+.startrow{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+
+.q{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px;backdrop-filter:blur(6px)}
+.q .top{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:8px}
+.q .num{font-family:var(--mono);font-size:11px;color:var(--faint)}
+.repo{font-family:var(--mono);font-size:11px;color:var(--cyan);border:1px solid rgba(71,234,219,.28);
+  border-radius:99px;padding:2px 9px;background:rgba(71,234,219,.08)}
+.skill{font-family:var(--mono);font-size:11px;color:var(--violet);border:1px solid rgba(169,159,255,.28);
+  border-radius:99px;padding:2px 9px;background:rgba(169,159,255,.1)}
+.q .stem{font-weight:600;margin:2px 0 10px;letter-spacing:-.01em;line-height:1.35}
+.issue{font-size:13.5px;color:var(--muted);border-left:2px solid var(--amber);padding:4px 0 4px 12px;margin:0 0 12px;font-style:italic}
+pre.code{font-family:var(--mono);font-size:12.5px;line-height:1.55;background:rgba(0,0,0,.34);
+  border:1px solid var(--line-2);border-radius:11px;padding:13px 14px;overflow-x:auto;margin:0 0 14px;color:#dcebe8}
+.ask{font-weight:600;margin:0 0 12px;color:var(--ink)}
+.opt{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);cursor:pointer;
+  border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:9px;background:rgba(255,255,255,.02);
+  transition:.15s var(--ease);display:flex;gap:11px;align-items:flex-start}
+.opt:hover{border-color:rgba(151,225,211,.34)}
+.opt .key{font-family:var(--mono);font-size:12px;color:var(--faint);flex:none;width:16px;padding-top:1px}
+.opt[aria-pressed="true"]{border-color:var(--cyan);background:rgba(71,234,219,.08)}
+.opt[aria-pressed="true"] .key{color:var(--cyan)}
+.q.graded .opt{cursor:default}
+.opt.correct{border-color:var(--good);background:var(--good-soft)} .opt.correct .key{color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)} .opt.wrong .key{color:var(--bad)}
+.why{font-size:13.5px;color:var(--muted);border-left:2px solid var(--teal);padding:2px 0 2px 12px;margin-top:8px;display:none}
+.q.graded .why{display:block}
+.tag{display:inline-flex;gap:6px;align-items:center;font-family:var(--mono);font-size:11px;margin-top:12px}
+.tag.ok{color:var(--good)} .tag.no{color:var(--bad)}
+
+.submitbar{position:sticky;bottom:0;margin-top:22px;padding:14px 0 calc(14px + env(safe-area-inset-bottom,0px));
+  background:linear-gradient(0deg,var(--night-deep) 30%,transparent);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.submitbar .count{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-right:auto}
+.result{background:var(--panel);border:1px solid var(--cyan);border-radius:18px;padding:22px;margin-bottom:26px;box-shadow:0 0 50px -24px var(--cyan)}
+.score{font-size:clamp(2.4rem,7vw,3.4rem);font-weight:700;letter-spacing:-.04em;line-height:1}
+.verdict{color:var(--muted);margin-top:6px}
+.cats{margin-top:18px;display:grid;gap:10px}
+.catrow{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;font-size:13px}
+.catrow .track{grid-column:1/-1;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+.catrow .track > i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--teal))}
+.catrow .nm{color:var(--muted)} .catrow .sc{font-family:var(--mono);color:var(--faint)}
+footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--faint);font-size:12.5px;line-height:1.6}
+footer a{color:var(--teal)}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:6px}
+</style>
+</head>
+<body>
+
+
+<header><div class="wrap">
+  <div class="brandrow"><span class="mark"></span><span class="brand">Aurora Forge <small>· Real-World Problems</small></span></div>
+  <div id="progWrap" hidden>
+    <div class="bar"><i id="progFill"></i></div>
+    <div class="barlbl"><span id="progText">0 answered</span><span>Layer 2 · SWE-bench-style comprehension</span></div>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <section id="intro" class="hero">
+    <div class="eyebrow">Layer 2 · real code</div>
+    <h1>Read the bug. Find the <span class="grad">core issue.</span> Pick the surgical fix.</h1>
+    <p>Eight read-and-diagnose problems in the shape of real GitHub bug-fixes — the exact skill the
+      AI-assisted round tests: can you understand code you didn't write, locate what's actually wrong,
+      and choose the smallest correct change (not a rewrite, not the wrong spot)?</p>
+    <div class="pills">
+      <span class="pill">8 problems</span><span class="pill">~15 min</span>
+      <span class="pill">read &amp; diagnose</span><span class="pill">answers explained</span>
+    </div>
+    <p class="note">Adapted &amp; simplified from the kinds of tasks in
+      <strong>SWE-bench Verified</strong> (500 human-validated GitHub issues across 12 Python
+      libraries — requests, Django, sympy, scikit-learn, pytest, matplotlib, flask, xarray, …).
+      Each excerpt here is self-contained so no repo setup is needed; the bug shapes are real.
+      Not AI-assisted — but you're welcome to bring your own AI to explore afterward.</p>
+    <div class="best" id="bestLine" hidden></div>
+    <div class="startrow"><button class="btn" id="startBtn">Start →</button></div>
+  </section>
+
+  <section id="results" hidden></section>
+  <form id="exam" hidden></form>
+
+  <div class="submitbar" id="submitbar" hidden>
+    <span class="count" id="answerCount">0 / 0 answered</span>
+    <button class="btn ghost" id="resetBtn" type="button">Restart</button>
+    <button class="btn" id="submitBtn" type="button" disabled>Submit</button>
+  </div>
+
+  <footer><div class="wrap" style="padding:0">Aurora Forge Lab · Layer 2 · problem shapes adapted from
+    <a href="https://www.swebench.com/">SWE-bench</a> (Jimenez et al., Princeton). Excerpts are simplified for a quick read.</div></footer>
+</main>
+
+<script>
+const QUESTIONS = [
+  { repo:"requests", cat:"Security",
+    stem:"Auth header leaks across a redirect",
+    issue:"Bug report: when a request to api.example.com returns a 301 to evil.com, our client resends the Authorization header to evil.com, leaking the user's credentials.",
+    code:`def rebuild_auth(prepared_request, response):
+    headers = prepared_request.headers
+    orig_host = urlparse(response.request.url).hostname
+    new_host  = urlparse(prepared_request.url).hostname
+    if "Authorization" in headers:
+        # forward the credentials to the redirect target
+        pass
+    return`,
+    ask:"What is the core issue and the surgical fix?",
+    o:[
+      "The Authorization header is forwarded even when the redirect points to a different host; strip it when new_host != orig_host.",
+      "urlparse is slow; cache the parsed URL.",
+      "Always delete the Authorization header on every redirect.",
+      "Rename orig_host to original_host for clarity."],
+    a:0,
+    why:"This is a credential-leak: on a cross-host redirect the auth header must be removed. The surgical fix strips Authorization only when the host changes — option C over-corrects and breaks legitimate same-host redirects."},
+
+  { repo:"django", cat:"State & mutation",
+    stem:"Filters bleed between calls",
+    issue:"Bug report: the second time we call get_active() the queryset is filtered by ('active', True) twice, and stale filters from earlier calls keep piling up.",
+    code:`def get_active(self, extra_filters=[]):
+    extra_filters.append(("active", True))
+    return self.filter(*extra_filters)`,
+    ask:"What is the core issue and the surgical fix?",
+    o:[
+      "A mutable default argument ([]) is shared across all calls and accumulates; default to None and create a fresh list inside.",
+      "filter() is deprecated; use exclude().",
+      "extra_filters should be a tuple literal (,) instead of a list.",
+      "The method needs @staticmethod."],
+    a:0,
+    why:"The classic mutable-default-argument trap: the same list object persists across calls and grows. Fix: `def get_active(self, extra_filters=None): extra_filters = list(extra_filters or [])`."},
+
+  { repo:"scikit-learn", cat:"Numerical edge cases",
+    stem:"Scaler returns NaN on a constant column",
+    issue:"Bug report: fitting the scaler on a feature where every value is the same produces NaN for that column and poisons the whole pipeline.",
+    code:`def standardize(col):
+    # zero-mean, unit-variance
+    return (col - col.mean()) / col.std()`,
+    ask:"What is the core issue and the surgical fix?",
+    o:[
+      "A constant column has std == 0, so it divides by zero (NaN); when std is 0, return zeros (or use a small epsilon).",
+      "col.mean() should be col.median().",
+      "It should divide by the variance, not the std.",
+      "The whole function should be deleted; scaling is unnecessary."],
+    a:0,
+    why:"Constant feature → std 0 → division by zero. The surgical fix guards that single case (return a zero column / add eps), leaving normal columns untouched. Changing mean→median or std→variance is a different, wrong transform."},
+
+  { repo:"pytest", cat:"Resource safety",
+    stem:"File handle leaks when parsing fails",
+    issue:"Bug report: on malformed config, read_config raises but the file is never closed; long runs exhaust file descriptors.",
+    code:`def read_config(path):
+    f = open(path)
+    data = parse(f.read())   # parse() may raise on bad input
+    f.close()
+    return data`,
+    ask:"What is the core issue and the surgical fix?",
+    o:[
+      "If parse() raises, f.close() is skipped and the handle leaks; open the file in a 'with' block so it always closes.",
+      "open() should pass mode='rb'.",
+      "parse() should be wrapped in json.loads().",
+      "read() should be readlines()."],
+    a:0,
+    why:"The close() only runs on the happy path. A `with open(path) as f:` guarantees the file closes even when parse() raises — the minimal, correct fix."},
+
+  { repo:"matplotlib", cat:"State & mutation",
+    stem:"Editing one style mutates the global default",
+    issue:"Bug report: after a user tweaks the style returned for an unknown name, every later chart with no style is also changed.",
+    code:`DEFAULT_STYLE = {"color": "black", "lw": 1}
+_cache = {}
+def get_style(name):
+    return _cache.get(name, DEFAULT_STYLE)   # callers may mutate the result`,
+    ask:"What is the core issue and the surgical fix?",
+    o:[
+      "It hands back the shared DEFAULT_STYLE object, so a caller mutating it changes the global default; return a copy (dict(...)).",
+      "_cache should be an OrderedDict.",
+      "DEFAULT_STYLE should use a tuple instead of a dict.",
+      "get_style should be memoized with lru_cache."],
+    a:0,
+    why:"Returning the shared default dict lets any caller's mutation leak into every future default. `return dict(_cache.get(name, DEFAULT_STYLE))` returns a fresh copy — surgical and correct. lru_cache would make the aliasing worse."},
+
+  { repo:"flask", cat:"Security",
+    stem:"Token check is not constant-time",
+    issue:"Bug report: security review flags that our session-token comparison can leak the token one byte at a time via response-timing.",
+    code:`import hmac
+def verify_token(supplied, expected):
+    return supplied == expected`,
+    ask:"What is the core issue and the surgical fix?",
+    o:[
+      "== short-circuits on the first mismatching byte (timing side channel); compare with hmac.compare_digest(supplied, expected).",
+      "supplied should be cast to int first.",
+      "It should check len(supplied) == len(expected) and return.",
+      "The comparison should be wrapped in try/except."],
+    a:0,
+    why:"String == returns as soon as bytes differ, so response time leaks how much of the token matched. `hmac.compare_digest` compares in constant time. A length check alone doesn't fix the content-timing leak."},
+
+  { repo:"xarray", cat:"Correctness",
+    stem:"Merging counts overwrites instead of adding",
+    issue:"Bug report: combining two word-count dicts loses counts — keys present in both come out with only the second dict's value.",
+    code:`def merge_counts(a, b):
+    out = dict(a)
+    for k, v in b.items():
+        out[k] = v
+    return out`,
+    ask:"What is the core issue and the surgical fix?",
+    o:[
+      "On a shared key it overwrites rather than sums; use out[k] = out.get(k, 0) + v.",
+      "dict(a) should be a.copy() — the current copy is shallow-broken.",
+      "It should iterate a.items() instead of b.items().",
+      "Return type should be a Counter, so the logic is fine."],
+    a:0,
+    why:"For keys in both dicts the loop replaces the accumulated value instead of adding to it. `out[k] = out.get(k, 0) + v` sums correctly. (`dict.update(b)` would have the same overwrite bug.)"},
+
+  { repo:"sympy", cat:"Numerical edge cases",
+    stem:"Sample variance crashes on a single value",
+    issue:"Bug report: variance([42]) raises ZeroDivisionError instead of returning a defined result.",
+    code:`def variance(xs):
+    n = len(xs)
+    mean = sum(xs) / n
+    return sum((x - mean) ** 2 for x in xs) / (n - 1)`,
+    ask:"What is the core issue and the surgical fix?",
+    o:[
+      "Sample variance divides by (n - 1), which is 0 when there is one value; guard n < 2 (return 0.0 or raise a clear error).",
+      "It should always divide by n, never n - 1.",
+      "sum(xs) / n should use integer division //.",
+      "mean should be computed with statistics.mean for speed."],
+    a:0,
+    why:"With one sample, n-1 == 0 → ZeroDivisionError. The surgical fix handles the n<2 case explicitly. Switching to /n silently changes it from sample to population variance — a different definition, not a fix."}
+];
+
+const KEY="aurora-swe-v1";
+const LETTERS=["A","B","C","D","E"];
+const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
+const answers={}; let graded=false;
+
+try{const b=localStorage.getItem(KEY);if(b){const bl=document.getElementById("bestLine");bl.hidden=false;bl.textContent="Best so far: "+b+"%";}}catch(e){}
+
+function buildExam(){
+  const form=document.getElementById("exam");form.innerHTML="";
+  QUESTIONS.forEach((item,qi)=>{
+    const q=el("div","q");q.id="q"+qi;
+    const top=el("div","top");
+    top.appendChild(el("span","num","Problem "+(qi+1)+"/"+QUESTIONS.length));
+    top.appendChild(el("span","repo",item.repo));
+    top.appendChild(el("span","skill",item.cat));
+    q.appendChild(top);
+    q.appendChild(el("div","stem",item.stem));
+    q.appendChild(el("div","issue",item.issue));
+    const pre=el("pre","code");pre.textContent=item.code;q.appendChild(pre);
+    q.appendChild(el("div","ask",item.ask));
+    item.o.forEach((opt,oi)=>{
+      const b=el("button","opt");b.type="button";b.setAttribute("aria-pressed","false");
+      b.appendChild(el("span","key",LETTERS[oi]));b.appendChild(el("span","txt",opt));
+      b.onclick=()=>{ if(graded)return; answers[qi]=oi;
+        [...q.querySelectorAll(".opt")].forEach((o,i)=>o.setAttribute("aria-pressed",i===oi?"true":"false"));
+        updateCount();};
+      q.appendChild(b);
+    });
+    const why=el("div","why");why.textContent="Why: "+item.why;q.appendChild(why);
+    form.appendChild(q);
+  });
+}
+function updateCount(){
+  const n=Object.keys(answers).length,total=QUESTIONS.length;
+  document.getElementById("answerCount").textContent=n+" / "+total+" answered";
+  document.getElementById("progText").textContent=n+" answered";
+  document.getElementById("progFill").style.width=(100*n/total)+"%";
+  document.getElementById("submitBtn").disabled=n<total;
+}
+function start(){
+  buildExam();
+  document.getElementById("intro").hidden=true;
+  document.getElementById("results").hidden=true;
+  document.getElementById("exam").hidden=false;
+  document.getElementById("submitbar").hidden=false;
+  document.getElementById("progWrap").hidden=false;
+  graded=false;updateCount();scrollTo(0,0);
+}
+function submitExam(){
+  graded=true;let correct=0;const catTot={},catOk={};
+  QUESTIONS.forEach((item,qi)=>{
+    catTot[item.cat]=(catTot[item.cat]||0)+1;
+    const q=document.getElementById("q"+qi);q.classList.add("graded");
+    const opts=[...q.querySelectorAll(".opt")];const chosen=answers[qi];
+    if(chosen===item.a){correct++;catOk[item.cat]=(catOk[item.cat]||0)+1;}
+    opts.forEach((o,i)=>{ if(i===item.a)o.classList.add("correct"); else if(i===chosen)o.classList.add("wrong"); });
+    const tag=el("div","tag "+(chosen===item.a?"ok":"no"),chosen===item.a?"✓ Correct":"✗ Your answer: "+LETTERS[chosen]+" · Correct: "+LETTERS[item.a]);
+    q.insertBefore(tag,q.querySelector(".why"));
+  });
+  const pct=Math.round(100*correct/QUESTIONS.length);
+  try{const prev=parseInt(localStorage.getItem(KEY)||"0",10);if(pct>prev)localStorage.setItem(KEY,String(pct));}catch(e){}
+  renderResult(pct,correct,catTot,catOk);
+  document.getElementById("submitbar").hidden=true;
+  document.getElementById("progFill").style.width="100%";document.getElementById("progText").textContent="submitted";
+}
+function verdict(p){
+  if(p>=88)return "Sharp code comprehension — you find the real issue fast.";
+  if(p>=63)return "Good instincts. Study the misses: were you fixing the symptom or the cause?";
+  if(p>=38)return "Getting there — notice how the wrong options fix the wrong spot or over-rewrite.";
+  return "Slow down and read: locate the CORE issue before choosing a fix. Explanations below.";
+}
+function renderResult(pct,correct,catTot,catOk){
+  const r=document.getElementById("results");r.hidden=false;r.innerHTML="";
+  const card=el("div","result");
+  card.appendChild(el("div","score",pct+"%"));
+  card.appendChild(el("div","verdict",correct+" / "+QUESTIONS.length+" correct — "+verdict(pct)));
+  const cats=el("div","cats");
+  Object.keys(catTot).forEach(c=>{
+    const ok=catOk[c]||0,tot=catTot[c];const row=el("div","catrow");
+    row.appendChild(el("span","nm",c));row.appendChild(el("span","sc",ok+"/"+tot));
+    const tr=el("div","track");const i=el("i");i.style.width=(100*ok/tot)+"%";tr.appendChild(i);row.appendChild(tr);
+    cats.appendChild(row);
+  });
+  card.appendChild(cats);
+  const again=el("button","btn ghost","Retake");again.type="button";again.onclick=reset;
+  const row2=el("div","startrow");row2.appendChild(again);card.appendChild(row2);
+  r.appendChild(card);r.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function reset(){for(const k in answers)delete answers[k];graded=false;document.getElementById("results").hidden=true;start();}
+document.getElementById("startBtn").onclick=start;
+document.getElementById("submitBtn").onclick=submitExam;
+document.getElementById("resetBtn").onclick=reset;
+</script>
+
+</body>
+</html>
