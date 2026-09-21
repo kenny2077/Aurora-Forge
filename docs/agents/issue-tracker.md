@@ -2,15 +2,13 @@
 
 Issues and specs for this repo live as GitHub issues in [`kenny2077/Aurora-Forge`](https://github.com/kenny2077/Aurora-Forge). Use the `gh` CLI for all operations.
 
-> **Cross-repo:** the code lives in `kenny2077/forge-range`, but issues live in a **different** repo,
-> `kenny2077/Aurora-Forge`. Because this clone's `git remote` points at `forge-range`, you **must**
-> pass `--repo kenny2077/Aurora-Forge` on every `gh issue` / issue-related `gh api` command below —
-> do **not** rely on `gh` inferring the repo from the remote (it would target `forge-range`).
-> `gh pr` commands stay on the local `forge-range` clone.
+> **Same repo:** code and issues both live in `kenny2077/Aurora-Forge` — this clone's `git remote` —
+> so `gh` resolves the right repo automatically. The commands below still pass
+> `--repo kenny2077/Aurora-Forge` explicitly so they also work from another clone or working directory.
 
 ## Conventions
 
-All commands below pin `--repo kenny2077/Aurora-Forge` (see the cross-repo note above).
+All commands below pass `--repo kenny2077/Aurora-Forge` explicitly (safe from any working directory).
 
 - **Create an issue**: `gh issue create --repo kenny2077/Aurora-Forge --title "..." --body "..."`. Use a heredoc for multi-line bodies.
 - **Read an issue**: `gh issue view <number> --repo kenny2077/Aurora-Forge --comments`, filtering comments by `jq` and also fetching labels.
@@ -19,7 +17,7 @@ All commands below pin `--repo kenny2077/Aurora-Forge` (see the cross-repo note 
 - **Apply / remove labels**: `gh issue edit <number> --repo kenny2077/Aurora-Forge --add-label "..."` / `--remove-label "..."`
 - **Close**: `gh issue close <number> --repo kenny2077/Aurora-Forge --comment "..."`
 
-Do **not** infer the repo from `git remote` — this clone is `forge-range`, so the `--repo` flag is required to reach Aurora-Forge.
+The `--repo` flag is optional here (the remote already points at Aurora-Forge) but kept for portability.
 
 ## Pull requests as a triage surface
 
