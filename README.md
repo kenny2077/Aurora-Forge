@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="assets/banner.svg" alt="Forge Range" width="100%">
+<img src="assets/banner.svg" alt="Aurora Forge" width="100%">
 
-# Forge Range
+# Aurora Forge
 
 ### The training range for the human-led, AI-assisted coding interview
 
@@ -14,7 +14,7 @@
 [![Difficulty](https://img.shields.io/badge/difficulty-L3–L5-7565ff?style=flat-square&labelColor=061713)](#curriculum)
 [![License](https://img.shields.io/badge/license-MIT-a9bbb5?style=flat-square&labelColor=061713)](./LICENSE)
 
-**[🎓 Fundamentals exam](https://kenny2077.github.io/Aurora-Forge/fundamentals.html)** · **[🐛 Real-world problems](https://kenny2077.github.io/Aurora-Forge/swe.html)** · **[▶ Coding days](https://kenny2077.github.io/Aurora-Forge/)** · **[📋 Plan](./MONTH_PLAN.md)** · **[🔎 Sources](./SOURCES.md)**
+**[🎓 Layer 1 · Fundamentals](https://kenny2077.github.io/Aurora-Forge/)** · **[🐛 Layer 2 · Real-world](https://kenny2077.github.io/Aurora-Forge/swe.html)** · **[▶ Layer 3 · Coding days](https://kenny2077.github.io/Aurora-Forge/days.html)** · **[📋 Plan](./MONTH_PLAN.md)** · **[🔎 Sources](./SOURCES.md)**
 
 </div>
 
@@ -30,14 +30,15 @@
 > LeetCode doesn't train that. **This does** — 35 runnable days, each a failing test suite you make
 > pass with AI. ([what this is based on →](./SOURCES.md))
 
-## Two layers
+## Three layers
 
-The product is two layers, entry-level (Google **L3**) first:
+Entry-level (Google **L3**) first — each layer unlocks the next:
 
 | | Layer | What it is |
 |---|---|---|
-| **1** | **[Fundamentals of Agentic Coding](https://kenny2077.github.io/Aurora-Forge/fundamentals.html)** — *know the game* | A **30-question** MCQ exam with **instant feedback**: context windows & compaction, prompting, tool calls / harness / MCP, prompt injection, reasoning-effort tiers, output validation. Objective and quantifiable. |
-| **2** | **[Real-world code](https://kenny2077.github.io/Aurora-Forge/swe.html)** — *play the game* | **8 SWE-bench-style problems** with **instant feedback**: read a real bug, find the **core issue**, pick the **surgical fix** — plus the 35 guided coding days below and the terminal mock. |
+| **1** | **[Fundamentals of Agentic Coding](https://kenny2077.github.io/Aurora-Forge/)** — *know the game* | The landing page: a **30-question** MCQ exam with **instant feedback** — context windows & compaction, prompting, tool calls / harness / MCP, prompt injection, reasoning-effort tiers, output validation. |
+| **2** | **[Real-world code](https://kenny2077.github.io/Aurora-Forge/swe.html)** — *play the game* | Unlocks after Layer 1: **8 SWE-bench-style problems** with **instant feedback** — read a real bug, find the **core issue**, pick the **surgical fix**. |
+| **3** | **[The 35 coding days](https://kenny2077.github.io/Aurora-Forge/days.html)** — *go deep* | The full guided track: 35 ticket-style exercises, each a failing test suite you make pass with AI, plus the terminal mock. |
 
 ## Why
 
@@ -113,9 +114,9 @@ Per-day levels and verification status live in **[MONTH_PLAN.md](./MONTH_PLAN.md
 │   ├── interview.json       #   drives the mock (prompt, clarifications, hints)
 │   └── AI_LOG.md            #   your prompt + verification log
 ├── interview.py             # the terminal mock runner
-├── docs/index.html          # the coding-days web app (GitHub Pages)
-├── docs/fundamentals.html   # Layer 1 — fundamentals exam
+├── docs/index.html          # Layer 1 — fundamentals exam (the landing page)
 ├── docs/swe.html            # Layer 2 — SWE-bench-style problems
+├── docs/days.html           # Layer 3 — the 35 coding days web app
 ├── assets/banner.svg        # the pixel-art hero
 ├── MONTH_PLAN.md            # curriculum + verification status
 └── SOURCES.md               # reporting behind the program's design

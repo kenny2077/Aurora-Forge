@@ -1,3 +1,10 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A 35-day interactive training range for the 2026 AI-assisted, agentic coding interview.">
+<meta name="color-scheme" content="dark">
 <title>Aurora Forge</title>
 <style>
 /* Aurora Forge palette + native type. Deep teal-green night, restrained glows, one GPU cursor light. */
@@ -201,6 +208,9 @@ footer .credit{margin-top:22px;font-family:var(--mono);font-size:11px;color:var(
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}#glow{display:none}}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:4px}
 </style>
+</head>
+<body>
+
 
 <div id="glow" aria-hidden="true"></div>
 
@@ -217,9 +227,10 @@ footer .credit{margin-top:22px;font-family:var(--mono);font-size:11px;color:var(
   <div>
     <span class="eyebrow">35-day range · built for 2026</span>
     <h1>Interviews stopped testing recall.<br><span class="grad">They test how you drive the AI.</span></h1>
-    <p class="lede">A month of exercises for the new human-led, AI-assisted coding round at Google and
-      Meta — read unfamiliar code, scope a vague ticket, validate what the model wrote, and ship.
-      Every day is a runnable test suite and a spoiler-free mock.</p>
+    <p class="lede">A month of exercises for the human-led, AI-assisted coding round — the format
+      Meta is piloting and rolling out, and that Google has reportedly tested for selected SWE
+      interviews. Read unfamiliar code, scope a vague ticket, validate what the model wrote, and
+      ship. Every day is a runnable test suite and a spoiler-free mock.</p>
     <div class="stats">
       <div class="stat"><b class="tnum grad">35</b><span>days</span></div>
       <div class="stat"><b class="tnum grad">7</b><span>weeks</span></div>
@@ -443,3 +454,6 @@ document.getElementById("resetBtn").onclick=()=>{store={done:{},score:{}};save()
 document.getElementById("hoursStat").textContent=Math.round(DAYS.reduce((a,d)=>a+d.time,0)/60);
 buildFilters();render();
 </script>
+
+</body>
+</html>

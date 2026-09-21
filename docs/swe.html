@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="SWE-bench-style read-and-diagnose problems with instant feedback (Aurora Forge, Layer 2).">
+<meta name="description" content="Aurora Forge Layer 2 — SWE-bench-style read-and-diagnose problems with instant feedback.">
 <meta name="color-scheme" content="dark">
 <title>SWE Problems</title>
 <style>
@@ -43,6 +43,15 @@ header{padding:22px 0 16px;border-bottom:1px solid var(--line);position:sticky;t
 .ghost{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:transparent;border:1px solid var(--line);
   border-radius:8px;padding:5px 10px;cursor:pointer;transition:.2s var(--ease)}
 .ghost:hover{border-color:var(--cyan);color:var(--ink)}
+.lnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.lnav a{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:5px 12px;transition:.15s var(--ease)}
+.lnav a:hover{border-color:var(--cyan);color:var(--ink)}
+.lnav a.active{background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);border-color:transparent;font-weight:600}
+.unlock{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:600;font-size:15px;text-decoration:none;
+  border-radius:12px;padding:13px 22px;background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);box-shadow:0 0 0 1px rgba(71,234,219,.3)}
+.unlock:hover{box-shadow:0 0 22px -6px var(--cyan)}
+.gate{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:22px}
+.gate p{margin:0 0 14px;color:var(--muted)}
 .bar{margin-top:13px;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
 .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--teal));
   transition:width .35s var(--ease);box-shadow:0 0 10px -1px var(--cyan)}
@@ -109,6 +118,11 @@ footer a{color:var(--teal)}
   <div class="brandrow"><span class="mark"></span><span class="brand">Aurora Forge <small>· Real-World Problems</small></span>
     <span class="hstats" id="hstats" hidden><span id="scoreText">0/0</span><button class="ghost" id="restartBtn" type="button">restart</button></span>
   </div>
+  <nav class="lnav">
+    <a href="https://kenny2077.github.io/Aurora-Forge/">① Fundamentals</a>
+    <a class="active" href="https://kenny2077.github.io/Aurora-Forge/swe.html">② Real-world</a>
+    <a href="https://kenny2077.github.io/Aurora-Forge/days.html">③ Coding days</a>
+  </nav>
   <div class="bar" id="progWrap" hidden><i id="progFill"></i></div>
 </div></header>
 
@@ -129,7 +143,14 @@ footer a{color:var(--teal)}
       These are self-contained teaching puzzles, not verbatim dataset rows — the repo tag names a
       library where this <em>shape</em> of bug is common, and each excerpt stands alone.</p>
     <div class="best" id="bestLine" hidden></div>
-    <div class="startrow"><button class="btn" id="startBtn">Start →</button></div>
+    <div id="gate" class="gate" hidden>
+      <p>🔒 <strong>Layer 2 unlocks after Layer 1.</strong> Get the fundamentals down first — it's a quick, 30-question exam.</p>
+      <div class="startrow">
+        <a class="unlock" href="https://kenny2077.github.io/Aurora-Forge/">Start Layer 1 — Fundamentals →</a>
+        <button class="btn ghost2" id="gateOverride" type="button">I've done it — continue</button>
+      </div>
+    </div>
+    <div class="startrow" id="startRow"><button class="btn" id="startBtn">Start →</button></div>
   </section>
 
   <section id="results" hidden></section>
@@ -280,6 +301,10 @@ const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()
 const graded={}; let answered=0, score=0;
 
 try{const b=localStorage.getItem(KEY);if(b){const bl=document.getElementById("bestLine");bl.hidden=false;bl.textContent="Best so far: "+b+"%";}}catch(e){}
+let l1done=false;try{l1done=localStorage.getItem("aurora-l1-done")==="1";}catch(e){}
+if(!l1done){document.getElementById("startRow").hidden=true;document.getElementById("gate").hidden=false;}
+document.getElementById("gateOverride").onclick=()=>{try{localStorage.setItem("aurora-l1-done","1");}catch(e){}
+  document.getElementById("gate").hidden=true;document.getElementById("startRow").hidden=false;};
 
 function buildExam(){
   const form=document.getElementById("exam");form.innerHTML="";
@@ -335,7 +360,7 @@ function verdict(p){
 }
 function finish(){
   const pct=Math.round(100*score/QUESTIONS.length);
-  try{const prev=parseInt(localStorage.getItem(KEY)||"0",10);if(pct>prev)localStorage.setItem(KEY,String(pct));}catch(e){}
+  try{const prev=parseInt(localStorage.getItem(KEY)||"0",10);if(pct>prev)localStorage.setItem(KEY,String(pct));localStorage.setItem("aurora-l2-done","1");}catch(e){}
   const catTot={},catOk={};
   QUESTIONS.forEach((item,qi)=>{catTot[item.cat]=(catTot[item.cat]||0)+1;if(graded[qi]===item.a)catOk[item.cat]=(catOk[item.cat]||0)+1;});
   const r=document.getElementById("results");r.hidden=false;r.innerHTML="";
@@ -347,8 +372,9 @@ function finish(){
     row.appendChild(el("span","nm",c));row.appendChild(el("span","sc",ok+"/"+tot));
     const tr=el("div","track");const i=el("i");i.style.width=(100*ok/tot)+"%";tr.appendChild(i);row.appendChild(tr);cats.appendChild(row);});
   card.appendChild(cats);
+  const cta=el("a","unlock","Layer 3 — the 35 coding days →");cta.href="https://kenny2077.github.io/Aurora-Forge/days.html";
   const again=el("button","btn ghost2","Retake");again.type="button";again.onclick=reset;
-  const row2=el("div","startrow");row2.appendChild(again);card.appendChild(row2);
+  const row2=el("div","startrow");row2.appendChild(cta);row2.appendChild(again);card.appendChild(row2);
   r.appendChild(card);r.scrollIntoView({behavior:"smooth",block:"start"});
 }
 function start(){
