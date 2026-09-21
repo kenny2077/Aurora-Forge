@@ -3,162 +3,109 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Aurora Forge Layer 2 — SWE-bench-style read-and-diagnose problems with instant feedback.">
+<meta name="description" content="Aurora Forge Layer 2: eight read-and-diagnose problems shaped like real GitHub bug fixes, with instant feedback.">
 <meta name="color-scheme" content="dark">
-<title>SWE Problems</title>
+<meta name="theme-color" content="#04110f">
+<title>Aurora Forge: real code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link rel="stylesheet" href="forge.css">
 <style>
-:root{
-  --night:#061713; --night-deep:#020c0f; --forest:#051a18; --panel:rgba(8,24,26,.55);
-  --ink:#eaf4f1; --muted:#a3b6bc; --faint:#8397a1; --line:rgba(151,225,211,.15); --line-2:rgba(151,225,211,.09);
-  --cyan:#47eadb; --teal:#0eb9ad; --blue:#6aa6ff; --violet:#a99fff; --amber:#f3b85e;
-  --good:#3ff0a8; --good-soft:rgba(63,240,168,.12); --bad:#ff7a8a; --bad-soft:rgba(255,122,138,.12);
-  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
-  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
-  --ease:cubic-bezier(.16,1,.3,1);
-}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;letter-spacing:-.006em;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;
-  background:
-    radial-gradient(1100px 520px at 82% -8%,rgba(14,185,173,.10),transparent 62%),
-    radial-gradient(880px 500px at 6% 0%,rgba(117,101,255,.09),transparent 60%),
-    linear-gradient(180deg,#020c0f,#051a18 32%,#07142b 60%,#061713 82%,#020c0f) fixed}
-.wrap{max-width:780px;margin:0 auto;padding:0 20px}
-h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.03em;text-wrap:balance}
-.mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
-.grad{background:linear-gradient(96deg,var(--cyan),var(--teal) 40%,var(--blue) 70%,var(--violet));
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-
-header{padding:22px 0 16px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;
-  background:linear-gradient(180deg,rgba(3,9,11,.93),rgba(3,9,11,.6));backdrop-filter:blur(12px)}
-.brandrow{display:flex;align-items:center;gap:11px}
-.mark{width:20px;height:20px;border-radius:6px;flex:none;
-  background:conic-gradient(from 210deg,var(--cyan),var(--blue),var(--violet),var(--cyan));
-  box-shadow:0 0 16px -3px var(--cyan);position:relative}
-.mark::after{content:"";position:absolute;inset:5px;border-radius:3px;background:var(--night-deep)}
-.brand{font-weight:600;font-size:15px}.brand small{color:var(--faint);font-weight:450}
-.hstats{margin-left:auto;display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;color:var(--muted)}
-.hstats b{color:var(--cyan);font-weight:600}
-.ghost{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:transparent;border:1px solid var(--line);
-  border-radius:8px;padding:5px 10px;cursor:pointer;transition:.2s var(--ease)}
-.ghost:hover{border-color:var(--cyan);color:var(--ink)}
-.lnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.lnav a{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:5px 12px;transition:.15s var(--ease)}
-.lnav a:hover{border-color:var(--cyan);color:var(--ink)}
-.lnav a.active{background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);border-color:transparent;font-weight:600}
-.unlock{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:600;font-size:15px;text-decoration:none;
-  border-radius:12px;padding:13px 22px;background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);box-shadow:0 0 0 1px rgba(71,234,219,.3)}
-.unlock:hover{box-shadow:0 0 22px -6px var(--cyan)}
-.gate{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:22px}
-.gate p{margin:0 0 14px;color:var(--muted)}
-.bar{margin-top:13px;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
-.bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--teal));
-  transition:width .35s var(--ease);box-shadow:0 0 10px -1px var(--cyan)}
-
-main{padding:28px 0 80px}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
-.hero h1{font-size:clamp(2rem,5vw,2.9rem);line-height:1.05;margin:14px 0 0;letter-spacing:-.04em}
-.hero p{color:var(--muted);max-width:60ch;margin-top:14px}
-.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
-.pill{font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px solid var(--line);
-  border-radius:99px;padding:6px 12px;background:rgba(255,255,255,.02)}
-.note{margin-top:18px;font-size:13px;color:var(--faint);max-width:64ch;line-height:1.6;border-left:2px solid var(--line);padding-left:12px}
-.best{margin-top:16px;font-family:var(--mono);font-size:12.5px;color:var(--faint)}
-.btn{font-family:var(--sans);font-weight:600;font-size:15px;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;
-  background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);transition:.2s var(--ease);box-shadow:0 0 0 1px rgba(71,234,219,.3)}
-.btn:hover{box-shadow:0 0 22px -6px var(--cyan)}
-.btn.ghost2{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);font-weight:500}
-.startrow{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-
-.q{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px;backdrop-filter:blur(6px)}
-.q .top{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:8px}
-.q .num{font-family:var(--mono);font-size:11px;color:var(--faint)}
-.repo{font-family:var(--mono);font-size:11px;color:var(--cyan);border:1px solid rgba(71,234,219,.28);border-radius:99px;padding:2px 9px;background:rgba(71,234,219,.08)}
-.skill{font-family:var(--mono);font-size:11px;color:var(--violet);border:1px solid rgba(169,159,255,.28);border-radius:99px;padding:2px 9px;background:rgba(169,159,255,.1)}
-.q .stem{font-weight:600;margin:2px 0 10px;letter-spacing:-.01em;line-height:1.35}
-.issue{font-size:13.5px;color:var(--muted);border-left:2px solid var(--amber);padding:4px 0 4px 12px;margin:0 0 12px;font-style:italic}
-pre.code{font-family:var(--mono);font-size:12.5px;line-height:1.55;background:rgba(0,0,0,.34);border:1px solid var(--line-2);border-radius:11px;padding:13px 14px;overflow-x:auto;margin:0 0 14px;color:#dcebe8}
-.ask{font-weight:600;margin:0 0 12px;color:var(--ink)}
-.opt{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);cursor:pointer;
-  border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:9px;background:rgba(255,255,255,.02);
-  transition:.15s var(--ease);display:flex;gap:11px;align-items:flex-start}
-.opt:hover{border-color:rgba(151,225,211,.34)}
-.opt .key{font-family:var(--mono);font-size:12px;color:var(--faint);flex:none;width:16px;padding-top:1px}
-.q.graded .opt{cursor:default}
-.opt.correct{border-color:var(--good);background:var(--good-soft)} .opt.correct .key{color:var(--good)}
-.opt.wrong{border-color:var(--bad);background:var(--bad-soft)} .opt.wrong .key{color:var(--bad)}
-.opt.dim{opacity:.5}
-.tag{display:inline-flex;gap:6px;align-items:center;font-family:var(--mono);font-size:11.5px;margin:2px 0 4px}
-.tag.ok{color:var(--good)} .tag.no{color:var(--bad)}
-.why{font-size:13.5px;color:var(--muted);border-left:2px solid var(--teal);padding:2px 0 2px 12px;margin-top:8px;display:none}
-.q.graded .why{display:block}
-@keyframes pop{0%{transform:scale(.995)}60%{transform:scale(1.004)}100%{transform:scale(1)}}
-.q.justgraded{animation:pop .28s var(--ease)}
-
-.result{background:var(--panel);border:1px solid var(--cyan);border-radius:18px;padding:22px;margin:26px 0;box-shadow:0 0 50px -24px var(--cyan)}
-.score{font-size:clamp(2.4rem,7vw,3.4rem);font-weight:700;letter-spacing:-.04em;line-height:1}
-.verdict{color:var(--muted);margin-top:6px}
-.cats{margin-top:18px;display:grid;gap:10px}
-.catrow{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;font-size:13px}
-.catrow .track{grid-column:1/-1;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
-.catrow .track > i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--teal))}
-.catrow .nm{color:var(--muted)} .catrow .sc{font-family:var(--mono);color:var(--faint)}
-footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--faint);font-size:12.5px;line-height:1.6}
-footer a{color:var(--teal)}
-[hidden]{display:none!important}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:6px}
+.q .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.q .meta span{font-size:13px;padding:4px 10px;background:rgba(232,243,238,.06);color:var(--muted)}
+.q .meta .repo{color:var(--teal);background:rgba(63,224,200,.08)}
+.q h3{font-size:clamp(30px,3vw,42px);font-weight:700;margin-bottom:16px}
+.issue{border-left:3px solid var(--ember);padding:4px 0 4px 16px;color:#cfe0da;max-width:70ch;margin-bottom:18px}
+.issue b{display:block;font-size:13px;color:var(--ember);font-weight:600;margin-bottom:2px}
+pre.code{max-width:100%;margin:0 0 20px;padding:18px 20px;background:var(--deep);box-shadow:inset 0 0 0 1px var(--line);clip-path:var(--chamfer);
+  font:14px/1.65 var(--code);color:#d6e7e1;overflow-x:auto;tab-size:4}
+.ask{font-weight:600;margin-bottom:12px}
+@media (max-width:640px){pre.code{font-size:13px;padding:14px;-webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}}
+.gate{margin-top:48px;max-width:760px;border:1px solid var(--line-2);background:var(--night-2);padding:clamp(24px,4vw,44px)}
+.gate h3{font-size:clamp(34px,3.6vw,52px);margin-bottom:14px}
+.gate p{color:var(--muted);max-width:52ch}
+.gate .actions{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
+.src{margin-top:18px;font-size:14px;color:var(--faint);max-width:70ch}
+.src a{color:var(--muted)}
 </style>
 </head>
 <body>
+<div class="frame" aria-hidden="true"></div>
 
-
-<header><div class="wrap">
-  <div class="brandrow"><span class="mark"></span><span class="brand">Aurora Forge <small>· Real-World Problems</small></span>
-    <span class="hstats" id="hstats" hidden><span id="scoreText">0/0</span><button class="ghost" id="restartBtn" type="button">restart</button></span>
-  </div>
-  <nav class="lnav">
-    <a href="https://kenny2077.github.io/Aurora-Forge/">① Fundamentals</a>
-    <a class="active" href="https://kenny2077.github.io/Aurora-Forge/swe.html">② Real-world</a>
-    <a href="https://kenny2077.github.io/Aurora-Forge/days.html">③ Coding days</a>
+<header class="nav">
+  <a class="brand" href="./"><svg viewBox="0 0 5 5" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="2" height="1" fill="#8b7dff"/><rect x="0" y="1" width="2" height="1" fill="#3fe0c8"/><rect x="4" y="1" width="1" height="1" fill="#3fe0c8"/><rect x="1" y="2" width="3" height="1" fill="#3aa0e8"/><rect x="1" y="3" width="3" height="1" fill="#ffb14a" opacity=".55"/><rect x="0" y="4" width="5" height="1" fill="#ffb14a"/></svg>Aurora Forge</a>
+  <nav class="layers-nav" aria-label="Layers">
+    <a href="./"><span>1</span>Warm-up</a>
+    <a href="swe.html" aria-current="page"><span>2</span>Real code</a>
+    <a href="days.html"><span>3</span>Coding days</a>
   </nav>
-  <div class="bar" id="progWrap" hidden><i id="progFill"></i></div>
-</div></header>
+  <div class="nav-end"><a class="btn small ghost" href="#problems">Read the bugs</a></div>
+</header>
 
-<main class="wrap">
-  <section id="intro" class="hero">
-    <div class="eyebrow">Layer 2 · real code</div>
-    <h1>Read the bug. Find the <span class="grad">core issue.</span> Pick the surgical fix.</h1>
-    <p>Eight read-and-diagnose problems in the shape of real GitHub bug-fixes — the exact skill the
-      AI-assisted round tests: can you understand code you didn't write, locate what's actually wrong,
-      and choose the smallest correct change? You get <strong>instant feedback</strong> on each click.</p>
-    <div class="pills">
-      <span class="pill">8 problems</span><span class="pill">instant feedback</span>
-      <span class="pill">read &amp; diagnose</span><span class="pill">answers explained</span>
+<main class="page">
+  <section class="hero short" id="top">
+    <canvas class="field" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <h1>Read the bug. Make the smallest fix.</h1>
+      <p class="lede">Eight problems shaped like real GitHub bug fixes. Understand code you didn't write,
+        find what's actually wrong, and choose the change you'd be willing to put your name on.</p>
+      <div class="actions"><a class="btn" href="#problems">Read the bugs</a></div>
+      <p class="note" id="bestLine">About 15 minutes. Instant feedback on every answer.</p>
     </div>
-    <p class="note">Adapted &amp; simplified from the <em>kinds</em> of tasks in
-      <strong>SWE-bench</strong> (Jimenez et al., 2023) — real GitHub bug-fixes across popular Python
-      libraries; its human-validated <strong>Verified</strong> subset (OpenAI) has 500 instances.
-      These are self-contained teaching puzzles, not verbatim dataset rows — the repo tag names a
-      library where this <em>shape</em> of bug is common, and each excerpt stands alone.</p>
-    <div class="best" id="bestLine" hidden></div>
-    <div id="gate" class="gate" hidden>
-      <p>🔒 <strong>Layer 2 unlocks after Layer 1.</strong> Get the fundamentals down first — it's a quick, 30-question warm-up.</p>
-      <div class="startrow">
-        <a class="unlock" href="https://kenny2077.github.io/Aurora-Forge/">Start Layer 1 — Fundamentals →</a>
-        <button class="btn ghost2" id="gateOverride" type="button">I've done it — continue</button>
-      </div>
-    </div>
-    <div class="startrow" id="startRow"><button class="btn" id="startBtn">Start →</button></div>
+    <aside class="try code" aria-label="Preview of problem 1">
+      <div class="lbl">Spot the bug</div>
+      <p class="stem" id="tryStem"></p>
+      <pre id="tryCode"></pre>
+      <p class="out" style="min-height:0">Credentials follow the redirect. <a href="#problems">Diagnose it</a></p>
+    </aside>
   </section>
 
-  <section id="results" hidden></section>
-  <form id="exam" hidden></form>
-  <footer><div class="wrap" style="padding:0">Aurora Forge Lab · Layer 2 · problem shapes adapted from
-    <a href="https://www.swebench.com/">SWE-bench</a> (Jimenez et al., 2023); the Verified subset is OpenAI's.</div></footer>
+  <section class="section" id="problems">
+    <div class="container">
+      <div class="kicker">Layer 2</div>
+      <h2>Eight real-world bugs</h2>
+      <p class="sub">Each one gives you an issue report and a code excerpt. Pick the core issue and the surgical fix.</p>
+      <p class="src">Adapted and simplified from the kinds of tasks in <a href="https://www.swebench.com/">SWE-bench</a>
+        (Jimenez et al., 2023), whose human-validated Verified subset (OpenAI) has 500 instances. These are
+        self-contained teaching puzzles, not dataset rows; the repo tag names a library where this shape of bug is common.</p>
+
+      <div class="gate" id="gate" hidden>
+        <h3>Finish the warm-up first</h3>
+        <p>Layer 2 builds on the fundamentals. The warm-up is 30 quick questions and takes about 10 minutes.</p>
+        <div class="actions">
+          <a class="btn" href="./#warmup">Go to the warm-up</a>
+          <button class="btn ghost" id="gateOverride" type="button">I've done it, let me in</button>
+        </div>
+      </div>
+
+      <div id="quiz">
+        <div class="tracker"><div class="tin" role="status" aria-live="polite">
+          <div class="cells" id="cells" aria-hidden="true"></div>
+          <span class="tally" id="tally"></span>
+          <button class="linkbtn" id="restartBtn" type="button">Start over</button>
+        </div></div>
+        <div class="qlist" id="exam"></div>
+        <div id="results"></div>
+      </div>
+    </div>
+  </section>
 </main>
 
+<footer class="site-footer">
+  <div class="cols">
+    <div><h4>Layers</h4><ul><li><a href="./">1. Warm-up</a></li><li><a href="swe.html">2. Real code</a></li><li><a href="days.html">3. Coding days</a></li></ul></div>
+    <div><h4>Run it locally</h4><ul><li><a href="https://github.com/kenny2077/Aurora-Forge">Source on GitHub</a></li><li><a href="https://github.com/kenny2077/Aurora-Forge#quickstart">Quickstart</a></li><li><a href="https://github.com/kenny2077/Aurora-Forge/blob/main/SOURCES.md">What this is based on</a></li></ul></div>
+    <div><h4>About</h4><p style="margin:0;max-width:34ch">A training range, not a leaderboard. Problem shapes adapted from SWE-bench; excerpts are written for teaching.</p></div>
+  </div>
+  <div class="mark-wrap">
+    <canvas class="wordmark" id="wordmark" aria-label="Aurora Forge" role="img"></canvas>
+    <div class="fine"><span>Aurora Forge Lab. MIT licensed.</span><span class="hint">Move your cursor over the letters.</span></div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+<script src="forge.js"></script>
 <script>
 const QUESTIONS = [
   { repo:"requests", cat:"Security",
@@ -298,99 +245,94 @@ const KEY="aurora-swe-v2";
 const LETTERS=["A","B","C","D","E"];
 const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
-const graded={}; let answered=0, score=0;
+const graded={};let answered=0,score=0,cells=[];
 
-try{const b=localStorage.getItem(KEY);if(b){const bl=document.getElementById("bestLine");bl.hidden=false;bl.textContent="Best so far: "+b+"%";}}catch(e){}
+Forge.initHero("#top",{top:.22,ridge:.78});
+Forge.initWordmark(document.getElementById("wordmark"),"Aurora Forge");
+document.getElementById("tryStem").textContent=QUESTIONS[0].stem;document.getElementById("tryCode").textContent=QUESTIONS[0].code;
+
+try{const b=localStorage.getItem(KEY);if(b)document.getElementById("bestLine").textContent="About 15 minutes. Your best so far: "+b+"%.";}catch(e){}
 let l1done=false;try{l1done=localStorage.getItem("aurora-l1-done")==="1";}catch(e){}
-if(!l1done){document.getElementById("startRow").hidden=true;document.getElementById("gate").hidden=false;}
+if(!l1done){document.getElementById("quiz").hidden=true;document.getElementById("gate").hidden=false;}
 document.getElementById("gateOverride").onclick=()=>{try{localStorage.setItem("aurora-l1-done","1");}catch(e){}
-  document.getElementById("gate").hidden=true;document.getElementById("startRow").hidden=false;};
+  document.getElementById("gate").hidden=true;document.getElementById("quiz").hidden=false;};
 
-function buildExam(){
-  const form=document.getElementById("exam");form.innerHTML="";
+function build(){
+  const host=document.getElementById("exam");host.innerHTML="";
   QUESTIONS.forEach((item,qi)=>{
-    const q=el("div","q");q.id="q"+qi;
-    const top=el("div","top");
-    top.appendChild(el("span","num","Problem "+(qi+1)+" / "+QUESTIONS.length));
-    top.appendChild(el("span","repo",item.repo));
-    top.appendChild(el("span","skill",item.cat));
-    q.appendChild(top);
-    q.appendChild(el("div","stem",item.stem));
-    q.appendChild(el("div","issue",item.issue));
-    const pre=el("pre","code");pre.textContent=item.code;q.appendChild(pre);
-    q.appendChild(el("div","ask",item.ask));
+    const q=el("article","q");q.id="q"+qi;
+    const n=el("div","n");n.appendChild(Forge.pixelSVG(String(qi+1).padStart(2,"0")));q.appendChild(n);
+    const body=el("div");
+    const meta=el("div","meta");meta.appendChild(el("span","repo",item.repo));meta.appendChild(el("span",null,item.cat));body.appendChild(meta);
+    body.appendChild(el("h3",null,item.stem));
+    const iss=el("p","issue");iss.appendChild(el("b",null,"Issue report"));iss.appendChild(document.createTextNode(item.issue.replace(/^Bug report:\s*/,"")));body.appendChild(iss);
+    const pre=el("pre","code");pre.textContent=item.code;body.appendChild(pre);
+    body.appendChild(el("p","ask",item.ask));
+    const opts=el("div","opts");
     shuffle(item.o.map((_,i)=>i)).forEach((oi,pos)=>{
       const b=el("button","opt");b.type="button";b.dataset.oi=oi;
       b.appendChild(el("span","key",LETTERS[pos]));b.appendChild(el("span","txt",item.o[oi]));
-      b.onclick=()=>gradeOne(qi,q,oi);
-      q.appendChild(b);
+      b.onclick=()=>grade(qi,q,oi);opts.appendChild(b);
     });
-    const why=el("div","why");why.textContent="Why: "+item.why;q.appendChild(why);
-    form.appendChild(q);
+    body.appendChild(opts);
+    const fb=el("div","fb"),wrap=el("div"),inner=el("div","inner");wrap.appendChild(inner);fb.appendChild(wrap);
+    body.appendChild(fb);q.appendChild(body);host.appendChild(q);
   });
+  cells=Forge.cells(document.getElementById("cells"),QUESTIONS.length);
 }
-function gradeOne(qi,q,chosen){
+function grade(qi,q,chosen){
   if(qi in graded)return;
   graded[qi]=chosen;
-  const item=QUESTIONS[qi];
-  q.classList.add("graded","justgraded");setTimeout(()=>q.classList.remove("justgraded"),300);
+  const item=QUESTIONS[qi],correct=chosen===item.a;
+  q.classList.add("graded");if(!correct)q.classList.add("missed");
   const opts=[...q.querySelectorAll(".opt")];
-  opts.forEach(o=>{const oi=+o.dataset.oi;
-    if(oi===item.a)o.classList.add("correct");
-    else if(oi===chosen)o.classList.add("wrong");
-    else o.classList.add("dim");});
-  const correct=chosen===item.a;
-  if(correct)score++;
-  answered++;
+  opts.forEach(o=>{const oi=+o.dataset.oi;o.setAttribute("aria-disabled","true");
+    o.classList.add(oi===item.a?"correct":oi===chosen?"wrong":"dim");});
+  if(correct)score++;answered++;
+  cells[qi].classList.add(correct?"ok":"no");
   const cPos=opts.findIndex(o=>+o.dataset.oi===item.a);
-  const tag=el("div","tag "+(correct?"ok":"no"),correct?"✓ Correct":"✗ Not quite — correct answer is "+LETTERS[cPos]);
-  q.insertBefore(tag,q.querySelector(".why"));
-  updateHead();
+  const fb=q.querySelector(".fb");fb.classList.add(correct?"ok":"no");
+  const inner=q.querySelector(".inner");inner.innerHTML="";
+  inner.appendChild(el("strong",null,correct?"Correct.":"Not quite. The answer is "+LETTERS[cPos]+"."));
+  inner.appendChild(el("span",null,item.why));
+  tally();
   if(answered===QUESTIONS.length)finish();
 }
-function updateHead(){
-  document.getElementById("scoreText").innerHTML="<b>"+score+"</b>/"+answered+" · "+answered+"/"+QUESTIONS.length;
-  document.getElementById("progFill").style.width=(100*answered/QUESTIONS.length)+"%";
-}
+function tally(){document.getElementById("tally").innerHTML="<b>"+answered+"</b> of "+QUESTIONS.length+" answered, <b>"+score+"</b> right";}
 function verdict(p){
-  if(p>=88)return "Sharp code comprehension — you find the real issue fast.";
-  if(p>=63)return "Good instincts. Were the misses symptom-fixes rather than the cause?";
-  if(p>=38)return "Getting there — notice how wrong options fix the wrong spot.";
-  return "Slow down and read: locate the core issue before choosing a fix.";
+  if(p>=88)return "Sharp code comprehension. You find the real issue fast.";
+  if(p>=63)return "Good instincts. Were the misses fixing a symptom instead of the cause?";
+  if(p>=38)return "Getting there. Notice how the wrong options fix the wrong spot.";
+  return "Slow down and read. Locate the core issue before choosing a fix.";
 }
 function finish(){
   const pct=Math.round(100*score/QUESTIONS.length);
   try{const prev=parseInt(localStorage.getItem(KEY)||"0",10);if(pct>prev)localStorage.setItem(KEY,String(pct));localStorage.setItem("aurora-l2-done","1");}catch(e){}
   const catTot={},catOk={};
   QUESTIONS.forEach((item,qi)=>{catTot[item.cat]=(catTot[item.cat]||0)+1;if(graded[qi]===item.a)catOk[item.cat]=(catOk[item.cat]||0)+1;});
-  const r=document.getElementById("results");r.hidden=false;r.innerHTML="";
-  const card=el("div","result");
-  card.appendChild(el("div","score",pct+"%"));
-  card.appendChild(el("div","verdict",score+" / "+QUESTIONS.length+" correct — "+verdict(pct)));
-  const cats=el("div","cats");
-  Object.keys(catTot).forEach(c=>{const ok=catOk[c]||0,tot=catTot[c];const row=el("div","catrow");
-    row.appendChild(el("span","nm",c));row.appendChild(el("span","sc",ok+"/"+tot));
-    const tr=el("div","track");const i=el("i");i.style.width=(100*ok/tot)+"%";tr.appendChild(i);row.appendChild(tr);cats.appendChild(row);});
-  card.appendChild(cats);
-  const cta=el("a","unlock","Layer 3 — the 35 coding days →");cta.href="https://kenny2077.github.io/Aurora-Forge/days.html";
-  const again=el("button","btn ghost2","Retake");again.type="button";again.onclick=reset;
-  const row2=el("div","startrow");row2.appendChild(cta);row2.appendChild(again);card.appendChild(row2);
-  r.appendChild(card);r.scrollIntoView({behavior:"smooth",block:"start"});
+  const r=document.getElementById("results");r.innerHTML="";
+  const card=el("section","result");card.setAttribute("aria-label","Your result");
+  const sc=el("div","score");sc.setAttribute("aria-label",pct+" percent");sc.appendChild(Forge.pixelSVG(pct+"%"));card.appendChild(sc);
+  const v=el("p","verdict",verdict(pct));v.appendChild(el("small",null,score+" of "+QUESTIONS.length+" correct."));card.appendChild(v);
+  const bars=el("div","bars");
+  Object.keys(catTot).forEach(c=>{const ok=catOk[c]||0,tot=catTot[c],row=el("div","bar-row");
+    row.appendChild(el("span","c",c));row.appendChild(el("span","tnum",ok+" / "+tot));
+    const cs=el("div","cells");for(let i=0;i<tot;i++){const x=el("i");if(i<ok)x.className="ok";cs.appendChild(x);}
+    row.appendChild(cs);bars.appendChild(row);});
+  card.appendChild(bars);
+  const act=el("div","actions");
+  const cta=el("a","btn","Open Layer 3: coding days");cta.href="days.html";
+  const again=el("button","btn ghost","Try again");again.type="button";again.onclick=restart;
+  act.appendChild(cta);act.appendChild(again);card.appendChild(act);
+  r.appendChild(card);Forge.scrollTo(card,-140);
 }
-function start(){
+function restart(){
   for(const k in graded)delete graded[k];answered=0;score=0;
-  buildExam();
-  document.getElementById("intro").hidden=true;
-  document.getElementById("results").hidden=true;
-  document.getElementById("exam").hidden=false;
-  document.getElementById("hstats").hidden=false;
-  document.getElementById("progWrap").hidden=false;
-  updateHead();scrollTo(0,0);
+  document.getElementById("results").innerHTML="";
+  build();tally();Forge.scrollTo("#problems",-80);
 }
-function reset(){document.getElementById("results").hidden=true;start();}
-document.getElementById("startBtn").onclick=start;
-document.getElementById("restartBtn").onclick=reset;
+document.getElementById("restartBtn").onclick=restart;
+build();tally();
 </script>
-
 </body>
 </html>

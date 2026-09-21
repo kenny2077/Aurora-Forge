@@ -3,146 +3,128 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Aurora Forge — a friendly, instant-feedback warm-up on the fundamentals of agentic coding (Layer 1).">
+<meta name="description" content="Aurora Forge: a free training range for the human-led, AI-assisted coding interview. Start with a 30-question warm-up with instant, explained feedback.">
 <meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#04110f">
 <title>Aurora Forge</title>
-<style>
-:root{
-  --night:#061713; --night-deep:#020c0f; --forest:#051a18; --panel:rgba(8,24,26,.55);
-  --ink:#eaf4f1; --muted:#a3b6bc; --faint:#8397a1; --line:rgba(151,225,211,.15); --line-2:rgba(151,225,211,.09);
-  --cyan:#47eadb; --teal:#0eb9ad; --blue:#6aa6ff; --violet:#a99fff; --amber:#f3b85e;
-  --good:#3ff0a8; --good-soft:rgba(63,240,168,.12); --bad:#ff7a8a; --bad-soft:rgba(255,122,138,.12);
-  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
-  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;
-  --ease:cubic-bezier(.16,1,.3,1);
-}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;letter-spacing:-.006em;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;
-  background:
-    radial-gradient(1100px 520px at 82% -8%,rgba(14,185,173,.10),transparent 62%),
-    radial-gradient(880px 500px at 6% 0%,rgba(117,101,255,.09),transparent 60%),
-    linear-gradient(180deg,#020c0f,#051a18 32%,#07142b 60%,#061713 82%,#020c0f) fixed}
-.wrap{max-width:760px;margin:0 auto;padding:0 20px}
-h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.03em;text-wrap:balance}
-.mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
-.grad{background:linear-gradient(96deg,var(--cyan),var(--teal) 40%,var(--blue) 70%,var(--violet));
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-
-header{padding:22px 0 16px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;
-  background:linear-gradient(180deg,rgba(3,9,11,.93),rgba(3,9,11,.6));backdrop-filter:blur(12px)}
-.brandrow{display:flex;align-items:center;gap:11px}
-.mark{width:20px;height:20px;border-radius:6px;flex:none;
-  background:conic-gradient(from 210deg,var(--cyan),var(--blue),var(--violet),var(--cyan));
-  box-shadow:0 0 16px -3px var(--cyan);position:relative}
-.mark::after{content:"";position:absolute;inset:5px;border-radius:3px;background:var(--night-deep)}
-.brand{font-weight:600;font-size:15px}.brand small{color:var(--faint);font-weight:450}
-.hstats{margin-left:auto;display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;color:var(--muted)}
-.hstats b{color:var(--cyan);font-weight:600}
-.ghost{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:transparent;border:1px solid var(--line);
-  border-radius:8px;padding:5px 10px;cursor:pointer;transition:.2s var(--ease)}
-.ghost:hover{border-color:var(--cyan);color:var(--ink)}
-.lnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.lnav a{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:5px 12px;transition:.15s var(--ease)}
-.lnav a:hover{border-color:var(--cyan);color:var(--ink)}
-.lnav a.active{background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);border-color:transparent;font-weight:600}
-.unlock{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:600;font-size:15px;text-decoration:none;
-  border-radius:12px;padding:13px 22px;background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);box-shadow:0 0 0 1px rgba(71,234,219,.3)}
-.unlock:hover{box-shadow:0 0 22px -6px var(--cyan)}
-.bar{margin-top:13px;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
-.bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--teal));
-  transition:width .35s var(--ease);box-shadow:0 0 10px -1px var(--cyan)}
-
-main{padding:28px 0 80px}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
-.hero h1{font-size:clamp(2rem,5vw,2.9rem);line-height:1.05;margin:14px 0 0;letter-spacing:-.04em}
-.hero p{color:var(--muted);max-width:58ch;margin-top:14px}
-.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
-.pill{font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px solid var(--line);
-  border-radius:99px;padding:6px 12px;background:rgba(255,255,255,.02)}
-.best{margin-top:16px;font-family:var(--mono);font-size:12.5px;color:var(--faint)}
-.btn{font-family:var(--sans);font-weight:600;font-size:15px;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;
-  background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);transition:.2s var(--ease);box-shadow:0 0 0 1px rgba(71,234,219,.3)}
-.btn:hover{box-shadow:0 0 22px -6px var(--cyan)}
-.btn.ghost2{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);font-weight:500}
-.startrow{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-
-.cat-head{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);
-  margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line-2)}
-.q{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;margin-bottom:14px;backdrop-filter:blur(6px)}
-.q .num{font-family:var(--mono);font-size:11px;color:var(--faint)}
-.q .stem{font-weight:600;margin:6px 0 14px;letter-spacing:-.01em;line-height:1.4}
-.opt{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);cursor:pointer;
-  border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:9px;background:rgba(255,255,255,.02);
-  transition:.15s var(--ease);display:flex;gap:11px;align-items:flex-start}
-.opt:hover{border-color:rgba(151,225,211,.34)}
-.opt .key{font-family:var(--mono);font-size:12px;color:var(--faint);flex:none;width:16px;padding-top:1px}
-.q.graded .opt{cursor:default}
-.opt.correct{border-color:var(--good);background:var(--good-soft)} .opt.correct .key{color:var(--good)}
-.opt.wrong{border-color:var(--bad);background:var(--bad-soft)} .opt.wrong .key{color:var(--bad)}
-.opt.dim{opacity:.5}
-.fb{display:none;margin-top:4px;font-size:13.5px;border-radius:10px;padding:10px 12px;line-height:1.5}
-.q.graded .fb{display:block}
-.fb.ok{background:var(--good-soft);border:1px solid rgba(63,240,168,.3);color:#bff3da}
-.fb.no{background:var(--bad-soft);border:1px solid rgba(255,122,138,.3);color:#ffd0d6}
-.fb b{font-family:var(--mono);font-size:12px}
-.fb .why{display:block;margin-top:5px;color:var(--muted)}
-@keyframes pop{0%{transform:scale(.99)}60%{transform:scale(1.005)}100%{transform:scale(1)}}
-.q.justgraded{animation:pop .28s var(--ease)}
-
-.result{background:var(--panel);border:1px solid var(--cyan);border-radius:18px;padding:22px;margin:26px 0;box-shadow:0 0 50px -24px var(--cyan)}
-.score{font-size:clamp(2.4rem,7vw,3.4rem);font-weight:700;letter-spacing:-.04em;line-height:1}
-.verdict{color:var(--muted);margin-top:6px}
-.cats{margin-top:18px;display:grid;gap:10px}
-.catrow{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;font-size:13px}
-.catrow .track{grid-column:1/-1;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
-.catrow .track > i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--teal))}
-.catrow .nm{color:var(--muted)} .catrow .sc{font-family:var(--mono);color:var(--faint)}
-footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--faint);font-size:12.5px}
-[hidden]{display:none!important}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:6px}
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link rel="stylesheet" href="forge.css">
 </head>
 <body>
+<div class="frame" aria-hidden="true"></div>
+<a class="sr" href="#warmup">Skip to the warm-up</a>
 
-
-<header><div class="wrap">
-  <div class="brandrow">
-    <span class="mark"></span><span class="brand">Aurora Forge <small>· Fundamentals</small></span>
-    <span class="hstats" id="hstats" hidden><span id="scoreText">0/0</span><button class="ghost" id="restartBtn" type="button">restart</button></span>
-  </div>
-  <nav class="lnav">
-    <a class="active" href="https://kenny2077.github.io/Aurora-Forge/">① Fundamentals</a>
-    <a href="https://kenny2077.github.io/Aurora-Forge/swe.html">② Real-world</a>
-    <a href="https://kenny2077.github.io/Aurora-Forge/days.html">③ Coding days</a>
+<header class="nav">
+  <a class="brand" href="./"><svg viewBox="0 0 5 5" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="2" height="1" fill="#8b7dff"/><rect x="0" y="1" width="2" height="1" fill="#3fe0c8"/><rect x="4" y="1" width="1" height="1" fill="#3fe0c8"/><rect x="1" y="2" width="3" height="1" fill="#3aa0e8"/><rect x="1" y="3" width="3" height="1" fill="#ffb14a" opacity=".55"/><rect x="0" y="4" width="5" height="1" fill="#ffb14a"/></svg>Aurora Forge</a>
+  <nav class="layers-nav" aria-label="Layers">
+    <a href="./" aria-current="page"><span>1</span>Warm-up</a>
+    <a href="swe.html"><span>2</span>Real code</a>
+    <a href="days.html"><span>3</span>Coding days</a>
   </nav>
-  <div class="bar" id="progWrap" hidden><i id="progFill"></i></div>
-</div></header>
+  <div class="nav-end"><a class="btn small ghost" href="#warmup">Start the warm-up</a></div>
+</header>
 
-<main class="wrap">
-  <section id="intro" class="hero">
-    <div class="eyebrow">Layer 1 · warm-up</div>
-    <h1>Do you actually understand <span class="grad">agentic coding?</span></h1>
-    <p>Thirty quick questions on the fundamentals the 2026 AI-assisted interview assumes — context
-      windows, prompting, tools &amp; MCP, working inside a repo, safety, cost, and validating what the
-      model writes. You get <strong>instant feedback</strong> on every click: right or wrong, and why.</p>
-    <div class="pills">
-      <span class="pill" id="qcountPill">— questions</span>
-      <span class="pill">instant feedback</span>
-      <span class="pill">L3 · entry-level</span>
-      <span class="pill">answers explained</span>
+<main class="page">
+  <section class="hero" id="top">
+    <canvas class="field" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <h1>Drive the AI. Own every line.</h1>
+      <p class="lede">Aurora Forge is a free training range for the human-led, AI-assisted coding round.
+        Start with a 30-question warm-up; every answer explains itself the moment you click.</p>
+      <div class="actions">
+        <a class="btn" href="#warmup">Start the warm-up</a>
+        <a class="btn ghost" href="#layers">See the three layers</a>
+      </div>
+      <p class="note" id="bestLine">About 10 minutes. No sign-up; progress stays in your browser.</p>
     </div>
-    <div class="best" id="bestLine" hidden></div>
-    <div class="startrow"><button class="btn" id="startBtn">Start →</button></div>
+    <div class="scroll-cue" aria-hidden="true">Scroll<i></i></div>
+    <aside class="try" aria-label="Try one question">
+      <div class="lbl">Try one</div>
+      <p class="stem" id="tryStem"></p>
+      <div class="opts" id="tryOpts"></div>
+      <p class="out" id="tryOut">Pick one to see why.</p>
+    </aside>
   </section>
 
-  <section id="results" hidden></section>
-  <form id="exam" hidden></form>
-  <footer><div>Aurora Forge Lab · Fundamentals of Agentic Coding · answers reflect current best practice (2026) and evolve.</div></footer>
+  <section class="statement" id="why" aria-label="Why this exists">
+    <div class="pin"><p>Meta is piloting coding rounds where you work with an AI assistant, and Google has
+      reportedly tested the format. The assistant types fast. You're graded on what it can't do:
+      <em>scoping a vague ask, reading code you didn't write, and catching what the model got subtly wrong.</em></p></div>
+  </section>
+
+  <section class="section paper" id="layers">
+    <div class="container">
+      <div class="kicker">Three layers</div>
+      <h2>Each layer unlocks the next.</h2>
+      <p class="sub">Built for entry-level candidates first. Learn how the tools work, then read real bugs, then ship code with an assistant.</p>
+      <div class="stack">
+        <article class="layer" style="--i:0">
+          <div class="num"><canvas data-text="1" role="img" aria-label="Layer 1"></canvas></div>
+          <div class="body">
+            <h3>Fundamentals of agentic coding</h3>
+            <p>30 questions on how the tools actually work, with the reasoning behind every answer.</p>
+            <ul><li>Context windows</li><li>Prompting</li><li>Tools and MCP</li><li>Safety</li><li>Cost and speed</li><li>Checking the output</li></ul>
+            <div class="foot"><a class="btn" href="#warmup">Start the warm-up</a><span class="state open" id="l1state">Open now</span></div>
+          </div>
+        </article>
+        <article class="layer" style="--i:1">
+          <div class="num"><canvas data-text="2" role="img" aria-label="Layer 2"></canvas></div>
+          <div class="body">
+            <h3>Real-world code</h3>
+            <p>8 bugs shaped like real GitHub fixes. Read the report, find the core issue, and pick the smallest correct change.</p>
+            <ul><li>Issue reports</li><li>Code excerpts</li><li>Surgical fixes</li></ul>
+            <div class="foot"><a class="btn" href="swe.html">Open Layer 2</a><span class="state" id="l2state">Unlocks after the warm-up</span></div>
+          </div>
+        </article>
+        <article class="layer" style="--i:2">
+          <div class="num"><canvas data-text="3" role="img" aria-label="Layer 3"></canvas></div>
+          <div class="body">
+            <h3>35 coding days</h3>
+            <p>Seven weeks of runnable exercises. Each starts with a failing test suite you make pass with AI, and a mock interviewer answers your clarifying questions.</p>
+            <ul><li>Python and TypeScript</li><li>L3 to L5</li><li>Mock interviewer</li></ul>
+            <div class="foot"><a class="btn" href="days.html">Browse the days</a><span class="state open">Always open</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="warmup">
+    <div class="container">
+      <div class="quiz-head">
+        <div>
+          <div class="kicker">Layer 1</div>
+          <h2>The warm-up</h2>
+          <p class="sub">Pick an answer and you'll see straight away whether it's right, and why. Finish all 30 to unlock Layer 2.</p>
+        </div>
+      </div>
+      <div class="tracker"><div class="tin" role="status" aria-live="polite">
+        <div class="cells" id="cells" aria-hidden="true"></div>
+        <span class="tally" id="tally"></span>
+        <button class="linkbtn" id="restartBtn" type="button">Start over</button>
+      </div></div>
+      <div class="qlist" id="exam"></div>
+      <div id="results"></div>
+    </div>
+  </section>
 </main>
 
+<footer class="site-footer">
+  <div class="cols">
+    <div><h4>Layers</h4><ul><li><a href="./">1. Warm-up</a></li><li><a href="swe.html">2. Real code</a></li><li><a href="days.html">3. Coding days</a></li></ul></div>
+    <div><h4>Run it locally</h4><ul><li><a href="https://github.com/kenny2077/Aurora-Forge">Source on GitHub</a></li><li><a href="https://github.com/kenny2077/Aurora-Forge#quickstart">Quickstart</a></li><li><a href="https://github.com/kenny2077/Aurora-Forge/blob/main/SOURCES.md">What this is based on</a></li></ul></div>
+    <div><h4>About</h4><p style="margin:0;max-width:34ch">A training range, not a leaderboard. Answers reflect current best practice in 2026 and will change as the tools do.</p></div>
+  </div>
+  <div class="mark-wrap">
+    <canvas class="wordmark" id="wordmark" aria-label="Aurora Forge" role="img"></canvas>
+    <div class="fine"><span>Aurora Forge Lab. MIT licensed.</span><span class="hint">Move your cursor over the letters.</span></div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+<script src="forge.js"></script>
 <script>
 const QUESTIONS = [
   // ---- Context ----
@@ -344,98 +326,118 @@ const KEY="aurora-fundamentals-v2";
 const LETTERS=["A","B","C","D","E"];
 const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
-const graded={}; // qi -> chosen original index
-let answered=0, score=0;
+const graded={};
+let answered=0, score=0, cells=[];
 
-document.getElementById("qcountPill").textContent=QUESTIONS.length+" questions";
-try{const b=localStorage.getItem(KEY);if(b){const bl=document.getElementById("bestLine");bl.hidden=false;bl.textContent="Best so far: "+b+"%";}}catch(e){}
+Forge.initHero("#top",{top:.24,ridge:.8});
+Forge.initStatement("#why");
+Forge.initStack(".layer");
+Forge.initNumerals(".layer .num canvas");
+Forge.initWordmark(document.getElementById("wordmark"),"Aurora Forge");
 
-function buildExam(){
-  const form=document.getElementById("exam");form.innerHTML="";
+function syncLayerStates(){
+  let l1=false,l2=false;try{l1=localStorage.getItem("aurora-l1-done")==="1";l2=localStorage.getItem("aurora-l2-done")==="1";}catch(e){}
+  const s1=document.getElementById("l1state"),s2=document.getElementById("l2state");
+  if(l1){s1.textContent="Completed";s1.className="state done";s1.previousElementSibling.textContent="Retake the warm-up";}
+  s2.textContent=l2?"Completed":l1?"Unlocked":"Unlocks after the warm-up";
+  s2.className="state"+(l2?" done":l1?" open":"");
+}
+syncLayerStates();
+try{const b=localStorage.getItem(KEY);if(b)document.getElementById("bestLine").textContent="About 10 minutes. Your best so far: "+b+"%.";}catch(e){}
+
+function build(){
+  const host=document.getElementById("exam");host.innerHTML="";
+  const counts={};QUESTIONS.forEach(q=>counts[q.cat]=(counts[q.cat]||0)+1);
   let lastCat=null;
   QUESTIONS.forEach((item,qi)=>{
-    if(item.cat!==lastCat){form.appendChild(el("div","cat-head",item.cat));lastCat=item.cat;}
-    const q=el("div","q");q.id="q"+qi;
-    q.appendChild(el("div","num","Question "+(qi+1)+" / "+QUESTIONS.length));
-    q.appendChild(el("div","stem",item.q));
+    if(item.cat!==lastCat){const h=el("div","cat");h.appendChild(el("h3",null,item.cat));
+      h.appendChild(el("span",null,counts[item.cat]+" questions"));host.appendChild(h);lastCat=item.cat;}
+    const q=el("article","q");q.id="q"+qi;
+    const n=el("div","n");n.appendChild(Forge.pixelSVG(String(qi+1).padStart(2,"0")));q.appendChild(n);
+    const body=el("div");
+    body.appendChild(el("p","stem",item.q));
+    const opts=el("div","opts");
     shuffle(item.o.map((_,i)=>i)).forEach((oi,pos)=>{
       const b=el("button","opt");b.type="button";b.dataset.oi=oi;
-      b.appendChild(el("span","key",LETTERS[pos]));
-      b.appendChild(el("span","txt",item.o[oi]));
-      b.onclick=()=>gradeOne(qi,q,oi);
-      q.appendChild(b);
+      b.appendChild(el("span","key",LETTERS[pos]));b.appendChild(el("span","txt",item.o[oi]));
+      b.onclick=()=>grade(qi,q,oi);opts.appendChild(b);
     });
-    const fb=el("div","fb");q.appendChild(fb);
-    form.appendChild(q);
+    body.appendChild(opts);
+    const fb=el("div","fb"),wrap=el("div"),inner=el("div","inner");wrap.appendChild(inner);fb.appendChild(wrap);
+    body.appendChild(fb);q.appendChild(body);host.appendChild(q);
   });
+  cells=Forge.cells(document.getElementById("cells"),QUESTIONS.length);
 }
-function gradeOne(qi,q,chosen){
+function grade(qi,q,chosen){
   if(qi in graded)return;
   graded[qi]=chosen;
-  const item=QUESTIONS[qi];
-  q.classList.add("graded","justgraded");
-  setTimeout(()=>q.classList.remove("justgraded"),300);
+  const item=QUESTIONS[qi],correct=chosen===item.a;
+  q.classList.add("graded");if(!correct)q.classList.add("missed");
   const opts=[...q.querySelectorAll(".opt")];
-  opts.forEach(o=>{const oi=+o.dataset.oi;
-    if(oi===item.a)o.classList.add("correct");
-    else if(oi===chosen)o.classList.add("wrong");
-    else o.classList.add("dim");});
-  const correct=chosen===item.a;
-  if(correct)score++;
-  answered++;
+  opts.forEach(o=>{const oi=+o.dataset.oi;o.setAttribute("aria-disabled","true");
+    o.classList.add(oi===item.a?"correct":oi===chosen?"wrong":"dim");});
+  if(correct)score++;answered++;
+  cells[qi].classList.add(correct?"ok":"no");
   const cPos=opts.findIndex(o=>+o.dataset.oi===item.a);
-  const fb=q.querySelector(".fb");
-  fb.classList.add(correct?"ok":"no");
-  const head=el("b",null,correct?"✓ Correct":"✗ Not quite — correct answer is "+LETTERS[cPos]);
-  fb.appendChild(head);
-  fb.appendChild(el("span","why",item.why));
-  updateHead();
+  const fb=q.querySelector(".fb");fb.classList.add(correct?"ok":"no");
+  const inner=q.querySelector(".inner");inner.innerHTML="";
+  inner.appendChild(el("strong",null,correct?"Correct.":"Not quite. The answer is "+LETTERS[cPos]+"."));
+  inner.appendChild(el("span",null,item.why));
+  tally();
   if(answered===QUESTIONS.length)finish();
 }
-function updateHead(){
-  document.getElementById("scoreText").innerHTML="<b>"+score+"</b>/"+answered+" · "+answered+"/"+QUESTIONS.length;
-  document.getElementById("progFill").style.width=(100*answered/QUESTIONS.length)+"%";
+function tally(){
+  document.getElementById("tally").innerHTML="<b>"+answered+"</b> of "+QUESTIONS.length+" answered, <b>"+score+"</b> right";
 }
 function verdict(p){
-  if(p>=90)return "Strong AI fluency — you're ready to reason out loud in the room.";
+  if(p>=90)return "Strong AI fluency. You're ready to reason out loud in the room.";
   if(p>=70)return "Solid foundation. Revisit the ones you missed and you're in good shape.";
-  if(p>=50)return "Getting there — the explanations above are your study list.";
+  if(p>=50)return "Getting there. The explanations above are your study list.";
   return "Early days. Reread every explanation; these fundamentals are the whole game now.";
 }
 function finish(){
   const pct=Math.round(100*score/QUESTIONS.length);
   try{const prev=parseInt(localStorage.getItem(KEY)||"0",10);if(pct>prev)localStorage.setItem(KEY,String(pct));localStorage.setItem("aurora-l1-done","1");}catch(e){}
+  syncLayerStates();
   const catTot={},catOk={};
   QUESTIONS.forEach((item,qi)=>{catTot[item.cat]=(catTot[item.cat]||0)+1;if(graded[qi]===item.a)catOk[item.cat]=(catOk[item.cat]||0)+1;});
-  const r=document.getElementById("results");r.hidden=false;r.innerHTML="";
-  const card=el("div","result");
-  card.appendChild(el("div","score",pct+"%"));
-  card.appendChild(el("div","verdict",score+" / "+QUESTIONS.length+" correct — "+verdict(pct)));
-  const cats=el("div","cats");
-  Object.keys(catTot).forEach(c=>{const ok=catOk[c]||0,tot=catTot[c];const row=el("div","catrow");
-    row.appendChild(el("span","nm",c));row.appendChild(el("span","sc",ok+"/"+tot));
-    const tr=el("div","track");const i=el("i");i.style.width=(100*ok/tot)+"%";tr.appendChild(i);row.appendChild(tr);cats.appendChild(row);});
-  card.appendChild(cats);
-  const cta=el("a","unlock","Layer 2 unlocked — Real-world problems →");
-  cta.href="https://kenny2077.github.io/Aurora-Forge/swe.html";
-  const again=el("button","btn ghost2","Try again");again.type="button";again.onclick=reset;
-  const row2=el("div","startrow");row2.appendChild(cta);row2.appendChild(again);card.appendChild(row2);
-  r.appendChild(card);r.scrollIntoView({behavior:"smooth",block:"start"});
+  const r=document.getElementById("results");r.innerHTML="";
+  const card=el("section","result");card.setAttribute("aria-label","Your result");
+  const sc=el("div","score");sc.setAttribute("aria-label",pct+" percent");sc.appendChild(Forge.pixelSVG(pct+"%"));card.appendChild(sc);
+  const v=el("p","verdict",verdict(pct));v.appendChild(el("small",null,score+" of "+QUESTIONS.length+" correct. Layer 2 is now unlocked."));card.appendChild(v);
+  const bars=el("div","bars");
+  Object.keys(catTot).forEach(c=>{const ok=catOk[c]||0,tot=catTot[c],row=el("div","bar-row");
+    row.appendChild(el("span","c",c));row.appendChild(el("span","tnum",ok+" / "+tot));
+    const cs=el("div","cells");for(let i=0;i<tot;i++){const x=el("i");if(i<ok)x.className="ok";cs.appendChild(x);}
+    row.appendChild(cs);bars.appendChild(row);});
+  card.appendChild(bars);
+  const act=el("div","actions");
+  const cta=el("a","btn","Open Layer 2: real code");cta.href="swe.html";
+  const again=el("button","btn ghost","Try again");again.type="button";again.onclick=restart;
+  act.appendChild(cta);act.appendChild(again);card.appendChild(act);
+  r.appendChild(card);
+  Forge.scrollTo(card,-140);
 }
-function start(){
+function restart(){
   for(const k in graded)delete graded[k];answered=0;score=0;
-  buildExam();
-  document.getElementById("intro").hidden=true;
-  document.getElementById("results").hidden=true;
-  document.getElementById("exam").hidden=false;
-  document.getElementById("hstats").hidden=false;
-  document.getElementById("progWrap").hidden=false;
-  updateHead();scrollTo(0,0);
+  document.getElementById("results").innerHTML="";
+  build();tally();Forge.scrollTo("#warmup",-80);
 }
-function reset(){document.getElementById("results").hidden=true;start();}
-document.getElementById("startBtn").onclick=start;
-document.getElementById("restartBtn").onclick=reset;
-</script>
+document.getElementById("restartBtn").onclick=restart;
+build();tally();
 
+/* hero teaser: one question, answered in place */
+(function(){
+  const item=QUESTIONS[1];document.getElementById("tryStem").textContent=item.q;
+  const host=document.getElementById("tryOpts"),out=document.getElementById("tryOut");let done=false;
+  item.o.forEach((txt,oi)=>{const b=el("button","opt");b.type="button";
+    b.appendChild(el("span","key",LETTERS[oi]));b.appendChild(el("span","txt",txt));
+    b.onclick=()=>{if(done)return;done=true;
+      [...host.children].forEach((o,j)=>o.classList.add(j===item.a?"correct":j===oi?"wrong":"dim"));
+      out.classList.add(oi===item.a?"ok":"no");out.textContent=(oi===item.a?"Correct. ":"Not quite. ")+item.why+" ";
+      const a=el("a",null,"29 more in the warm-up");a.href="#warmup";out.appendChild(a);};
+    host.appendChild(b);});
+})();
+</script>
 </body>
 </html>
