@@ -55,10 +55,10 @@ git clone https://github.com/kenny2077/Aurora-Forge.git
 cd Aurora-Forge
 
 # Python days — needs python3 + pytest
-cd Day6_Concurrency_Race && python3 -m pytest -q     # watch it fail, then fix it with AI
+cd days/Day6_Concurrency_Race && python3 -m pytest -q   # watch it fail, then fix it with AI
 
 # TypeScript days — needs Node 24+ (runs .ts natively, no build)
-cd Day7_CSV_Tokenizer_TS && node --test
+cd days/Day7_CSV_Tokenizer_TS && node --test
 ```
 
 > [!TIP]
@@ -107,19 +107,20 @@ Per-day levels and verification status live in **[MONTH_PLAN.md](./MONTH_PLAN.md
 
 ```text
 .
-├── Day01…Day35_*/           # one folder per exercise
-│   ├── README.md            #   the ticket + workflow
-│   ├── <starter>.py|.ts     #   code with the planted bug / stub
-│   ├── test_*.py | *.test.ts#   the failing suite you make pass
-│   ├── interview.json       #   drives the mock (prompt, clarifications, hints)
-│   └── AI_LOG.md            #   your prompt + verification log
-├── interview.py             # the terminal mock runner
-├── docs/index.html          # Layer 1 — fundamentals warm-up (the landing page)
-├── docs/swe.html            # Layer 2 — SWE-bench-style problems
-├── docs/days.html           # Layer 3 — the 35 coding days web app
-├── assets/banner.svg        # the pixel-art hero
-├── MONTH_PLAN.md            # curriculum + verification status
-└── SOURCES.md               # reporting behind the program's design
+├── days/                      # the 35 coding-day exercises (Layer 3)
+│   └── DayNN_*/               #   one folder per exercise:
+│       ├── README.md          #     the ticket + workflow
+│       ├── <starter>.py|.ts   #     code with the planted bug / stub
+│       ├── test_*.py|*.test.ts #    the failing suite you make pass
+│       ├── interview.json     #     drives the mock (prompt, clarifications, hints)
+│       └── AI_LOG.md          #     your prompt + verification log
+├── interview.py               # the terminal mock runner
+├── docs/index.html            # Layer 1 — fundamentals warm-up (landing page)
+├── docs/swe.html              # Layer 2 — SWE-bench-style problems
+├── docs/days.html             # Layer 3 — the 35 coding days web app
+├── assets/banner.svg          # the pixel-art hero
+├── MONTH_PLAN.md              # curriculum + verification status
+└── SOURCES.md                 # reporting behind the program's design
 ```
 
 ## Quality bar

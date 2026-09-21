@@ -1,6 +1,6 @@
-# Forge Range
+# Aurora Forge
 
-Training-range repo of 35 daily exercises (`DayN_*/`) for the human-led, AI-assisted coding
+Training-range repo of 35 daily exercises (`days/DayN_*/`) for the human-led, AI-assisted coding
 interview, plus the static site in `docs/` and the mock-interview CLI `interview.py`.
 
 ## Agent skills

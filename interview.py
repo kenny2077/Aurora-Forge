@@ -31,6 +31,7 @@ import time
 from datetime import datetime
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+DAYS = os.path.join(HERE, "days")  # the coding-day folders live under days/
 
 
 def _c(text: str, code: str) -> str:
@@ -49,8 +50,8 @@ def red(t): return _c(t, "31")
 
 def find_days() -> list[str]:
     days = []
-    for name in sorted(os.listdir(HERE)):
-        if os.path.isfile(os.path.join(HERE, name, "interview.json")):
+    for name in sorted(os.listdir(DAYS)):
+        if os.path.isfile(os.path.join(DAYS, name, "interview.json")):
             days.append(name)
     return days
 
@@ -63,7 +64,7 @@ def pick_day() -> str | None:
     print(bold("\nAvailable interview days:\n"))
     for i, d in enumerate(days, 1):
         try:
-            m = json.load(open(os.path.join(HERE, d, "interview.json")))
+            m = json.load(open(os.path.join(DAYS, d, "interview.json")))
             label = f"{m.get('title', d)}  {dim('· ' + m.get('difficulty', ''))}"
         except Exception:
             label = d
@@ -76,7 +77,7 @@ def pick_day() -> str | None:
 
 
 def load_manifest(folder: str) -> dict | None:
-    path = os.path.join(HERE, folder, "interview.json")
+    path = os.path.join(DAYS, folder, "interview.json")
     if not os.path.isfile(path):
         print(red(f"No interview.json in {folder}"))
         return None
@@ -103,7 +104,7 @@ def run_tests(folder: str, test_cmd: str) -> bool:
     print(dim(f"\n$ {test_cmd}   (in {folder})\n"))
     try:
         proc = subprocess.run(
-            test_cmd, shell=True, cwd=os.path.join(HERE, folder),
+            test_cmd, shell=True, cwd=os.path.join(DAYS, folder),
             capture_output=True, text=True, timeout=120,
         )
     except subprocess.TimeoutExpired:
@@ -165,7 +166,7 @@ def debrief(folder: str, manifest: dict, elapsed: float, hints_used: int,
     ]
     if scores:
         record.append("- Self-score: " + ", ".join(f"{k} {v}" for k, v in scores.items()))
-    log_path = os.path.join(HERE, folder, "AI_LOG.md")
+    log_path = os.path.join(DAYS, folder, "AI_LOG.md")
     try:
         with open(log_path, "a") as f:
             f.write("\n".join(record) + "\n")
@@ -243,7 +244,7 @@ def main() -> None:
     if not folder:
         print(red("No day selected."))
         sys.exit(1)
-    if not os.path.isdir(os.path.join(HERE, folder)):
+    if not os.path.isdir(os.path.join(DAYS, folder)):
         print(red(f"No such folder: {folder}"))
         sys.exit(1)
     run(folder)
