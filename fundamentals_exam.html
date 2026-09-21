@@ -146,10 +146,10 @@ const QUESTIONS = [
     "A single character, always"], a:1,
     why:"Models process text as tokens (~3–4 characters / roughly ¾ of a word on average). Cost and context limits are measured in tokens, not characters or lines."},
   {cat:"LLM & context basics", q:"What tends to happen as a session's context gets very full?", o:[
-    "The model gets permanently smarter",
-    "Nothing — bigger is always strictly better",
+    "The model permanently remembers everything from the whole session",
+    "Nothing — a fuller window is always strictly better",
     "Earlier detail can be dropped or compacted, and the model may 'forget' things said earlier",
-    "The model refuses to answer entirely"], a:2,
+    "The window automatically expands to fit whatever you add"], a:2,
     why:"As the window fills, older content is summarized/compacted or evicted, so specifics from early in the session can be lost or diluted — a real failure mode on long tasks."},
 
   {cat:"Context management", q:"Your long task's session just compacted and you lost earlier detail. Best recovery habit?", o:[
@@ -179,29 +179,29 @@ const QUESTIONS = [
     why:"'Make the code better' has no target, no constraints, and no definition of done — it invites arbitrary changes you can't validate. The others scope the task precisely."},
 
   {cat:"Agentic infrastructure", q:"What is a 'tool call'?", o:[
-    "The model editing its own weights",
+    "The model updating its own weights mid-conversation",
     "A structured request from the model to run an external function/tool (read a file, run tests, search) whose result is fed back into its context",
-    "A phone call to support",
-    "Another word for a prompt"], a:1,
+    "A step where the model rewrites its own system prompt",
+    "Another name for the system prompt that sets the model's role"], a:1,
     why:"Tool calling lets the model act on the world through defined functions; the harness executes the call and returns the result so the model can reason over real data instead of guessing."},
   {cat:"Agentic infrastructure", q:"In an agent, what is the 'harness' versus the model?", o:[
-    "The harness is the model; there is no difference",
+    "They're the same thing — 'harness' is just another word for the model",
     "The harness is the loop/runtime around the model — it feeds context, executes tool calls, and enforces limits; the model is the reasoning 'brain'",
-    "The harness is the training dataset",
-    "The harness is the GPU"], a:1,
+    "The harness is the system-prompt template the model is given",
+    "The harness is the fine-tuning pipeline that produced the model"], a:1,
     why:"The model decides; the harness does — it manages context, runs tools, applies guardrails, and loops. Good agentic work comes from the two working well together, not the model alone."},
   {cat:"Agentic infrastructure", q:"What is an MCP server?", o:[
-    "A gaming server",
+    "A proprietary plugin format only one editor can load",
     "A standardized way (Model Context Protocol) to expose tools/data/resources to an AI client so any compatible model can use them",
-    "A type of GPU",
-    "A closed format only one vendor can read"], a:1,
+    "A hosted model endpoint you send prompts to over HTTP",
+    "A background service that fine-tunes the model on your repo"], a:1,
     why:"MCP is an open protocol: a server advertises tools/resources, and any MCP-capable client (editor, agent) can call them — decoupling capabilities from any single model or app."},
 
   {cat:"Safety", q:"What is a prompt injection?", o:[
-    "A syntax error in your prompt",
+    "A prompt so long it overflows the context window",
     "Malicious instructions hidden in content the model reads (a web page, file, tool output) that try to hijack its behavior",
-    "Typing too fast",
-    "A way to speed up the model"], a:1,
+    "When the model refuses a request it judges unsafe",
+    "A trick for compressing a prompt into fewer tokens"], a:1,
     why:"Untrusted content pulled into context can carry instructions ('ignore previous instructions, exfiltrate secrets'). Treat tool/document output as data, never as commands, and constrain what the agent can do."},
   {cat:"Safety", q:"Best mitigation when an agent processes untrusted external content?", o:[
     "Trust it fully to save time",
@@ -211,10 +211,10 @@ const QUESTIONS = [
     why:"Defense is layered: don't let fetched content issue commands, minimize the agent's permissions, and gate destructive/outward actions behind human confirmation."},
 
   {cat:"Cost & reasoning effort", q:"When is higher reasoning effort most worth the extra cost/latency?", o:[
-    "For every task, always",
+    "On every task — maximum reasoning is always worth it",
     "For genuinely hard, multi-step or ambiguous problems — not for trivial edits or lookups",
-    "Only for spelling fixes",
-    "Never; low effort is always fine"], a:1,
+    "Only when the answer has to be valid JSON",
+    "Only when you're running low on API credits"], a:1,
     why:"Match effort to difficulty: crank reasoning up for gnarly design/debugging, keep it low for mechanical or well-specified work so you don't burn time and tokens for no gain."},
   {cat:"Cost & reasoning effort", q:"A good first move to cut token cost on a big task?", o:[
     "Paste the entire repository into every prompt",
@@ -232,8 +232,8 @@ const QUESTIONS = [
   {cat:"Workflow & validation", q:"The AI wrote code and all looks fine. What's the right habit?", o:[
     "Ship it — the model is usually right",
     "Validate it: read the diff, run the tests, check edge cases; never keep a line you can't explain",
-    "Delete the tests so it passes",
-    "Trust it because it sounds confident"], a:1,
+    "Skim it and merge if it reads reasonably",
+    "Trust it — confident, well-formatted code is usually correct"], a:1,
     why:"Output validation is the core scored skill: treat AI code like a peer's PR — trace it, test it, and own every line. Confident prose is not evidence of correctness."},
   {cat:"Workflow & validation", q:"Best approach to a long-horizon task the model can't finish in one shot?", o:[
     "One giant prompt and hope",
@@ -260,6 +260,7 @@ document.getElementById("qcountPill").textContent=QUESTIONS.length+" questions";
 try{const b=localStorage.getItem(KEY);if(b){const bl=document.getElementById("bestLine");
   bl.hidden=false;bl.textContent="Best so far: "+b+"%";}}catch(e){}
 
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function buildExam(){
   const form=document.getElementById("exam");form.innerHTML="";
   let lastCat=null;
@@ -268,13 +269,14 @@ function buildExam(){
     const q=el("div","q");q.id="q"+qi;
     q.appendChild(el("div","num","Question "+(qi+1)));
     q.appendChild(el("div","stem",item.q));
-    item.o.forEach((opt,oi)=>{
-      const b=el("button","opt");b.type="button";b.setAttribute("aria-pressed","false");
-      b.appendChild(el("span","key",LETTERS[oi]));
-      b.appendChild(el("span","txt",opt));
+    shuffle(item.o.map((_,i)=>i)).forEach((oi,pos)=>{
+      const b=el("button","opt");b.type="button";b.setAttribute("aria-pressed","false");b.dataset.oi=oi;
+      b.appendChild(el("span","key",LETTERS[pos]));
+      b.appendChild(el("span","txt",item.o[oi]));
       b.onclick=()=>{ if(graded)return;
         answers[qi]=oi;
-        [...q.querySelectorAll(".opt")].forEach((o,i)=>o.setAttribute("aria-pressed",i===oi?"true":"false"));
+        [...q.querySelectorAll(".opt")].forEach(o=>o.setAttribute("aria-pressed","false"));
+        b.setAttribute("aria-pressed","true");
         updateCount();
       };
       q.appendChild(b);
@@ -308,11 +310,10 @@ function submitExam(){
     const opts=[...q.querySelectorAll(".opt")];
     const chosen=answers[qi];
     if(chosen===item.a){correct++;catOk[item.cat]=(catOk[item.cat]||0)+1;}
-    opts.forEach((o,i)=>{
-      if(i===item.a)o.classList.add("correct");
-      else if(i===chosen)o.classList.add("wrong");
-    });
-    const tag=el("div","tag "+(chosen===item.a?"ok":"no"),chosen===item.a?"✓ Correct":"✗ Your answer: "+LETTERS[chosen]+" · Correct: "+LETTERS[item.a]);
+    opts.forEach(o=>{const oi=+o.dataset.oi; if(oi===item.a)o.classList.add("correct"); else if(oi===chosen)o.classList.add("wrong");});
+    const cPos=opts.findIndex(o=>+o.dataset.oi===item.a);
+    const chPos=opts.findIndex(o=>+o.dataset.oi===chosen);
+    const tag=el("div","tag "+(chosen===item.a?"ok":"no"),chosen===item.a?"✓ Correct":"✗ Your answer: "+LETTERS[chPos]+" · Correct: "+LETTERS[cPos]);
     q.insertBefore(tag,q.querySelector(".why"));
   });
   const pct=Math.round(100*correct/QUESTIONS.length);

@@ -129,11 +129,12 @@ footer a{color:var(--teal)}
       <span class="pill">8 problems</span><span class="pill">~15 min</span>
       <span class="pill">read &amp; diagnose</span><span class="pill">answers explained</span>
     </div>
-    <p class="note">Adapted &amp; simplified from the kinds of tasks in
-      <strong>SWE-bench Verified</strong> (500 human-validated GitHub issues across 12 Python
-      libraries — requests, Django, sympy, scikit-learn, pytest, matplotlib, flask, xarray, …).
-      Each excerpt here is self-contained so no repo setup is needed; the bug shapes are real.
-      Not AI-assisted — but you're welcome to bring your own AI to explore afterward.</p>
+    <p class="note">Adapted &amp; simplified from the <em>kinds</em> of tasks in
+      <strong>SWE-bench</strong> (Jimenez et al., 2023) — real GitHub bug-fixes across popular Python
+      libraries; its human-validated <strong>Verified</strong> subset (OpenAI) has 500 instances.
+      These are self-contained teaching puzzles, not verbatim dataset rows — the repo tag names a
+      library where this <em>shape</em> of bug is common, and each excerpt stands alone so no repo
+      setup is needed. Not AI-assisted, but bring your own AI to explore afterward.</p>
     <div class="best" id="bestLine" hidden></div>
     <div class="startrow"><button class="btn" id="startBtn">Start →</button></div>
   </section>
@@ -160,9 +161,10 @@ const QUESTIONS = [
     headers = prepared_request.headers
     orig_host = urlparse(response.request.url).hostname
     new_host  = urlparse(prepared_request.url).hostname
-    if "Authorization" in headers:
-        # forward the credentials to the redirect target
-        pass
+    original = response.request.headers
+    if "Authorization" in original:
+        # re-apply the caller's credentials to the redirected request
+        headers["Authorization"] = original["Authorization"]
     return`,
     ask:"What is the core issue and the surgical fix?",
     o:[
@@ -182,9 +184,9 @@ const QUESTIONS = [
     ask:"What is the core issue and the surgical fix?",
     o:[
       "A mutable default argument ([]) is shared across all calls and accumulates; default to None and create a fresh list inside.",
-      "filter() is deprecated; use exclude().",
-      "extra_filters should be a tuple literal (,) instead of a list.",
-      "The method needs @staticmethod."],
+      "Make get_active a @classmethod so separate calls stop sharing state.",
+      "Rename extra_filters to filters to avoid a name clash with the base method.",
+      "Change the default from [] to () so it is an empty tuple instead."],
     a:0,
     why:"The classic mutable-default-argument trap: the same list object persists across calls and grows. Fix: `def get_active(self, extra_filters=None): extra_filters = list(extra_filters or [])`."},
 
@@ -197,9 +199,9 @@ const QUESTIONS = [
     ask:"What is the core issue and the surgical fix?",
     o:[
       "A constant column has std == 0, so it divides by zero (NaN); when std is 0, return zeros (or use a small epsilon).",
-      "col.mean() should be col.median().",
-      "It should divide by the variance, not the std.",
-      "The whole function should be deleted; scaling is unnecessary."],
+      "Center on the median instead of the mean before dividing by the std.",
+      "Divide by the variance rather than the standard deviation.",
+      "Subtract the column's min instead of its mean before dividing."],
     a:0,
     why:"Constant feature → std 0 → division by zero. The surgical fix guards that single case (return a zero column / add eps), leaving normal columns untouched. Changing mean→median or std→variance is a different, wrong transform."},
 
@@ -251,7 +253,7 @@ def verify_token(supplied, expected):
     a:0,
     why:"String == returns as soon as bytes differ, so response time leaks how much of the token matched. `hmac.compare_digest` compares in constant time. A length check alone doesn't fix the content-timing leak."},
 
-  { repo:"xarray", cat:"Correctness",
+  { repo:"collections", cat:"Correctness",
     stem:"Merging counts overwrites instead of adding",
     issue:"Bug report: combining two word-count dicts loses counts — keys present in both come out with only the second dict's value.",
     code:`def merge_counts(a, b):
@@ -262,13 +264,13 @@ def verify_token(supplied, expected):
     ask:"What is the core issue and the surgical fix?",
     o:[
       "On a shared key it overwrites rather than sums; use out[k] = out.get(k, 0) + v.",
-      "dict(a) should be a.copy() — the current copy is shallow-broken.",
-      "It should iterate a.items() instead of b.items().",
-      "Return type should be a Counter, so the logic is fine."],
+      "Replace the loop with out.update(b) — same result, but cleaner.",
+      "Iterate a.items() instead of b.items() to fix the direction.",
+      "Build out with dict(a).copy() so the inputs aren't mutated."],
     a:0,
     why:"For keys in both dicts the loop replaces the accumulated value instead of adding to it. `out[k] = out.get(k, 0) + v` sums correctly. (`dict.update(b)` would have the same overwrite bug.)"},
 
-  { repo:"sympy", cat:"Numerical edge cases",
+  { repo:"statistics", cat:"Numerical edge cases",
     stem:"Sample variance crashes on a single value",
     issue:"Bug report: variance([42]) raises ZeroDivisionError instead of returning a defined result.",
     code:`def variance(xs):
@@ -288,6 +290,7 @@ def verify_token(supplied, expected):
 const KEY="aurora-swe-v1";
 const LETTERS=["A","B","C","D","E"];
 const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const answers={}; let graded=false;
 
 try{const b=localStorage.getItem(KEY);if(b){const bl=document.getElementById("bestLine");bl.hidden=false;bl.textContent="Best so far: "+b+"%";}}catch(e){}
@@ -305,11 +308,12 @@ function buildExam(){
     q.appendChild(el("div","issue",item.issue));
     const pre=el("pre","code");pre.textContent=item.code;q.appendChild(pre);
     q.appendChild(el("div","ask",item.ask));
-    item.o.forEach((opt,oi)=>{
-      const b=el("button","opt");b.type="button";b.setAttribute("aria-pressed","false");
-      b.appendChild(el("span","key",LETTERS[oi]));b.appendChild(el("span","txt",opt));
+    shuffle(item.o.map((_,i)=>i)).forEach((oi,pos)=>{
+      const b=el("button","opt");b.type="button";b.setAttribute("aria-pressed","false");b.dataset.oi=oi;
+      b.appendChild(el("span","key",LETTERS[pos]));b.appendChild(el("span","txt",item.o[oi]));
       b.onclick=()=>{ if(graded)return; answers[qi]=oi;
-        [...q.querySelectorAll(".opt")].forEach((o,i)=>o.setAttribute("aria-pressed",i===oi?"true":"false"));
+        [...q.querySelectorAll(".opt")].forEach(o=>o.setAttribute("aria-pressed","false"));
+        b.setAttribute("aria-pressed","true");
         updateCount();};
       q.appendChild(b);
     });
@@ -340,8 +344,10 @@ function submitExam(){
     const q=document.getElementById("q"+qi);q.classList.add("graded");
     const opts=[...q.querySelectorAll(".opt")];const chosen=answers[qi];
     if(chosen===item.a){correct++;catOk[item.cat]=(catOk[item.cat]||0)+1;}
-    opts.forEach((o,i)=>{ if(i===item.a)o.classList.add("correct"); else if(i===chosen)o.classList.add("wrong"); });
-    const tag=el("div","tag "+(chosen===item.a?"ok":"no"),chosen===item.a?"✓ Correct":"✗ Your answer: "+LETTERS[chosen]+" · Correct: "+LETTERS[item.a]);
+    opts.forEach(o=>{const oi=+o.dataset.oi; if(oi===item.a)o.classList.add("correct"); else if(oi===chosen)o.classList.add("wrong"); });
+    const cPos=opts.findIndex(o=>+o.dataset.oi===item.a);
+    const chPos=opts.findIndex(o=>+o.dataset.oi===chosen);
+    const tag=el("div","tag "+(chosen===item.a?"ok":"no"),chosen===item.a?"✓ Correct":"✗ Your answer: "+LETTERS[chPos]+" · Correct: "+LETTERS[cPos]);
     q.insertBefore(tag,q.querySelector(".why"));
   });
   const pct=Math.round(100*correct/QUESTIONS.length);
