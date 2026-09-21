@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Fundamentals of Agentic Coding — a scored MCQ exam (Aurora Forge, Layer 1).">
+<meta name="description" content="Fundamentals of Agentic Coding — a 30-question exam with instant feedback (Aurora Forge, Layer 1).">
 <meta name="color-scheme" content="dark">
 <title>Fundamentals Exam</title>
 <style>
@@ -30,41 +30,40 @@ h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.03em;text-wrap:balance}
 .grad{background:linear-gradient(96deg,var(--cyan),var(--teal) 40%,var(--blue) 70%,var(--violet));
   -webkit-background-clip:text;background-clip:text;color:transparent}
 
-header{padding:26px 0 18px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;
-  background:linear-gradient(180deg,rgba(3,9,11,.92),rgba(3,9,11,.55));backdrop-filter:blur(12px)}
+header{padding:22px 0 16px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;
+  background:linear-gradient(180deg,rgba(3,9,11,.93),rgba(3,9,11,.6));backdrop-filter:blur(12px)}
 .brandrow{display:flex;align-items:center;gap:11px}
 .mark{width:20px;height:20px;border-radius:6px;flex:none;
   background:conic-gradient(from 210deg,var(--cyan),var(--blue),var(--violet),var(--cyan));
   box-shadow:0 0 16px -3px var(--cyan);position:relative}
 .mark::after{content:"";position:absolute;inset:5px;border-radius:3px;background:var(--night-deep)}
 .brand{font-weight:600;font-size:15px}.brand small{color:var(--faint);font-weight:450}
-.bar{margin-top:14px;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+.hstats{margin-left:auto;display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.hstats b{color:var(--cyan);font-weight:600}
+.ghost{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:transparent;border:1px solid var(--line);
+  border-radius:8px;padding:5px 10px;cursor:pointer;transition:.2s var(--ease)}
+.ghost:hover{border-color:var(--cyan);color:var(--ink)}
+.bar{margin-top:13px;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
 .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--teal));
-  transition:width .4s var(--ease);box-shadow:0 0 10px -1px var(--cyan)}
-.barlbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;color:var(--faint);margin-top:8px}
+  transition:width .35s var(--ease);box-shadow:0 0 10px -1px var(--cyan)}
 
 main{padding:28px 0 80px}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
 .hero h1{font-size:clamp(2rem,5vw,2.9rem);line-height:1.05;margin:14px 0 0;letter-spacing:-.04em}
-.hero p{color:var(--muted);max-width:56ch;margin-top:14px}
+.hero p{color:var(--muted);max-width:58ch;margin-top:14px}
 .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
 .pill{font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px solid var(--line);
   border-radius:99px;padding:6px 12px;background:rgba(255,255,255,.02)}
-.best{margin-top:18px;font-family:var(--mono);font-size:12.5px;color:var(--faint)}
-
+.best{margin-top:16px;font-family:var(--mono);font-size:12.5px;color:var(--faint)}
 .btn{font-family:var(--sans);font-weight:600;font-size:15px;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;
-  background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);transition:.2s var(--ease);
-  box-shadow:0 0 0 1px rgba(71,234,219,.3)}
+  background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);transition:.2s var(--ease);box-shadow:0 0 0 1px rgba(71,234,219,.3)}
 .btn:hover{box-shadow:0 0 22px -6px var(--cyan)}
-.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
-.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);font-weight:500}
-.btn.ghost:hover{box-shadow:inset 0 0 0 1px var(--line-strong,rgba(151,225,211,.3))}
+.btn.ghost2{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);font-weight:500}
 .startrow{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 
 .cat-head{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);
-  margin:34px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line-2)}
-.q{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;margin-bottom:14px;
-  backdrop-filter:blur(6px)}
+  margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line-2)}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;margin-bottom:14px;backdrop-filter:blur(6px)}
 .q .num{font-family:var(--mono);font-size:11px;color:var(--faint)}
 .q .stem{font-weight:600;margin:6px 0 14px;letter-spacing:-.01em;line-height:1.4}
 .opt{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);cursor:pointer;
@@ -72,32 +71,30 @@ main{padding:28px 0 80px}
   transition:.15s var(--ease);display:flex;gap:11px;align-items:flex-start}
 .opt:hover{border-color:rgba(151,225,211,.34)}
 .opt .key{font-family:var(--mono);font-size:12px;color:var(--faint);flex:none;width:16px;padding-top:1px}
-.opt[aria-pressed="true"]{border-color:var(--cyan);background:rgba(71,234,219,.08)}
-.opt[aria-pressed="true"] .key{color:var(--cyan)}
-.graded .opt{cursor:default}
+.q.graded .opt{cursor:default}
 .opt.correct{border-color:var(--good);background:var(--good-soft)} .opt.correct .key{color:var(--good)}
 .opt.wrong{border-color:var(--bad);background:var(--bad-soft)} .opt.wrong .key{color:var(--bad)}
-.why{font-size:13.5px;color:var(--muted);border-left:2px solid var(--teal);padding:2px 0 2px 12px;margin-top:6px;display:none}
-.q.graded .why{display:block}
-.q .tag{display:inline-flex;gap:6px;align-items:center;font-family:var(--mono);font-size:11px;margin-top:12px}
-.q .tag.ok{color:var(--good)} .q .tag.no{color:var(--bad)}
+.opt.dim{opacity:.5}
+.fb{display:none;margin-top:4px;font-size:13.5px;border-radius:10px;padding:10px 12px;line-height:1.5}
+.q.graded .fb{display:block}
+.fb.ok{background:var(--good-soft);border:1px solid rgba(63,240,168,.3);color:#bff3da}
+.fb.no{background:var(--bad-soft);border:1px solid rgba(255,122,138,.3);color:#ffd0d6}
+.fb b{font-family:var(--mono);font-size:12px}
+.fb .why{display:block;margin-top:5px;color:var(--muted)}
+@keyframes pop{0%{transform:scale(.99)}60%{transform:scale(1.005)}100%{transform:scale(1)}}
+.q.justgraded{animation:pop .28s var(--ease)}
 
-.submitbar{position:sticky;bottom:0;margin-top:22px;padding:14px 0 calc(14px + env(safe-area-inset-bottom,0px));
-  background:linear-gradient(0deg,var(--night-deep) 30%,transparent);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.submitbar .count{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-right:auto}
-
-.result{background:var(--panel);border:1px solid var(--cyan);border-radius:18px;padding:22px;margin-bottom:26px;
-  box-shadow:0 0 50px -24px var(--cyan)}
+.result{background:var(--panel);border:1px solid var(--cyan);border-radius:18px;padding:22px;margin:26px 0;box-shadow:0 0 50px -24px var(--cyan)}
 .score{font-size:clamp(2.4rem,7vw,3.4rem);font-weight:700;letter-spacing:-.04em;line-height:1}
 .verdict{color:var(--muted);margin-top:6px}
 .cats{margin-top:18px;display:grid;gap:10px}
-.catrow{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;font-size:13px}
+.catrow{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;font-size:13px}
 .catrow .track{grid-column:1/-1;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
 .catrow .track > i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--teal))}
 .catrow .nm{color:var(--muted)} .catrow .sc{font-family:var(--mono);color:var(--faint)}
 footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--faint);font-size:12.5px}
 [hidden]{display:none!important}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:6px}
 </style>
 </head>
@@ -105,267 +102,325 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--faint);f
 
 
 <header><div class="wrap">
-  <div class="brandrow"><span class="mark"></span><span class="brand">Aurora Forge <small>· Fundamentals</small></span></div>
-  <div id="progWrap" hidden>
-    <div class="bar"><i id="progFill"></i></div>
-    <div class="barlbl"><span id="progText">0 answered</span><span id="progRight">Layer 1 · Fundamentals of Agentic Coding</span></div>
+  <div class="brandrow">
+    <span class="mark"></span><span class="brand">Aurora Forge <small>· Fundamentals</small></span>
+    <span class="hstats" id="hstats" hidden><span id="scoreText">0/0</span><button class="ghost" id="restartBtn" type="button">restart</button></span>
   </div>
+  <div class="bar" id="progWrap" hidden><i id="progFill"></i></div>
 </div></header>
 
 <main class="wrap">
   <section id="intro" class="hero">
     <div class="eyebrow">Layer 1 · exam</div>
     <h1>Do you actually understand <span class="grad">agentic coding?</span></h1>
-    <p>A short, scored exam on the fundamentals the 2026 AI-assisted interview assumes — context
-      windows, prompting, tool calls, harnesses, MCP, prompt injection, reasoning effort, and how to
-      validate what the model writes. One correct answer each; you get the reasoning after you submit.</p>
+    <p>Thirty quick questions on the fundamentals the 2026 AI-assisted interview assumes — context
+      windows, prompting, tools &amp; MCP, working inside a repo, safety, cost, and validating what the
+      model writes. You get <strong>instant feedback</strong> on every click: right or wrong, and why.</p>
     <div class="pills">
       <span class="pill" id="qcountPill">— questions</span>
-      <span class="pill">~10 min</span>
+      <span class="pill">instant feedback</span>
       <span class="pill">L3 · entry-level</span>
       <span class="pill">answers explained</span>
     </div>
     <div class="best" id="bestLine" hidden></div>
-    <div class="startrow"><button class="btn" id="startBtn">Start exam →</button></div>
+    <div class="startrow"><button class="btn" id="startBtn">Start →</button></div>
   </section>
 
   <section id="results" hidden></section>
   <form id="exam" hidden></form>
-
-  <div class="submitbar" id="submitbar" hidden>
-    <span class="count" id="answerCount">0 / 0 answered</span>
-    <button class="btn ghost" id="resetBtn" type="button">Restart</button>
-    <button class="btn" id="submitBtn" type="button" disabled>Submit exam</button>
-  </div>
-
   <footer><div>Aurora Forge Lab · Fundamentals of Agentic Coding · answers reflect current best practice (2026) and evolve.</div></footer>
 </main>
 
 <script>
 const QUESTIONS = [
-  {cat:"LLM & context basics", q:"What is a model's context window?", o:[
-    "The total amount of text (tokens) the model can consider at once — your prompt plus its reply",
-    "The maximum number of files a repo can contain",
-    "How long the model has been trained for",
-    "The size of the model's weights on disk"], a:0,
-    why:"The context window is the working memory for a single request: everything in it — system prompt, conversation, files, and the response — competes for that fixed token budget."},
-  {cat:"LLM & context basics", q:"Roughly, what is a token?", o:[
-    "One full sentence",
-    "A chunk of text (often ~a word or word-piece) — the unit models read and bill by",
-    "One line of code",
-    "A single character, always"], a:1,
-    why:"Models process text as tokens (~3–4 characters / roughly ¾ of a word on average). Cost and context limits are measured in tokens, not characters or lines."},
-  {cat:"LLM & context basics", q:"What tends to happen as a session's context gets very full?", o:[
-    "The model permanently remembers everything from the whole session",
-    "Nothing — a fuller window is always strictly better",
-    "Earlier detail can be dropped or compacted, and the model may 'forget' things said earlier",
-    "The window automatically expands to fit whatever you add"], a:2,
-    why:"As the window fills, older content is summarized/compacted or evicted, so specifics from early in the session can be lost or diluted — a real failure mode on long tasks."},
+  // ---- Context ----
+  {cat:"Context & the model", q:"What is a model's context window?", o:[
+    "Its long-term memory shared across all your chats",
+    "All the text it can consider within one request",
+    "The number of files open in your editor",
+    "The size of the model stored on disk"], a:1,
+    why:"It's the working memory for a single request — prompt, files, history, and reply all share that one token budget."},
+  {cat:"Context & the model", q:"A token is, roughly:", o:[
+    "one full sentence of natural-language text",
+    "a chunk of text, often part of a word",
+    "always exactly one character of input",
+    "one complete line of source-code text"], a:1,
+    why:"Models read text as tokens (~3–4 characters on average); cost and limits are counted in tokens."},
+  {cat:"Context & the model", q:"As a long chat's context fills, you should expect:", o:[
+    "the model to get faster and sharper",
+    "older detail to be summarized or dropped",
+    "the window to grow to fit everything",
+    "the model to reject all further input"], a:1,
+    why:"Once full, earlier content is compacted or evicted — so specifics from early on can quietly get lost."},
+  {cat:"Context & the model", q:"The 'lost in the middle' effect means models tend to:", o:[
+    "weight the start and end over the middle",
+    "delete the middle lines of an open file",
+    "lose your scroll position in a long diff",
+    "forget the very first message you sent"], a:0,
+    why:"With lots of context, information buried in the middle gets less attention than the beginning and end."},
+  {cat:"Context & the model", q:"After a session compacts and you lose detail, the best habit is to:", o:[
+    "re-paste the whole history each time",
+    "keep a short handoff file to re-seed",
+    "start over from zero every session",
+    "keep prompting and hope it recovers"], a:1,
+    why:"A concise handoff/continuity file survives compaction and lets a fresh session rehydrate the important state cheaply."},
 
-  {cat:"Context management", q:"Your long task's session just compacted and you lost earlier detail. Best recovery habit?", o:[
-    "Paste the entire chat history back in and hope it fits",
-    "Keep a running handoff / continuity file (e.g. CONTINUITY.md) that captures decisions and state, and re-seed from it",
-    "Start over from scratch each time",
-    "Ignore it and keep going"], a:1,
-    why:"A durable handoff/continuity file is the standard fix: it survives compaction and lets you (or a fresh session) rehydrate the important state cheaply, instead of re-pasting everything."},
-  {cat:"Context management", q:"Would you always pick a 1M-token context window over a 256k one?", o:[
-    "Yes — more context is always better",
-    "No — a bigger window costs more, can be slower, and stuffing it can dilute the model's attention; right-size to the task",
-    "No — large windows are never useful",
-    "Yes — it makes the model more accurate on every task"], a:1,
-    why:"Bigger helps when you genuinely need more grounding, but it raises cost/latency and can bury the relevant tokens ('lost in the middle'). Curate what you put in rather than maxing the window."},
+  // ---- Prompting ----
+  {cat:"Prompting", q:"The strongest prompt for a coding task usually:", o:[
+    "states the goal, constraints, and edge cases",
+    "stays as short and as casual as possible",
+    "assumes you know what I mean, just do it",
+    "asks the model to be creative and surprising"], a:0,
+    why:"Specific goal + constraints + pinned edge cases removes guesswork and is what you can actually validate against."},
+  {cat:"Prompting", q:"For 'convert snake_case to camelCase', the best prompt is:", o:[
+    "clean up the casing in my strings please",
+    "fix the naming, you basically get the idea",
+    "write snake_to_camel(s); pin the edge cases",
+    "do that camelCase thing for me, thanks"], a:2,
+    why:"It names the function and pins the exact edge cases — the part the interview actually cares about."},
+  {cat:"Prompting", q:"A system prompt (versus a user message) carries:", o:[
+    "the model's standing role, rules, and format",
+    "only the single latest question you typed",
+    "the model's private, hidden chain of thought",
+    "your API key and account billing details"], a:0,
+    why:"The system prompt sets durable behavior and constraints; user messages are the turn-by-turn asks."},
+  {cat:"Prompting", q:"'Few-shot' prompting means:", o:[
+    "giving a few worked examples in the prompt",
+    "sending only a few words to save on cost",
+    "limiting the model to only a few replies",
+    "fine-tuning the model on a few new samples"], a:0,
+    why:"You show the model a handful of input→output examples so it infers the pattern you want."},
+  {cat:"Prompting", q:"Requesting structured output (like a JSON schema) mainly:", o:[
+    "makes replies reliably machine-parseable",
+    "makes the model reason more deeply",
+    "lowers the token cost of the call",
+    "gets around the context-window limit"], a:0,
+    why:"Constraining the shape makes the response safe to parse downstream — it doesn't make the model smarter or cheaper."},
 
-  {cat:"Prompting", q:"For 'convert snake_case to camelCase', which prompt is best?", o:[
-    "Write some code for strings",
-    "Write a function snake_to_camel(s): convert snake_case to camelCase; leading/trailing/double underscores and empty input are defined edge cases — include tests",
-    "Fix my casing please",
-    "Do the camelCase thing you know what I mean"], a:1,
-    why:"The strong prompt names the exact function, the transformation, and pins the edge cases (the part the interview actually cares about) — it defines boundaries instead of leaving them to guesswork."},
-  {cat:"Prompting", q:"Which prompt is too weak/general to trust the output of?", o:[
-    "Given this failing test and stack trace, find the root cause and propose the smallest fix",
-    "Refactor auth.py's login() to inject the clock so the token-expiry branch is testable; keep behavior identical",
-    "Make the code better",
-    "Add a rate limiter: token bucket, 5 req/s, injectable clock, reject when empty"], a:2,
-    why:"'Make the code better' has no target, no constraints, and no definition of done — it invites arbitrary changes you can't validate. The others scope the task precisely."},
+  // ---- Agents & tools ----
+  {cat:"Agents & tools", q:"A 'tool call' is:", o:[
+    "the model quietly retraining itself on data",
+    "the model asking to run an external function",
+    "just another name for the system prompt itself",
+    "a support ticket sent to the model vendor"], a:1,
+    why:"The model emits a structured request; the harness runs the function and feeds the result back into context."},
+  {cat:"Agents & tools", q:"The 'harness' around an agent is:", o:[
+    "simply another word for the model itself",
+    "the loop that feeds context and runs tools",
+    "the dataset the model was trained on",
+    "the GPU that the model runs on"], a:1,
+    why:"The model reasons; the harness acts — managing context, executing tools, and enforcing limits in a loop."},
+  {cat:"Agents & tools", q:"An MCP server is:", o:[
+    "a way to expose tools/data to any MCP client",
+    "a plugin format only one editor can load",
+    "a hosted chat UI for talking to a model",
+    "a service that fine-tunes on your repo"], a:0,
+    why:"Model Context Protocol is an open standard: a server advertises tools/resources any MCP-capable client can use."},
+  {cat:"Agents & tools", q:"Splitting work across subagents helps most when tasks are:", o:[
+    "independent and can run in parallel",
+    "strictly dependent, each on the last",
+    "meant to share one giant context",
+    "tiny and already trivial to do"], a:0,
+    why:"Parallel subagents shine on independent chunks; tightly-sequential work gains little and adds coordination cost."},
+  {cat:"Agents & tools", q:"When an agent calls a tool, the tool's result is:", o:[
+    "fed back into its context to reason over",
+    "hidden from the model entirely afterward",
+    "written straight into your production database",
+    "used to update the model's weights live"], a:0,
+    why:"Tool output returns into the model's context so it can reason over real data instead of guessing."},
 
-  {cat:"Agentic infrastructure", q:"What is a 'tool call'?", o:[
-    "The model updating its own weights mid-conversation",
-    "A structured request from the model to run an external function/tool (read a file, run tests, search) whose result is fed back into its context",
-    "A step where the model rewrites its own system prompt",
-    "Another name for the system prompt that sets the model's role"], a:1,
-    why:"Tool calling lets the model act on the world through defined functions; the harness executes the call and returns the result so the model can reason over real data instead of guessing."},
-  {cat:"Agentic infrastructure", q:"In an agent, what is the 'harness' versus the model?", o:[
-    "They're the same thing — 'harness' is just another word for the model",
-    "The harness is the loop/runtime around the model — it feeds context, executes tool calls, and enforces limits; the model is the reasoning 'brain'",
-    "The harness is the system-prompt template the model is given",
-    "The harness is the fine-tuning pipeline that produced the model"], a:1,
-    why:"The model decides; the harness does — it manages context, runs tools, applies guardrails, and loops. Good agentic work comes from the two working well together, not the model alone."},
-  {cat:"Agentic infrastructure", q:"What is an MCP server?", o:[
-    "A proprietary plugin format only one editor can load",
-    "A standardized way (Model Context Protocol) to expose tools/data/resources to an AI client so any compatible model can use them",
-    "A hosted model endpoint you send prompts to over HTTP",
-    "A background service that fine-tunes the model on your repo"], a:1,
-    why:"MCP is an open protocol: a server advertises tools/resources, and any MCP-capable client (editor, agent) can call them — decoupling capabilities from any single model or app."},
+  // ---- Working in a repo ----
+  {cat:"Working in a repo", q:"A CLAUDE.md / AGENTS.md / rules file exists to:", o:[
+    "store your API keys and secrets for the agent",
+    "give the agent project conventions and context",
+    "list out every single file in the repository",
+    "keep a running log of the agent's past chats"], a:1,
+    why:"It's durable project context — conventions, commands, gotchas — that the agent reads before working."},
+  {cat:"Working in a repo", q:"For edits to large files, agents generally prefer:", o:[
+    "rewriting the whole file from scratch each time",
+    "targeted diffs or search-and-replace edits",
+    "deleting the file and retyping from memory",
+    "never modifying any existing files at all"], a:1,
+    why:"Small, targeted edits are cheaper, safer, and far easier to review than whole-file rewrites."},
+  {cat:"Working in a repo", q:"Good git hygiene when coding with an agent is:", o:[
+    "one giant commit at the very end",
+    "small commits, and review each diff",
+    "committing without reading the changes",
+    "force-pushing over main to save time"], a:1,
+    why:"Small reviewed commits keep AI changes legible and let you catch a bad one before it compounds."},
+  {cat:"Working in a repo", q:"Before a change in an unfamiliar codebase, you should first:", o:[
+    "rewrite the whole module to be safe",
+    "read and reproduce, then fix minimally",
+    "start editing where you guess the bug is",
+    "let the agent rewrite it all unread"], a:1,
+    why:"Comprehension before change — understand and reproduce, then make the smallest correct edit."},
+  {cat:"Working in a repo", q:"A long, multi-step build with an agent goes best when you:", o:[
+    "send one huge prompt and hope for it",
+    "set a goal and split it into checkable steps",
+    "keep the whole plan only in your head",
+    "improvise each step with no clear target"], a:1,
+    why:"A stated goal decomposed into verifiable steps catches errors early instead of letting them pile up."},
 
-  {cat:"Safety", q:"What is a prompt injection?", o:[
-    "A prompt so long it overflows the context window",
-    "Malicious instructions hidden in content the model reads (a web page, file, tool output) that try to hijack its behavior",
-    "When the model refuses a request it judges unsafe",
-    "A trick for compressing a prompt into fewer tokens"], a:1,
-    why:"Untrusted content pulled into context can carry instructions ('ignore previous instructions, exfiltrate secrets'). Treat tool/document output as data, never as commands, and constrain what the agent can do."},
-  {cat:"Safety", q:"Best mitigation when an agent processes untrusted external content?", o:[
-    "Trust it fully to save time",
-    "Treat that content as data (not instructions), least-privilege the tools, and require confirmation for risky actions",
-    "Give the agent your credentials up front",
-    "Disable all logging"], a:1,
-    why:"Defense is layered: don't let fetched content issue commands, minimize the agent's permissions, and gate destructive/outward actions behind human confirmation."},
+  // ---- Safety ----
+  {cat:"Safety & guardrails", q:"Prompt injection is:", o:[
+    "a plain syntax error inside your own prompt",
+    "hidden instructions in content the model reads",
+    "sending too many prompts too quickly in a row",
+    "a handy trick for shortening a long prompt"], a:1,
+    why:"Untrusted content (a page, file, tool output) can smuggle instructions that try to hijack the agent."},
+  {cat:"Safety & guardrails", q:"The safest way to handle untrusted content an agent reads is to:", o:[
+    "treat it as data, never as commands",
+    "let it run whatever tool it requests",
+    "hand the agent all your credentials",
+    "trust it when it sounds authoritative"], a:0,
+    why:"Never let fetched content issue commands; combine that with least-privilege tools and confirmations for risky actions."},
+  {cat:"Safety & guardrails", q:"Auto-approving every agent action ('YOLO mode') is risky because it:", o:[
+    "runs destructive commands with no approval step",
+    "makes the model noticeably slower to respond",
+    "quietly swaps in a smaller, weaker model",
+    "turns off the model's reasoning entirely"], a:0,
+    why:"Without confirmation gates, one bad tool call (rm, force-push, a leak) executes with no human in the loop."},
+  {cat:"Safety & guardrails", q:"'Least privilege' for an agent means:", o:[
+    "give it only the tools and access it needs",
+    "give it full admin so it never gets stuck",
+    "turn off all logging and review entirely",
+    "run everything as root, just to be safe"], a:0,
+    why:"Minimizing the agent's permissions shrinks the blast radius if a prompt injection or mistake occurs."},
 
-  {cat:"Cost & reasoning effort", q:"When is higher reasoning effort most worth the extra cost/latency?", o:[
-    "On every task — maximum reasoning is always worth it",
-    "For genuinely hard, multi-step or ambiguous problems — not for trivial edits or lookups",
-    "Only when the answer has to be valid JSON",
-    "Only when you're running low on API credits"], a:1,
-    why:"Match effort to difficulty: crank reasoning up for gnarly design/debugging, keep it low for mechanical or well-specified work so you don't burn time and tokens for no gain."},
-  {cat:"Cost & reasoning effort", q:"A good first move to cut token cost on a big task?", o:[
-    "Paste the entire repository into every prompt",
-    "Give the model only the relevant files/slices and a clear goal, and let it request more as needed",
-    "Ask the same question many times",
-    "Turn off tools so it can't read anything"], a:1,
-    why:"Context curation is the biggest lever: feed what's relevant, not everything. Precise, scoped context is cheaper, faster, and usually produces better answers than a dumped repo."},
+  // ---- Cost & speed ----
+  {cat:"Cost & speed", q:"Prompt caching saves cost mainly by:", o:[
+    "reusing unchanged context across calls",
+    "making the model reply in fewer words",
+    "skipping the model's reasoning step",
+    "compressing your API key on the wire"], a:0,
+    why:"Repeated, unchanged context (a big system prompt, files) can be cached so you aren't billed to re-process it each call."},
+  {cat:"Cost & speed", q:"Higher reasoning effort is most worth its cost for:", o:[
+    "trivial edits and quick lookups",
+    "hard, ambiguous, multi-step problems",
+    "every request, no matter how small",
+    "only when the output must be JSON"], a:1,
+    why:"Match effort to difficulty — spend it on gnarly design/debugging, keep it low for mechanical work."},
+  {cat:"Cost & speed", q:"To cut tokens on a big task, the first move is to:", o:[
+    "paste the entire repo into each prompt",
+    "send only the relevant files and a goal",
+    "ask the same question several ways",
+    "disable the agent's file-reading tools"], a:1,
+    why:"Context curation is the biggest lever: scoped, relevant context is cheaper, faster, and usually more accurate."},
+  {cat:"Cost & speed", q:"Compared with stuffing everything into context, RAG is preferred when the knowledge is:", o:[
+    "huge and changes often",
+    "only a few short files",
+    "meant to spark creativity",
+    "never actually needed"], a:0,
+    why:"Retrieval fetches just the relevant slices from a large, changing corpus instead of paying to hold it all in context."},
 
-  {cat:"Workflow & validation", q:"You must make a surgical change in an unfamiliar codebase. Best first step?", o:[
-    "Immediately start editing where you think the bug is",
-    "Read to understand the code and reproduce the behavior first, then make the smallest change that fixes it",
-    "Rewrite the whole module to be safe",
-    "Ask the AI to rewrite everything without reading it"], a:1,
-    why:"Comprehension before change: understand and reproduce, locate the true cause, then make a minimal, targeted edit. This is exactly the 'human-led, AI-assisted' signal interviewers watch for."},
-  {cat:"Workflow & validation", q:"The AI wrote code and all looks fine. What's the right habit?", o:[
-    "Ship it — the model is usually right",
-    "Validate it: read the diff, run the tests, check edge cases; never keep a line you can't explain",
-    "Skim it and merge if it reads reasonably",
-    "Trust it — confident, well-formatted code is usually correct"], a:1,
-    why:"Output validation is the core scored skill: treat AI code like a peer's PR — trace it, test it, and own every line. Confident prose is not evidence of correctness."},
-  {cat:"Workflow & validation", q:"Best approach to a long-horizon task the model can't finish in one shot?", o:[
-    "One giant prompt and hope",
-    "Set an explicit goal, break it into verifiable steps, and check each step before moving on",
-    "Randomly try things until it works",
-    "Never write anything down"], a:1,
-    why:"Long tasks need a stated goal and decomposition into small, checkable slices — each verified before the next — so errors are caught early instead of compounding."},
-  {cat:"Workflow & validation", q:"When is it smarter to start a fresh session than to keep going?", o:[
-    "Never — one endless session is always best",
-    "When the context is bloated/compacted and the model is drifting — re-seed a clean session from your handoff/continuity notes",
-    "Only when the computer restarts",
-    "After every single message"], a:1,
-    why:"A degraded, over-full context produces worse reasoning. Starting clean and re-seeding from a concise handoff often beats pushing on in a polluted window."}
+  // ---- Verification ----
+  {cat:"Verification", q:"The AI wrote code and it looks fine. You should:", o:[
+    "merge it; the model is usually right",
+    "read the diff, run tests, check edges",
+    "skim it and ship if it reads okay",
+    "trust it — tidy code is usually correct"], a:1,
+    why:"Output validation is the scored skill: treat AI code like a peer's PR and own every line you keep."},
+  {cat:"Verification", q:"The model cites an API method you don't recognize. Best move:", o:[
+    "assume it exists; the model sounds sure",
+    "verify it against the real docs or source",
+    "ship it and wait to see if it errors",
+    "rename your code to match the method"], a:1,
+    why:"Models hallucinate plausible-looking APIs; confirm against real documentation before relying on it."}
 ];
 
-const KEY="aurora-fundamentals-v1";
+const KEY="aurora-fundamentals-v2";
 const LETTERS=["A","B","C","D","E"];
 const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
-const answers={}; // qIndex -> chosen option index
-let graded=false;
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const graded={}; // qi -> chosen original index
+let answered=0, score=0;
 
 document.getElementById("qcountPill").textContent=QUESTIONS.length+" questions";
-// best score
-try{const b=localStorage.getItem(KEY);if(b){const bl=document.getElementById("bestLine");
-  bl.hidden=false;bl.textContent="Best so far: "+b+"%";}}catch(e){}
+try{const b=localStorage.getItem(KEY);if(b){const bl=document.getElementById("bestLine");bl.hidden=false;bl.textContent="Best so far: "+b+"%";}}catch(e){}
 
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function buildExam(){
   const form=document.getElementById("exam");form.innerHTML="";
   let lastCat=null;
   QUESTIONS.forEach((item,qi)=>{
     if(item.cat!==lastCat){form.appendChild(el("div","cat-head",item.cat));lastCat=item.cat;}
     const q=el("div","q");q.id="q"+qi;
-    q.appendChild(el("div","num","Question "+(qi+1)));
+    q.appendChild(el("div","num","Question "+(qi+1)+" / "+QUESTIONS.length));
     q.appendChild(el("div","stem",item.q));
     shuffle(item.o.map((_,i)=>i)).forEach((oi,pos)=>{
-      const b=el("button","opt");b.type="button";b.setAttribute("aria-pressed","false");b.dataset.oi=oi;
+      const b=el("button","opt");b.type="button";b.dataset.oi=oi;
       b.appendChild(el("span","key",LETTERS[pos]));
       b.appendChild(el("span","txt",item.o[oi]));
-      b.onclick=()=>{ if(graded)return;
-        answers[qi]=oi;
-        [...q.querySelectorAll(".opt")].forEach(o=>o.setAttribute("aria-pressed","false"));
-        b.setAttribute("aria-pressed","true");
-        updateCount();
-      };
+      b.onclick=()=>gradeOne(qi,q,oi);
       q.appendChild(b);
     });
-    const why=el("div","why");why.textContent="Why: "+item.why;q.appendChild(why);
+    const fb=el("div","fb");q.appendChild(fb);
     form.appendChild(q);
   });
 }
-function updateCount(){
-  const n=Object.keys(answers).length,total=QUESTIONS.length;
-  document.getElementById("answerCount").textContent=n+" / "+total+" answered";
-  document.getElementById("progText").textContent=n+" answered";
-  document.getElementById("progFill").style.width=(100*n/total)+"%";
-  document.getElementById("submitBtn").disabled=n<total;
+function gradeOne(qi,q,chosen){
+  if(qi in graded)return;
+  graded[qi]=chosen;
+  const item=QUESTIONS[qi];
+  q.classList.add("graded","justgraded");
+  setTimeout(()=>q.classList.remove("justgraded"),300);
+  const opts=[...q.querySelectorAll(".opt")];
+  opts.forEach(o=>{const oi=+o.dataset.oi;
+    if(oi===item.a)o.classList.add("correct");
+    else if(oi===chosen)o.classList.add("wrong");
+    else o.classList.add("dim");});
+  const correct=chosen===item.a;
+  if(correct)score++;
+  answered++;
+  const cPos=opts.findIndex(o=>+o.dataset.oi===item.a);
+  const fb=q.querySelector(".fb");
+  fb.classList.add(correct?"ok":"no");
+  const head=el("b",null,correct?"✓ Correct":"✗ Not quite — correct answer is "+LETTERS[cPos]);
+  fb.appendChild(head);
+  fb.appendChild(el("span","why",item.why));
+  updateHead();
+  if(answered===QUESTIONS.length)finish();
+}
+function updateHead(){
+  document.getElementById("scoreText").innerHTML="<b>"+score+"</b>/"+answered+" · "+answered+"/"+QUESTIONS.length;
+  document.getElementById("progFill").style.width=(100*answered/QUESTIONS.length)+"%";
+}
+function verdict(p){
+  if(p>=90)return "Strong AI fluency — you're ready to reason out loud in the room.";
+  if(p>=70)return "Solid foundation. Revisit the ones you missed and you're in good shape.";
+  if(p>=50)return "Getting there — the explanations above are your study list.";
+  return "Early days. Reread every explanation; these fundamentals are the whole game now.";
+}
+function finish(){
+  const pct=Math.round(100*score/QUESTIONS.length);
+  try{const prev=parseInt(localStorage.getItem(KEY)||"0",10);if(pct>prev)localStorage.setItem(KEY,String(pct));}catch(e){}
+  const catTot={},catOk={};
+  QUESTIONS.forEach((item,qi)=>{catTot[item.cat]=(catTot[item.cat]||0)+1;if(graded[qi]===item.a)catOk[item.cat]=(catOk[item.cat]||0)+1;});
+  const r=document.getElementById("results");r.hidden=false;r.innerHTML="";
+  const card=el("div","result");
+  card.appendChild(el("div","score",pct+"%"));
+  card.appendChild(el("div","verdict",score+" / "+QUESTIONS.length+" correct — "+verdict(pct)));
+  const cats=el("div","cats");
+  Object.keys(catTot).forEach(c=>{const ok=catOk[c]||0,tot=catTot[c];const row=el("div","catrow");
+    row.appendChild(el("span","nm",c));row.appendChild(el("span","sc",ok+"/"+tot));
+    const tr=el("div","track");const i=el("i");i.style.width=(100*ok/tot)+"%";tr.appendChild(i);row.appendChild(tr);cats.appendChild(row);});
+  card.appendChild(cats);
+  const again=el("button","btn ghost2","Retake exam");again.type="button";again.onclick=reset;
+  const row2=el("div","startrow");row2.appendChild(again);card.appendChild(row2);
+  r.appendChild(card);r.scrollIntoView({behavior:"smooth",block:"start"});
 }
 function start(){
+  for(const k in graded)delete graded[k];answered=0;score=0;
   buildExam();
   document.getElementById("intro").hidden=true;
   document.getElementById("results").hidden=true;
   document.getElementById("exam").hidden=false;
-  document.getElementById("submitbar").hidden=false;
+  document.getElementById("hstats").hidden=false;
   document.getElementById("progWrap").hidden=false;
-  graded=false;updateCount();scrollTo(0,0);
+  updateHead();scrollTo(0,0);
 }
-function submitExam(){
-  graded=true;
-  let correct=0;const catTot={},catOk={};
-  QUESTIONS.forEach((item,qi)=>{
-    catTot[item.cat]=(catTot[item.cat]||0)+1;
-    const q=document.getElementById("q"+qi);q.classList.add("graded");
-    const opts=[...q.querySelectorAll(".opt")];
-    const chosen=answers[qi];
-    if(chosen===item.a){correct++;catOk[item.cat]=(catOk[item.cat]||0)+1;}
-    opts.forEach(o=>{const oi=+o.dataset.oi; if(oi===item.a)o.classList.add("correct"); else if(oi===chosen)o.classList.add("wrong");});
-    const cPos=opts.findIndex(o=>+o.dataset.oi===item.a);
-    const chPos=opts.findIndex(o=>+o.dataset.oi===chosen);
-    const tag=el("div","tag "+(chosen===item.a?"ok":"no"),chosen===item.a?"✓ Correct":"✗ Your answer: "+LETTERS[chPos]+" · Correct: "+LETTERS[cPos]);
-    q.insertBefore(tag,q.querySelector(".why"));
-  });
-  const pct=Math.round(100*correct/QUESTIONS.length);
-  try{const prev=parseInt(localStorage.getItem(KEY)||"0",10);if(pct>prev)localStorage.setItem(KEY,String(pct));}catch(e){}
-  renderResult(pct,correct,catTot,catOk);
-  document.getElementById("submitbar").hidden=true;
-  document.getElementById("progFill").style.width="100%";
-  document.getElementById("progText").textContent="submitted";
-}
-function verdict(p){
-  if(p>=90)return "Strong AI fluency — you're ready to reason out loud in the room.";
-  if(p>=70)return "Solid foundation. Review the misses below and you're in good shape.";
-  if(p>=50)return "Getting there — the explanations below are your study list.";
-  return "Early days. Read every explanation; these fundamentals are the whole game now.";
-}
-function renderResult(pct,correct,catTot,catOk){
-  const r=document.getElementById("results");r.hidden=false;r.innerHTML="";
-  const card=el("div","result");
-  card.appendChild(el("div","score",pct+"%"));
-  card.appendChild(el("div","verdict",correct+" / "+QUESTIONS.length+" correct — "+verdict(pct)));
-  const cats=el("div","cats");
-  Object.keys(catTot).forEach(c=>{
-    const ok=catOk[c]||0,tot=catTot[c];const row=el("div","catrow");
-    row.appendChild(el("span","nm",c));
-    row.appendChild(el("span","sc",ok+"/"+tot));
-    const tr=el("div","track");const i=el("i");i.style.width=(100*ok/tot)+"%";tr.appendChild(i);
-    row.appendChild(tr);cats.appendChild(row);
-  });
-  card.appendChild(cats);
-  const again=el("button","btn ghost","Retake exam");again.type="button";again.onclick=reset;
-  const row2=el("div","startrow");row2.appendChild(again);card.appendChild(row2);
-  r.appendChild(card);
-  r.scrollIntoView({behavior:"smooth",block:"start"});
-}
-function reset(){
-  for(const k in answers)delete answers[k];graded=false;
-  document.getElementById("results").hidden=true;
-  start();
-}
+function reset(){document.getElementById("results").hidden=true;start();}
 document.getElementById("startBtn").onclick=start;
-document.getElementById("submitBtn").onclick=submitExam;
-document.getElementById("resetBtn").onclick=reset;
+document.getElementById("restartBtn").onclick=reset;
 </script>
 
 </body>
