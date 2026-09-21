@@ -36,7 +36,7 @@ Entry-level (Google **L3**) first — each layer unlocks the next:
 
 | | Layer | What it is |
 |---|---|---|
-| **1** | **[Fundamentals of Agentic Coding](https://kenny2077.github.io/Aurora-Forge/)** — *know the game* | The landing page: a **30-question** MCQ exam with **instant feedback** — context windows & compaction, prompting, tool calls / harness / MCP, prompt injection, reasoning-effort tiers, output validation. |
+| **1** | **[Fundamentals of Agentic Coding](https://kenny2077.github.io/Aurora-Forge/)** — *know the game* | The landing page: a **30-question** multiple-choice warm-up with **instant feedback** — context windows & compaction, prompting, tool calls / harness / MCP, prompt injection, reasoning-effort tiers, output validation. |
 | **2** | **[Real-world code](https://kenny2077.github.io/Aurora-Forge/swe.html)** — *play the game* | Unlocks after Layer 1: **8 SWE-bench-style problems** with **instant feedback** — read a real bug, find the **core issue**, pick the **surgical fix**. |
 | **3** | **[The 35 coding days](https://kenny2077.github.io/Aurora-Forge/days.html)** — *go deep* | The full guided track: 35 ticket-style exercises, each a failing test suite you make pass with AI, plus the terminal mock. |
 
@@ -114,7 +114,7 @@ Per-day levels and verification status live in **[MONTH_PLAN.md](./MONTH_PLAN.md
 │   ├── interview.json       #   drives the mock (prompt, clarifications, hints)
 │   └── AI_LOG.md            #   your prompt + verification log
 ├── interview.py             # the terminal mock runner
-├── docs/index.html          # Layer 1 — fundamentals exam (the landing page)
+├── docs/index.html          # Layer 1 — fundamentals warm-up (the landing page)
 ├── docs/swe.html            # Layer 2 — SWE-bench-style problems
 ├── docs/days.html           # Layer 3 — the 35 coding days web app
 ├── assets/banner.svg        # the pixel-art hero
