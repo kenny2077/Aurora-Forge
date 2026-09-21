@@ -2,16 +2,24 @@
 
 Issues and specs for this repo live as GitHub issues in [`kenny2077/Aurora-Forge`](https://github.com/kenny2077/Aurora-Forge). Use the `gh` CLI for all operations.
 
+> **Cross-repo:** the code lives in `kenny2077/forge-range`, but issues live in a **different** repo,
+> `kenny2077/Aurora-Forge`. Because this clone's `git remote` points at `forge-range`, you **must**
+> pass `--repo kenny2077/Aurora-Forge` on every `gh issue` / issue-related `gh api` command below —
+> do **not** rely on `gh` inferring the repo from the remote (it would target `forge-range`).
+> `gh pr` commands stay on the local `forge-range` clone.
+
 ## Conventions
 
-- **Create an issue**: `gh issue create --title "..." --body "..."`. Use a heredoc for multi-line bodies.
-- **Read an issue**: `gh issue view <number> --comments`, filtering comments by `jq` and also fetching labels.
-- **List issues**: `gh issue list --state open --json number,title,body,labels,comments --jq '[.[] | {number, title, body, labels: [.labels[].name], comments: [.comments[].body]}]'` with appropriate `--label` and `--state` filters.
-- **Comment on an issue**: `gh issue comment <number> --body "..."`
-- **Apply / remove labels**: `gh issue edit <number> --add-label "..."` / `--remove-label "..."`
-- **Close**: `gh issue close <number> --comment "..."`
+All commands below pin `--repo kenny2077/Aurora-Forge` (see the cross-repo note above).
 
-Infer the repo from `git remote -v`; `gh` does this automatically when run inside a clone.
+- **Create an issue**: `gh issue create --repo kenny2077/Aurora-Forge --title "..." --body "..."`. Use a heredoc for multi-line bodies.
+- **Read an issue**: `gh issue view <number> --repo kenny2077/Aurora-Forge --comments`, filtering comments by `jq` and also fetching labels.
+- **List issues**: `gh issue list --repo kenny2077/Aurora-Forge --state open --json number,title,body,labels,comments --jq '[.[] | {number, title, body, labels: [.labels[].name], comments: [.comments[].body]}]'` with appropriate `--label` and `--state` filters.
+- **Comment on an issue**: `gh issue comment <number> --repo kenny2077/Aurora-Forge --body "..."`
+- **Apply / remove labels**: `gh issue edit <number> --repo kenny2077/Aurora-Forge --add-label "..."` / `--remove-label "..."`
+- **Close**: `gh issue close <number> --repo kenny2077/Aurora-Forge --comment "..."`
+
+Do **not** infer the repo from `git remote` — this clone is `forge-range`, so the `--repo` flag is required to reach Aurora-Forge.
 
 ## Pull requests as a triage surface
 
