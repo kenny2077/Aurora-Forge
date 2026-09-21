@@ -4,7 +4,7 @@
 
 # Aurora Forge
 
-### The training range for the human-led, AI-assisted coding interview
+### The training range for the 2026 human-led, Agent-assisted coding interview
 
 **35 days. 35 failing test suites. One habit: never ship a line you can't defend.**
 
