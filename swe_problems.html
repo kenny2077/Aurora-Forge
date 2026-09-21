@@ -23,18 +23,22 @@ h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.03em;text-wrap:balance}
 .grad{background:linear-gradient(96deg,var(--cyan),var(--teal) 40%,var(--blue) 70%,var(--violet));
   -webkit-background-clip:text;background-clip:text;color:transparent}
 
-header{padding:26px 0 18px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;
-  background:linear-gradient(180deg,rgba(3,9,11,.92),rgba(3,9,11,.55));backdrop-filter:blur(12px)}
+header{padding:22px 0 16px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;
+  background:linear-gradient(180deg,rgba(3,9,11,.93),rgba(3,9,11,.6));backdrop-filter:blur(12px)}
 .brandrow{display:flex;align-items:center;gap:11px}
 .mark{width:20px;height:20px;border-radius:6px;flex:none;
   background:conic-gradient(from 210deg,var(--cyan),var(--blue),var(--violet),var(--cyan));
   box-shadow:0 0 16px -3px var(--cyan);position:relative}
 .mark::after{content:"";position:absolute;inset:5px;border-radius:3px;background:var(--night-deep)}
 .brand{font-weight:600;font-size:15px}.brand small{color:var(--faint);font-weight:450}
-.bar{margin-top:14px;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+.hstats{margin-left:auto;display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.hstats b{color:var(--cyan);font-weight:600}
+.ghost{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:transparent;border:1px solid var(--line);
+  border-radius:8px;padding:5px 10px;cursor:pointer;transition:.2s var(--ease)}
+.ghost:hover{border-color:var(--cyan);color:var(--ink)}
+.bar{margin-top:13px;height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
 .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--teal));
-  transition:width .4s var(--ease);box-shadow:0 0 10px -1px var(--cyan)}
-.barlbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;color:var(--faint);margin-top:8px}
+  transition:width .35s var(--ease);box-shadow:0 0 10px -1px var(--cyan)}
 
 main{padding:28px 0 80px}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
@@ -43,49 +47,40 @@ main{padding:28px 0 80px}
 .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
 .pill{font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px solid var(--line);
   border-radius:99px;padding:6px 12px;background:rgba(255,255,255,.02)}
-.note{margin-top:18px;font-size:13px;color:var(--faint);max-width:64ch;line-height:1.6;
-  border-left:2px solid var(--line);padding-left:12px}
+.note{margin-top:18px;font-size:13px;color:var(--faint);max-width:64ch;line-height:1.6;border-left:2px solid var(--line);padding-left:12px}
 .best{margin-top:16px;font-family:var(--mono);font-size:12.5px;color:var(--faint)}
-
 .btn{font-family:var(--sans);font-weight:600;font-size:15px;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;
-  background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);transition:.2s var(--ease);
-  box-shadow:0 0 0 1px rgba(71,234,219,.3)}
+  background:linear-gradient(96deg,var(--cyan),var(--teal));color:var(--night-deep);transition:.2s var(--ease);box-shadow:0 0 0 1px rgba(71,234,219,.3)}
 .btn:hover{box-shadow:0 0 22px -6px var(--cyan)}
-.btn:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
-.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);font-weight:500}
+.btn.ghost2{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);font-weight:500}
 .startrow{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 
 .q{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px;backdrop-filter:blur(6px)}
 .q .top{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:8px}
 .q .num{font-family:var(--mono);font-size:11px;color:var(--faint)}
-.repo{font-family:var(--mono);font-size:11px;color:var(--cyan);border:1px solid rgba(71,234,219,.28);
-  border-radius:99px;padding:2px 9px;background:rgba(71,234,219,.08)}
-.skill{font-family:var(--mono);font-size:11px;color:var(--violet);border:1px solid rgba(169,159,255,.28);
-  border-radius:99px;padding:2px 9px;background:rgba(169,159,255,.1)}
+.repo{font-family:var(--mono);font-size:11px;color:var(--cyan);border:1px solid rgba(71,234,219,.28);border-radius:99px;padding:2px 9px;background:rgba(71,234,219,.08)}
+.skill{font-family:var(--mono);font-size:11px;color:var(--violet);border:1px solid rgba(169,159,255,.28);border-radius:99px;padding:2px 9px;background:rgba(169,159,255,.1)}
 .q .stem{font-weight:600;margin:2px 0 10px;letter-spacing:-.01em;line-height:1.35}
 .issue{font-size:13.5px;color:var(--muted);border-left:2px solid var(--amber);padding:4px 0 4px 12px;margin:0 0 12px;font-style:italic}
-pre.code{font-family:var(--mono);font-size:12.5px;line-height:1.55;background:rgba(0,0,0,.34);
-  border:1px solid var(--line-2);border-radius:11px;padding:13px 14px;overflow-x:auto;margin:0 0 14px;color:#dcebe8}
+pre.code{font-family:var(--mono);font-size:12.5px;line-height:1.55;background:rgba(0,0,0,.34);border:1px solid var(--line-2);border-radius:11px;padding:13px 14px;overflow-x:auto;margin:0 0 14px;color:#dcebe8}
 .ask{font-weight:600;margin:0 0 12px;color:var(--ink)}
 .opt{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);cursor:pointer;
   border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:9px;background:rgba(255,255,255,.02);
   transition:.15s var(--ease);display:flex;gap:11px;align-items:flex-start}
 .opt:hover{border-color:rgba(151,225,211,.34)}
 .opt .key{font-family:var(--mono);font-size:12px;color:var(--faint);flex:none;width:16px;padding-top:1px}
-.opt[aria-pressed="true"]{border-color:var(--cyan);background:rgba(71,234,219,.08)}
-.opt[aria-pressed="true"] .key{color:var(--cyan)}
 .q.graded .opt{cursor:default}
 .opt.correct{border-color:var(--good);background:var(--good-soft)} .opt.correct .key{color:var(--good)}
 .opt.wrong{border-color:var(--bad);background:var(--bad-soft)} .opt.wrong .key{color:var(--bad)}
+.opt.dim{opacity:.5}
+.tag{display:inline-flex;gap:6px;align-items:center;font-family:var(--mono);font-size:11.5px;margin:2px 0 4px}
+.tag.ok{color:var(--good)} .tag.no{color:var(--bad)}
 .why{font-size:13.5px;color:var(--muted);border-left:2px solid var(--teal);padding:2px 0 2px 12px;margin-top:8px;display:none}
 .q.graded .why{display:block}
-.tag{display:inline-flex;gap:6px;align-items:center;font-family:var(--mono);font-size:11px;margin-top:12px}
-.tag.ok{color:var(--good)} .tag.no{color:var(--bad)}
+@keyframes pop{0%{transform:scale(.995)}60%{transform:scale(1.004)}100%{transform:scale(1)}}
+.q.justgraded{animation:pop .28s var(--ease)}
 
-.submitbar{position:sticky;bottom:0;margin-top:22px;padding:14px 0 calc(14px + env(safe-area-inset-bottom,0px));
-  background:linear-gradient(0deg,var(--night-deep) 30%,transparent);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.submitbar .count{font-family:var(--mono);font-size:12.5px;color:var(--faint);margin-right:auto}
-.result{background:var(--panel);border:1px solid var(--cyan);border-radius:18px;padding:22px;margin-bottom:26px;box-shadow:0 0 50px -24px var(--cyan)}
+.result{background:var(--panel);border:1px solid var(--cyan);border-radius:18px;padding:22px;margin:26px 0;box-shadow:0 0 50px -24px var(--cyan)}
 .score{font-size:clamp(2.4rem,7vw,3.4rem);font-weight:700;letter-spacing:-.04em;line-height:1}
 .verdict{color:var(--muted);margin-top:6px}
 .cats{margin-top:18px;display:grid;gap:10px}
@@ -96,16 +91,15 @@ pre.code{font-family:var(--mono);font-size:12.5px;line-height:1.55;background:rg
 footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--faint);font-size:12.5px;line-height:1.6}
 footer a{color:var(--teal)}
 [hidden]{display:none!important}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:6px}
 </style>
 
 <header><div class="wrap">
-  <div class="brandrow"><span class="mark"></span><span class="brand">Aurora Forge <small>· Real-World Problems</small></span></div>
-  <div id="progWrap" hidden>
-    <div class="bar"><i id="progFill"></i></div>
-    <div class="barlbl"><span id="progText">0 answered</span><span>Layer 2 · SWE-bench-style comprehension</span></div>
+  <div class="brandrow"><span class="mark"></span><span class="brand">Aurora Forge <small>· Real-World Problems</small></span>
+    <span class="hstats" id="hstats" hidden><span id="scoreText">0/0</span><button class="ghost" id="restartBtn" type="button">restart</button></span>
   </div>
+  <div class="bar" id="progWrap" hidden><i id="progFill"></i></div>
 </div></header>
 
 <main class="wrap">
@@ -114,39 +108,31 @@ footer a{color:var(--teal)}
     <h1>Read the bug. Find the <span class="grad">core issue.</span> Pick the surgical fix.</h1>
     <p>Eight read-and-diagnose problems in the shape of real GitHub bug-fixes — the exact skill the
       AI-assisted round tests: can you understand code you didn't write, locate what's actually wrong,
-      and choose the smallest correct change (not a rewrite, not the wrong spot)?</p>
+      and choose the smallest correct change? You get <strong>instant feedback</strong> on each click.</p>
     <div class="pills">
-      <span class="pill">8 problems</span><span class="pill">~15 min</span>
+      <span class="pill">8 problems</span><span class="pill">instant feedback</span>
       <span class="pill">read &amp; diagnose</span><span class="pill">answers explained</span>
     </div>
     <p class="note">Adapted &amp; simplified from the <em>kinds</em> of tasks in
       <strong>SWE-bench</strong> (Jimenez et al., 2023) — real GitHub bug-fixes across popular Python
       libraries; its human-validated <strong>Verified</strong> subset (OpenAI) has 500 instances.
       These are self-contained teaching puzzles, not verbatim dataset rows — the repo tag names a
-      library where this <em>shape</em> of bug is common, and each excerpt stands alone so no repo
-      setup is needed. Not AI-assisted, but bring your own AI to explore afterward.</p>
+      library where this <em>shape</em> of bug is common, and each excerpt stands alone.</p>
     <div class="best" id="bestLine" hidden></div>
     <div class="startrow"><button class="btn" id="startBtn">Start →</button></div>
   </section>
 
   <section id="results" hidden></section>
   <form id="exam" hidden></form>
-
-  <div class="submitbar" id="submitbar" hidden>
-    <span class="count" id="answerCount">0 / 0 answered</span>
-    <button class="btn ghost" id="resetBtn" type="button">Restart</button>
-    <button class="btn" id="submitBtn" type="button" disabled>Submit</button>
-  </div>
-
   <footer><div class="wrap" style="padding:0">Aurora Forge Lab · Layer 2 · problem shapes adapted from
-    <a href="https://www.swebench.com/">SWE-bench</a> (Jimenez et al., Princeton). Excerpts are simplified for a quick read.</div></footer>
+    <a href="https://www.swebench.com/">SWE-bench</a> (Jimenez et al., 2023); the Verified subset is OpenAI's.</div></footer>
 </main>
 
 <script>
 const QUESTIONS = [
   { repo:"requests", cat:"Security",
     stem:"Auth header leaks across a redirect",
-    issue:"Bug report: when a request to api.example.com returns a 301 to evil.com, our client resends the Authorization header to evil.com, leaking the user's credentials.",
+    issue:"Bug report: a request to api.example.com returns a 301 to evil.com, and the client resends the Authorization header to evil.com — leaking the user's credentials.",
     code:`def rebuild_auth(prepared_request, response):
     headers = prepared_request.headers
     orig_host = urlparse(response.request.url).hostname
@@ -158,42 +144,42 @@ const QUESTIONS = [
     return`,
     ask:"What is the core issue and the surgical fix?",
     o:[
-      "The Authorization header is forwarded even when the redirect points to a different host; strip it when new_host != orig_host.",
-      "urlparse is slow; cache the parsed URL.",
-      "Always delete the Authorization header on every redirect.",
-      "Rename orig_host to original_host for clarity."],
+      "Auth is re-sent even when the redirect host changes; strip it when the host differs.",
+      "urlparse is slow here; cache the parsed URL to make the redirects faster overall.",
+      "Always delete the Authorization header on every redirect, same-host or not at all.",
+      "orig_host and new_host are computed but never used; just rename them more clearly."],
     a:0,
-    why:"This is a credential-leak: on a cross-host redirect the auth header must be removed. The surgical fix strips Authorization only when the host changes — option C over-corrects and breaks legitimate same-host redirects."},
+    why:"It re-applies the auth header regardless of host — a credential leak on cross-host redirects. The fix strips it only when the host changes; always deleting the header would break legitimate same-host redirects."},
 
   { repo:"django", cat:"State & mutation",
     stem:"Filters bleed between calls",
-    issue:"Bug report: the second time we call get_active() the queryset is filtered by ('active', True) twice, and stale filters from earlier calls keep piling up.",
+    issue:"Bug report: the second call to get_active() is filtered by ('active', True) twice, and stale filters from earlier calls keep piling up.",
     code:`def get_active(self, extra_filters=[]):
     extra_filters.append(("active", True))
     return self.filter(*extra_filters)`,
     ask:"What is the core issue and the surgical fix?",
     o:[
-      "A mutable default argument ([]) is shared across all calls and accumulates; default to None and create a fresh list inside.",
-      "Make get_active a @classmethod so separate calls stop sharing state.",
-      "Rename extra_filters to filters to avoid a name clash with the base method.",
-      "Change the default from [] to () so it is an empty tuple instead."],
+      "A mutable default [] is shared across every call and accumulates; default to None.",
+      "Make get_active a @classmethod so separate calls stop sharing any state at all.",
+      "Rename extra_filters to filters to avoid clashing with the base method's name.",
+      "Change the default from [] to an empty tuple () so nothing can be appended to it."],
     a:0,
-    why:"The classic mutable-default-argument trap: the same list object persists across calls and grows. Fix: `def get_active(self, extra_filters=None): extra_filters = list(extra_filters or [])`."},
+    why:"The classic mutable-default trap: the same list persists across calls and grows. Fix: default None, then create a fresh list inside."},
 
   { repo:"scikit-learn", cat:"Numerical edge cases",
     stem:"Scaler returns NaN on a constant column",
-    issue:"Bug report: fitting the scaler on a feature where every value is the same produces NaN for that column and poisons the whole pipeline.",
+    issue:"Bug report: fitting the scaler on a feature where every value is identical produces NaN for that column and poisons the pipeline.",
     code:`def standardize(col):
     # zero-mean, unit-variance
     return (col - col.mean()) / col.std()`,
     ask:"What is the core issue and the surgical fix?",
     o:[
-      "A constant column has std == 0, so it divides by zero (NaN); when std is 0, return zeros (or use a small epsilon).",
-      "Center on the median instead of the mean before dividing by the std.",
-      "Divide by the variance rather than the standard deviation.",
-      "Subtract the column's min instead of its mean before dividing."],
+      "A constant column has std 0, so it divides by zero; guard std==0 and return zeros.",
+      "Center on the median instead of the mean before dividing by the std of the column.",
+      "Divide by the variance rather than the standard deviation of the column's values.",
+      "Subtract the column's minimum instead of its mean before performing the division."],
     a:0,
-    why:"Constant feature → std 0 → division by zero. The surgical fix guards that single case (return a zero column / add eps), leaving normal columns untouched. Changing mean→median or std→variance is a different, wrong transform."},
+    why:"Constant feature → std 0 → division by zero (NaN). The surgical guard handles that single case; median/variance are different, wrong transforms."},
 
   { repo:"pytest", cat:"Resource safety",
     stem:"File handle leaks when parsing fails",
@@ -205,43 +191,43 @@ const QUESTIONS = [
     return data`,
     ask:"What is the core issue and the surgical fix?",
     o:[
-      "If parse() raises, f.close() is skipped and the handle leaks; open the file in a 'with' block so it always closes.",
-      "open() should pass mode='rb'.",
-      "parse() should be wrapped in json.loads().",
-      "read() should be readlines()."],
+      "If parse() raises, f.close() is skipped and the file leaks; use a with block.",
+      "open() should pass mode='rb' so it reads raw bytes rather than decoded text.",
+      "parse() should be wrapped in json.loads() before the parsed data gets returned.",
+      "read() should become readlines() so the parser receives a list of lines instead."],
     a:0,
-    why:"The close() only runs on the happy path. A `with open(path) as f:` guarantees the file closes even when parse() raises — the minimal, correct fix."},
+    why:"close() only runs on the happy path. A `with open(path) as f:` guarantees the file closes even when parse() raises."},
 
   { repo:"matplotlib", cat:"State & mutation",
     stem:"Editing one style mutates the global default",
-    issue:"Bug report: after a user tweaks the style returned for an unknown name, every later chart with no style is also changed.",
+    issue:"Bug report: after a user tweaks the style returned for an unknown name, every later chart with no style is changed too.",
     code:`DEFAULT_STYLE = {"color": "black", "lw": 1}
 _cache = {}
 def get_style(name):
     return _cache.get(name, DEFAULT_STYLE)   # callers may mutate the result`,
     ask:"What is the core issue and the surgical fix?",
     o:[
-      "It hands back the shared DEFAULT_STYLE object, so a caller mutating it changes the global default; return a copy (dict(...)).",
-      "_cache should be an OrderedDict.",
-      "DEFAULT_STYLE should use a tuple instead of a dict.",
-      "get_style should be memoized with lru_cache."],
+      "It returns the shared DEFAULT_STYLE, so a caller's edit hits everyone; return a copy.",
+      "_cache should be an OrderedDict so the stored styles keep a predictable ordering.",
+      "DEFAULT_STYLE should be a tuple instead of a dict to hold its fields more safely.",
+      "get_style should be wrapped in lru_cache so that repeated lookups run much faster."],
     a:0,
-    why:"Returning the shared default dict lets any caller's mutation leak into every future default. `return dict(_cache.get(name, DEFAULT_STYLE))` returns a fresh copy — surgical and correct. lru_cache would make the aliasing worse."},
+    why:"Handing back the shared default dict lets any caller's mutation leak into every future default. Return a fresh copy (dict(...)); lru_cache would make the aliasing worse."},
 
   { repo:"flask", cat:"Security",
     stem:"Token check is not constant-time",
-    issue:"Bug report: security review flags that our session-token comparison can leak the token one byte at a time via response-timing.",
+    issue:"Bug report: security review flags that the session-token comparison can leak the token one byte at a time via response timing.",
     code:`import hmac
 def verify_token(supplied, expected):
     return supplied == expected`,
     ask:"What is the core issue and the surgical fix?",
     o:[
-      "== short-circuits on the first mismatching byte (timing side channel); compare with hmac.compare_digest(supplied, expected).",
-      "supplied should be cast to int first.",
-      "It should check len(supplied) == len(expected) and return.",
-      "The comparison should be wrapped in try/except."],
+      "== short-circuits on the first bad byte (a timing leak); use hmac.compare_digest.",
+      "supplied should be cast to int before the two token strings are compared here.",
+      "It should check len(supplied) == len(expected) first and then return that result.",
+      "The comparison should be wrapped in a try/except to catch any unexpected errors."],
     a:0,
-    why:"String == returns as soon as bytes differ, so response time leaks how much of the token matched. `hmac.compare_digest` compares in constant time. A length check alone doesn't fix the content-timing leak."},
+    why:"String == returns on the first differing byte, so timing leaks how much matched. hmac.compare_digest compares in constant time; a length check alone doesn't fix it."},
 
   { repo:"collections", cat:"Correctness",
     stem:"Merging counts overwrites instead of adding",
@@ -253,12 +239,12 @@ def verify_token(supplied, expected):
     return out`,
     ask:"What is the core issue and the surgical fix?",
     o:[
-      "On a shared key it overwrites rather than sums; use out[k] = out.get(k, 0) + v.",
-      "Replace the loop with out.update(b) — same result, but cleaner.",
-      "Iterate a.items() instead of b.items() to fix the direction.",
-      "Build out with dict(a).copy() so the inputs aren't mutated."],
+      "On a shared key it overwrites instead of summing; use out[k] = out.get(k, 0) + v.",
+      "Replace the loop with out.update(b) — the same result but a bit cleaner to read.",
+      "Iterate a.items() instead of b.items() to fix the direction of the count merge.",
+      "Build out with dict(a).copy() so that neither of the input dicts is mutated at all."],
     a:0,
-    why:"For keys in both dicts the loop replaces the accumulated value instead of adding to it. `out[k] = out.get(k, 0) + v` sums correctly. (`dict.update(b)` would have the same overwrite bug.)"},
+    why:"For keys in both dicts the loop replaces the running value instead of adding to it. `out.get(k, 0) + v` sums correctly; `dict.update(b)` has the same overwrite bug."},
 
   { repo:"statistics", cat:"Numerical edge cases",
     stem:"Sample variance crashes on a single value",
@@ -269,19 +255,19 @@ def verify_token(supplied, expected):
     return sum((x - mean) ** 2 for x in xs) / (n - 1)`,
     ask:"What is the core issue and the surgical fix?",
     o:[
-      "Sample variance divides by (n - 1), which is 0 when there is one value; guard n < 2 (return 0.0 or raise a clear error).",
-      "It should always divide by n, never n - 1.",
-      "sum(xs) / n should use integer division //.",
-      "mean should be computed with statistics.mean for speed."],
+      "n-1 is 0 for a single value, so it divides by zero; guard the n < 2 case first.",
+      "It should always divide by n and never by n-1 when it computes the variance.",
+      "sum(xs)/n should use integer division // so the mean stays an integer value.",
+      "The mean should come from statistics.mean(xs) for better numerical accuracy."],
     a:0,
-    why:"With one sample, n-1 == 0 → ZeroDivisionError. The surgical fix handles the n<2 case explicitly. Switching to /n silently changes it from sample to population variance — a different definition, not a fix."}
+    why:"With one sample, n-1 == 0 → ZeroDivisionError. Guard n<2. Dividing by n instead silently switches sample→population variance — a different definition, not a fix."}
 ];
 
-const KEY="aurora-swe-v1";
+const KEY="aurora-swe-v2";
 const LETTERS=["A","B","C","D","E"];
 const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;};
 const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
-const answers={}; let graded=false;
+const graded={}; let answered=0, score=0;
 
 try{const b=localStorage.getItem(KEY);if(b){const bl=document.getElementById("bestLine");bl.hidden=false;bl.textContent="Best so far: "+b+"%";}}catch(e){}
 
@@ -290,7 +276,7 @@ function buildExam(){
   QUESTIONS.forEach((item,qi)=>{
     const q=el("div","q");q.id="q"+qi;
     const top=el("div","top");
-    top.appendChild(el("span","num","Problem "+(qi+1)+"/"+QUESTIONS.length));
+    top.appendChild(el("span","num","Problem "+(qi+1)+" / "+QUESTIONS.length));
     top.appendChild(el("span","repo",item.repo));
     top.appendChild(el("span","skill",item.cat));
     q.appendChild(top);
@@ -299,78 +285,73 @@ function buildExam(){
     const pre=el("pre","code");pre.textContent=item.code;q.appendChild(pre);
     q.appendChild(el("div","ask",item.ask));
     shuffle(item.o.map((_,i)=>i)).forEach((oi,pos)=>{
-      const b=el("button","opt");b.type="button";b.setAttribute("aria-pressed","false");b.dataset.oi=oi;
+      const b=el("button","opt");b.type="button";b.dataset.oi=oi;
       b.appendChild(el("span","key",LETTERS[pos]));b.appendChild(el("span","txt",item.o[oi]));
-      b.onclick=()=>{ if(graded)return; answers[qi]=oi;
-        [...q.querySelectorAll(".opt")].forEach(o=>o.setAttribute("aria-pressed","false"));
-        b.setAttribute("aria-pressed","true");
-        updateCount();};
+      b.onclick=()=>gradeOne(qi,q,oi);
       q.appendChild(b);
     });
     const why=el("div","why");why.textContent="Why: "+item.why;q.appendChild(why);
     form.appendChild(q);
   });
 }
-function updateCount(){
-  const n=Object.keys(answers).length,total=QUESTIONS.length;
-  document.getElementById("answerCount").textContent=n+" / "+total+" answered";
-  document.getElementById("progText").textContent=n+" answered";
-  document.getElementById("progFill").style.width=(100*n/total)+"%";
-  document.getElementById("submitBtn").disabled=n<total;
+function gradeOne(qi,q,chosen){
+  if(qi in graded)return;
+  graded[qi]=chosen;
+  const item=QUESTIONS[qi];
+  q.classList.add("graded","justgraded");setTimeout(()=>q.classList.remove("justgraded"),300);
+  const opts=[...q.querySelectorAll(".opt")];
+  opts.forEach(o=>{const oi=+o.dataset.oi;
+    if(oi===item.a)o.classList.add("correct");
+    else if(oi===chosen)o.classList.add("wrong");
+    else o.classList.add("dim");});
+  const correct=chosen===item.a;
+  if(correct)score++;
+  answered++;
+  const cPos=opts.findIndex(o=>+o.dataset.oi===item.a);
+  const tag=el("div","tag "+(correct?"ok":"no"),correct?"✓ Correct":"✗ Not quite — correct answer is "+LETTERS[cPos]);
+  q.insertBefore(tag,q.querySelector(".why"));
+  updateHead();
+  if(answered===QUESTIONS.length)finish();
+}
+function updateHead(){
+  document.getElementById("scoreText").innerHTML="<b>"+score+"</b>/"+answered+" · "+answered+"/"+QUESTIONS.length;
+  document.getElementById("progFill").style.width=(100*answered/QUESTIONS.length)+"%";
+}
+function verdict(p){
+  if(p>=88)return "Sharp code comprehension — you find the real issue fast.";
+  if(p>=63)return "Good instincts. Were the misses symptom-fixes rather than the cause?";
+  if(p>=38)return "Getting there — notice how wrong options fix the wrong spot.";
+  return "Slow down and read: locate the core issue before choosing a fix.";
+}
+function finish(){
+  const pct=Math.round(100*score/QUESTIONS.length);
+  try{const prev=parseInt(localStorage.getItem(KEY)||"0",10);if(pct>prev)localStorage.setItem(KEY,String(pct));}catch(e){}
+  const catTot={},catOk={};
+  QUESTIONS.forEach((item,qi)=>{catTot[item.cat]=(catTot[item.cat]||0)+1;if(graded[qi]===item.a)catOk[item.cat]=(catOk[item.cat]||0)+1;});
+  const r=document.getElementById("results");r.hidden=false;r.innerHTML="";
+  const card=el("div","result");
+  card.appendChild(el("div","score",pct+"%"));
+  card.appendChild(el("div","verdict",score+" / "+QUESTIONS.length+" correct — "+verdict(pct)));
+  const cats=el("div","cats");
+  Object.keys(catTot).forEach(c=>{const ok=catOk[c]||0,tot=catTot[c];const row=el("div","catrow");
+    row.appendChild(el("span","nm",c));row.appendChild(el("span","sc",ok+"/"+tot));
+    const tr=el("div","track");const i=el("i");i.style.width=(100*ok/tot)+"%";tr.appendChild(i);row.appendChild(tr);cats.appendChild(row);});
+  card.appendChild(cats);
+  const again=el("button","btn ghost2","Retake");again.type="button";again.onclick=reset;
+  const row2=el("div","startrow");row2.appendChild(again);card.appendChild(row2);
+  r.appendChild(card);r.scrollIntoView({behavior:"smooth",block:"start"});
 }
 function start(){
+  for(const k in graded)delete graded[k];answered=0;score=0;
   buildExam();
   document.getElementById("intro").hidden=true;
   document.getElementById("results").hidden=true;
   document.getElementById("exam").hidden=false;
-  document.getElementById("submitbar").hidden=false;
+  document.getElementById("hstats").hidden=false;
   document.getElementById("progWrap").hidden=false;
-  graded=false;updateCount();scrollTo(0,0);
+  updateHead();scrollTo(0,0);
 }
-function submitExam(){
-  graded=true;let correct=0;const catTot={},catOk={};
-  QUESTIONS.forEach((item,qi)=>{
-    catTot[item.cat]=(catTot[item.cat]||0)+1;
-    const q=document.getElementById("q"+qi);q.classList.add("graded");
-    const opts=[...q.querySelectorAll(".opt")];const chosen=answers[qi];
-    if(chosen===item.a){correct++;catOk[item.cat]=(catOk[item.cat]||0)+1;}
-    opts.forEach(o=>{const oi=+o.dataset.oi; if(oi===item.a)o.classList.add("correct"); else if(oi===chosen)o.classList.add("wrong"); });
-    const cPos=opts.findIndex(o=>+o.dataset.oi===item.a);
-    const chPos=opts.findIndex(o=>+o.dataset.oi===chosen);
-    const tag=el("div","tag "+(chosen===item.a?"ok":"no"),chosen===item.a?"✓ Correct":"✗ Your answer: "+LETTERS[chPos]+" · Correct: "+LETTERS[cPos]);
-    q.insertBefore(tag,q.querySelector(".why"));
-  });
-  const pct=Math.round(100*correct/QUESTIONS.length);
-  try{const prev=parseInt(localStorage.getItem(KEY)||"0",10);if(pct>prev)localStorage.setItem(KEY,String(pct));}catch(e){}
-  renderResult(pct,correct,catTot,catOk);
-  document.getElementById("submitbar").hidden=true;
-  document.getElementById("progFill").style.width="100%";document.getElementById("progText").textContent="submitted";
-}
-function verdict(p){
-  if(p>=88)return "Sharp code comprehension — you find the real issue fast.";
-  if(p>=63)return "Good instincts. Study the misses: were you fixing the symptom or the cause?";
-  if(p>=38)return "Getting there — notice how the wrong options fix the wrong spot or over-rewrite.";
-  return "Slow down and read: locate the CORE issue before choosing a fix. Explanations below.";
-}
-function renderResult(pct,correct,catTot,catOk){
-  const r=document.getElementById("results");r.hidden=false;r.innerHTML="";
-  const card=el("div","result");
-  card.appendChild(el("div","score",pct+"%"));
-  card.appendChild(el("div","verdict",correct+" / "+QUESTIONS.length+" correct — "+verdict(pct)));
-  const cats=el("div","cats");
-  Object.keys(catTot).forEach(c=>{
-    const ok=catOk[c]||0,tot=catTot[c];const row=el("div","catrow");
-    row.appendChild(el("span","nm",c));row.appendChild(el("span","sc",ok+"/"+tot));
-    const tr=el("div","track");const i=el("i");i.style.width=(100*ok/tot)+"%";tr.appendChild(i);row.appendChild(tr);
-    cats.appendChild(row);
-  });
-  card.appendChild(cats);
-  const again=el("button","btn ghost","Retake");again.type="button";again.onclick=reset;
-  const row2=el("div","startrow");row2.appendChild(again);card.appendChild(row2);
-  r.appendChild(card);r.scrollIntoView({behavior:"smooth",block:"start"});
-}
-function reset(){for(const k in answers)delete answers[k];graded=false;document.getElementById("results").hidden=true;start();}
+function reset(){document.getElementById("results").hidden=true;start();}
 document.getElementById("startBtn").onclick=start;
-document.getElementById("submitBtn").onclick=submitExam;
-document.getElementById("resetBtn").onclick=reset;
+document.getElementById("restartBtn").onclick=reset;
 </script>

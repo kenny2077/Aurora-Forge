@@ -36,8 +36,8 @@ The product is two layers, entry-level (Google **L3**) first:
 
 | | Layer | What it is |
 |---|---|---|
-| **1** | **[Fundamentals of Agentic Coding](https://kenny2077.github.io/Aurora-Forge/fundamentals.html)** — *know the game* | A scored MCQ exam: context windows & compaction, prompting, tool calls / harness / MCP, prompt injection, reasoning-effort tiers, and output validation. Objective and quantifiable. |
-| **2** | **Real-world code** — *play the game* | [SWE-bench-style problems](https://kenny2077.github.io/Aurora-Forge/swe.html): read a real bug, find the **core issue**, pick the **surgical fix** — plus the 35 guided coding days below and the terminal mock. |
+| **1** | **[Fundamentals of Agentic Coding](https://kenny2077.github.io/Aurora-Forge/fundamentals.html)** — *know the game* | A **30-question** MCQ exam with **instant feedback**: context windows & compaction, prompting, tool calls / harness / MCP, prompt injection, reasoning-effort tiers, output validation. Objective and quantifiable. |
+| **2** | **[Real-world code](https://kenny2077.github.io/Aurora-Forge/swe.html)** — *play the game* | **8 SWE-bench-style problems** with **instant feedback**: read a real bug, find the **core issue**, pick the **surgical fix** — plus the 35 guided coding days below and the terminal mock. |
 
 ## Why
 
