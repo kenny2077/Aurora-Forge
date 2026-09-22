@@ -172,32 +172,52 @@
   const AUR = [hex("#3fe0c8"), hex("#3aa0e8"), hex("#8b7dff")];
   const STAR = hex("#d8f2ec"), RIDGE1 = hex("#041311"), RIDGE2 = hex("#020908");
 
+  // Curtain aurora: a bright green lower edge with vertical rays that fade upward
+  // through teal into violet/magenta. Only the scroll phase moves it.
+  const CURTAIN = [hex("#7fe6b0"), hex("#4fd89a"), hex("#2fd9b0"), hex("#39a8e0"), hex("#8b7dff"), hex("#c46bff")];
+  const HAZE = hex("#0c3326");
   Forge.auroraPainter = function (opts) {
     const o = Object.assign({ top: 0.3, ridge: 0.8 }, opts);
+    const K = 3;
     return function (buf, cols, rows, st) {
       const phase = (st && st.phase) || 0, glow = st && st.glow != null ? st.glow : 1;
+      const edge = [], len = [], ray = [], fold = [];
+      for (let k = 0; k < K; k++) {
+        edge[k] = new Float32Array(cols); len[k] = new Float32Array(cols); ray[k] = new Float32Array(cols); fold[k] = new Float32Array(cols);
+        for (let x = 0; x < cols; x++) {
+          const u = x / cols;
+          // lower edge: a slow sweeping fold plus a small ripple
+          edge[k][x] = o.top + 0.1 + k * 0.07 + 0.075 * Math.sin(u * 3.3 + phase * 0.9 + k * 2.4) + 0.022 * Math.sin(u * 11.5 - phase * 1.3 + k * 1.7);
+          len[k][x] = 0.13 + 0.1 * vnoise(u * 4.5 + k * 13 + phase * 0.3);
+          // crisp vertical rays: bright columns with dark gaps between
+          ray[k][x] = 0.18 + 0.82 * Math.pow(vnoise(x * 0.55 + k * 31 + phase * 2), 2);
+          const f = clamp(0.5 + 0.9 * Math.sin(u * 2.4 + phase * 0.5 + k * 2.6), 0, 1);
+          fold[k][x] = [1, 0.7, 0.42][k] * f * f * (3 - 2 * f);
+        }
+      }
       for (let y = 0; y < rows; y++) {
         const v = y / rows;
         for (let x = 0; x < cols; x++) {
           const u = x / cols, i = (y * cols + x) * 3;
           let c = skyAt(Math.min(1, (Math.floor(v * 18) + bayer(x, y) * 0.9) / 18));
-          const hs = hash(x, y);
-          if (v < o.ridge - 0.08 && hs > 0.993) c = mix(c, STAR, 0.08 + 0.26 * hash(y, x) * hash(y, x));
-          // two ribbons; only scroll (phase) moves them
-          let best = 0, tone = 0;
-          for (let k = 0; k < 2; k++) {
-            const yc = o.top + 0.075 * Math.sin(u * 5.6 + phase + k * 1.9) + 0.035 * Math.sin(u * 14.1 - phase * 1.3 + k)
-              + (k ? 0.09 : 0);
-            const th = 0.04 + 0.018 * Math.sin(u * 8.7 + phase * 0.8 + k * 2.1);
-            let I = Math.exp(-Math.pow((v - yc) / th, 2)) * (0.6 + 0.4 * Math.sin(u * 6.9 + phase * 0.6 + k * 3));
-            if (v > yc) I = Math.max(I, Math.exp(-(v - yc) / 0.07) * 0.26 * (0.5 + 0.5 * Math.sin(x * 0.45 + k)) * (k ? 0.6 : 1));
-            I *= k ? 0.7 : 1;
-            if (I > best) { best = I; tone = 0.5 + 0.5 * Math.sin(u * 7.7 + phase * 0.5 + k * 2.4); }
+          if (v < o.ridge - 0.08 && hash(x, y) > 0.993) c = mix(c, STAR, 0.08 + 0.26 * hash(y, x) * hash(y, x));
+          if (v > o.ridge - 0.12) c = mix(c, HAZE, clamp((v - (o.ridge - 0.12)) / 0.12, 0, 1) * 0.5 * glow);
+          let best = 0, t = 0, onEdge = false;
+          for (let k = 0; k < K; k++) {
+            const d = edge[k][x] - v, h = len[k][x], F = fold[k][x];
+            if (F < 0.02) continue;
+            let I;
+            if (d < 0) I = Math.exp(d / 0.008) * 0.6 * F;               // thin glow under the edge
+            else if (d < 0.016) I = (0.75 + 0.5 * ray[k][x]) * F;       // the luminous lower edge
+            else I = Math.exp(-(d - 0.016) / h) * (0.3 + 0.95 * ray[k][x]) * F; // rays rising and fading
+            if (I > best) { best = I; t = clamp(d / (h * 2.3), 0, 1); onEdge = d >= 0 && d < 0.016; }
           }
-          const lvl = Math.floor(best * glow * 4 + bayer(x, y) * 0.8) / 4;
-          if (lvl > 0) {
-            const t = Math.min(2, Math.floor(tone * 3));
-            c = mix(c, AUR[t], Math.min(0.92, lvl * 0.85));
+          if (best > 0.1) {
+            const lvl = Math.min(1, Math.floor(best * glow * 4 + bayer(x, y) * 0.55) / 4);
+            if (lvl > 0) {
+              const tone = onEdge && lvl >= 0.75 ? 0 : 1 + Math.min(4, Math.floor(t * 5));
+              c = mix(c, CURTAIN[tone], Math.min(0.7, lvl * (tone > 3 ? 0.42 : 0.64)));
+            }
           }
           const r1 = o.ridge + 0.05 * vnoise(u * 4 + 2) + 0.03 * vnoise(u * 13);
           const r2 = o.ridge + 0.1 + 0.045 * vnoise(u * 6 + 9) + 0.02 * vnoise(u * 21);

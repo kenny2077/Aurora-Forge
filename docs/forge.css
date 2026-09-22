@@ -43,7 +43,7 @@ p{margin:0}
 body.on-paper .nav.solid{background:rgba(228,237,232,.86);color:var(--paper-ink);border-bottom-color:var(--paper-line)}
 .brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:800;
   font-size:22px;letter-spacing:.01em;justify-self:start}
-.brand svg{width:22px;height:22px;flex:none;image-rendering:pixelated}
+.brand svg{width:44px;height:24px;flex:none;image-rendering:pixelated}
 .layers-nav{display:flex;gap:4px}
 .layers-nav a{text-decoration:none;font-size:14px;font-weight:500;padding:8px 14px;color:var(--muted);transition:color .2s,background .2s;
   display:inline-flex;gap:8px;align-items:baseline}
@@ -79,6 +79,7 @@ body.on-paper .nav .btn.ghost{--fg:var(--paper-ink);--bg:rgba(6,37,32,.06)}
   background:linear-gradient(180deg,rgba(4,17,15,0) 70%,var(--night) 100%)}
 .hero-inner{width:100%;padding:calc(var(--nav-h) + 40px) var(--gutter) clamp(56px,9vh,110px);will-change:transform}
 .hero h1{font-size:clamp(58px,10.4vw,168px);max-width:12ch;line-height:.95;text-shadow:0 2px 40px rgba(2,10,9,.6)}
+.hero h1.long{font-size:clamp(52px,6.6vw,104px);max-width:min(100%,17ch)}
 .hero.short h1{font-size:clamp(52px,8.4vw,132px)}
 .hero .lede{margin-top:28px;max-width:52ch;font-size:clamp(17px,1.35vw,20px);line-height:1.55;color:#cfe0da}
 .hero .actions{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
